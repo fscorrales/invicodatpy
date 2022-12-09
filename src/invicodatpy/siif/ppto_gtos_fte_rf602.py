@@ -9,7 +9,7 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, f
+from datar import base, dplyr, tidyr,f
 from .siif import SIIF
 
 class PptoGtosFteRf602(SIIF):
@@ -53,7 +53,19 @@ class PptoGtosFteRf602(SIIF):
                 pendiente = f['20']
             ) >> \
             base.tail(-16) >> \
-            dplyr.filter_(f.programa != '00')
+            dplyr.filter_(f.programa != '00') >> \
+            tidyr.unite(
+                'estructura',
+                [f.programa, f.subprograma, f.proyecto,
+                f.actividad, f.partida],
+                sep='-', remove=False
+            ) >> \
+            dplyr.select(
+                f.ejercicio, f.estructura, f.fuente,
+                f.programa, f.subprograma, f.proyecto, 
+                f.actividad, f.grupo, f.partida,
+                dplyr.everything()
+            )
 
         campos_modificar = ['credito_original', 'credito_vigente', 
         'comprometido', 'ordenado', 'saldo', 'pendiente']
