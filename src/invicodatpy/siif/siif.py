@@ -56,5 +56,20 @@ class SIIF():
         engine.dispose()
         return self.df
 
+    # --------------------------------------------------
     def print_tidyverse(self):
         print(PrintTidyverse(self.df))
+
+    # --------------------------------------------------
+    def test_sql(
+        self, sql_path:str, df:pd.DataFrame):
+        engine = create_engine(f'sqlite:///{sql_path}')
+        self.df.to_sql(
+            name = 'test',
+            con = engine,
+            if_exists='replace',
+            index=False
+        )
+        engine.dispose()
+        print('Sqlite test done')
+
