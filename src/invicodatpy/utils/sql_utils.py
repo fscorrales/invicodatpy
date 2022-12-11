@@ -21,3 +21,14 @@ class SQLUtils():
             sql_table.c[col_filter].in_(unique_col))
         result = connection.execute(u)
         return result
+
+    def delete_all_rows(
+        self, engine:engine, table_filter:str
+    ):
+        metadata = MetaData()
+        sql_table = Table(table_filter, 
+        metadata, autoload=True, autoload_with=engine)
+        connection = engine.connect()
+        u = delete(sql_table)
+        result = connection.execute(u)
+        return result
