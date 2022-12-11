@@ -61,8 +61,7 @@ class SIIF():
         print(PrintTidyverse(self.df))
 
     # --------------------------------------------------
-    def test_sql(
-        self, sql_path:str, df:pd.DataFrame):
+    def test_sql(self, sql_path:str):
         engine = create_engine(f'sqlite:///{sql_path}')
         self.df.to_sql(
             name = 'test',

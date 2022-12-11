@@ -7,8 +7,9 @@ Purpose: SIIF database model
 import os
 from dataclasses import dataclass
 
-from sqlalchemy import (Column, Integer, MetaData, Numeric, String, Table,
-                        create_engine)
+from sqlalchemy import (Boolean, Column, Date, Integer, MetaData, Numeric,
+                        String, Table, create_engine)
+
 
 @dataclass
 class SIIFModel():
@@ -65,6 +66,31 @@ class SIIFModel():
             Column('comprometido', Numeric(12,2)),
             Column('ordenado', Numeric(12,2)),
             Column('saldo', Numeric(12,2))
+        )
+
+        self.comprobantes_gtos_rcg01_uejp = Table(
+            'comprobantes_gtos_rcg01_uejp', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('mes', String(7)),
+            Column('fecha', Date()),
+            Column('nro_comprobante', String(8)),
+            Column('monto', Numeric(12,2)),
+            Column('fuente', String(2)),
+            Column('cta_cte', String(20)),
+            Column('cuit', String(11)),
+            Column('nro_expte', String(12)),
+            Column('nro_fondo', String(5)),
+            Column('nro_entrada', String(5)),
+            Column('nro_origen', String(5)),
+            Column('clase_reg', String(3)),
+            Column('clase_mod', String(3)),
+            Column('clase_gto', String(3)),
+            Column('beneficiario', String(50)),
+            Column('comprometido', Boolean()),
+            Column('verificado', Boolean()),
+            Column('aprobado',Boolean()),
+            Column('pagado', Boolean())
         )
 
     def create_engine(self):
