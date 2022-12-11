@@ -20,7 +20,7 @@ class PptoGtosFteRf602(SIIF):
     _FILTER_COL = 'ejercicio'
 
     # --------------------------------------------------
-    def read_siif_report(self, xls_path:str) -> pd.DataFrame:
+    def from_siif_xls_report(self, xls_path:str) -> pd.DataFrame:
         """"Read from xls SIIF's report"""
         df = self.read_xls(xls_path)
         read_title = df['2'].iloc[5][:-5] 
@@ -99,10 +99,10 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     siif_rf602 = PptoGtosFteRf602()
-    siif_rf602.read_siif_report(dir_path + '/' + args.file)
+    siif_rf602.from_siif_xls_report(dir_path + '/' + args.file)
     siif_rf602.to_sql(dir_path + '/siif.sqlite')
     siif_rf602.print_tidyverse()
-    df = siif_rf602.from_sql(dir_path + '/siif.sqlite')
+    siif_rf602.from_sql(dir_path + '/siif.sqlite')
     siif_rf602.print_tidyverse()
 
 # --------------------------------------------------
