@@ -9,7 +9,6 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, f, tidyr
 
 from ..utils.print_tidyverse import PrintTidyverse
 from .ppto_gtos_desc_rf610 import PptoGtosDescRf610
