@@ -57,6 +57,31 @@ class SGFModel():
             Column('importe_neto', Numeric(12,2))
         )
 
+        self.resumen_rend_obras = Table(
+            'resumen_rend_obras', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('mes', String(7)),
+            Column('fecha', Date()),
+            Column('beneficiario', String(50)),
+            Column('cod_obra', String(15)),
+            Column('obra', String(100)),
+            Column('destino', String(30)),
+            Column('libramiento_sgf', String(10)),
+            Column('movimiento', String(10)),
+            Column('importe_bruto', Numeric(12,2)),
+            Column('gcias', Numeric(12,2)),
+            Column('sellos', Numeric(12,2)),
+            Column('lp', Numeric(12,2)),
+            Column('iibb', Numeric(12,2)),
+            Column('suss', Numeric(12,2)),
+            Column('seguro', Numeric(12,2)),
+            Column('salud', Numeric(12,2)),
+            Column('mutual', Numeric(12,2)),
+            Column('retenciones', Numeric(12,2)),
+            Column('importe_neto', Numeric(12,2))
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
