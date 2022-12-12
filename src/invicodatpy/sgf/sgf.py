@@ -19,10 +19,12 @@ class SGF():
     _FILTER_COL = ''
 
     # --------------------------------------------------
-    def read_csv(self, PATH:str) -> pd.DataFrame:
+    def read_csv(
+        self, PATH:str, names=None) -> pd.DataFrame:
         """"Read from csv SGF's report"""
         df = pd.read_csv(PATH, index_col=None, header=None, 
-        na_filter = False, dtype=str, encoding = 'ISO-8859-1')
+        na_filter = False, dtype=str, encoding = 'ISO-8859-1',
+        on_bad_lines='warn', names=names)
         n_col = df.shape[1]
         df.columns = [str(x) for x in range(n_col)]
         return df

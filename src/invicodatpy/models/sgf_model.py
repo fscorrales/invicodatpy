@@ -23,6 +23,7 @@ class SGFModel():
 
     def model_tables(self):
         """Create table models"""
+        
         self.listado_prov = Table(
             'listado_prov', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
@@ -33,6 +34,27 @@ class SGFModel():
             Column('localidad', String(30)),
             Column('telefono', String(30)),
             Column('condicion_iva', String(30))
+        )
+
+        self.certificados_obras = Table(
+            'certificados_obras', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('beneficiario', String(50)),
+            Column('cod_obra', String(10)),
+            Column('obra', String(100)),
+            Column('nro_certificado', String(6)),
+            Column('monto_certificado', Numeric(12,2)),
+            Column('fondo_reparo', Numeric(12,2)),
+            Column('otros', Numeric(12,2)),
+            Column('importe_bruto', Numeric(12,2)),
+            Column('iibb', Numeric(12,2)),
+            Column('lp', Numeric(12,2)),
+            Column('suss', Numeric(12,2)),
+            Column('gcias', Numeric(12,2)),
+            Column('invico', Numeric(12,2)),
+            Column('retenciones', Numeric(12,2)),
+            Column('importe_neto', Numeric(12,2))
         )
 
     def create_engine(self):
