@@ -7,7 +7,7 @@ Purpose: SGF database model
 import os
 from dataclasses import dataclass
 
-from sqlalchemy import (Boolean, Column, Date, Integer, MetaData, Numeric,
+from sqlalchemy import (Column, Date, Integer, MetaData, Numeric,
                         String, Table, create_engine)
 
 
