@@ -137,7 +137,8 @@ class ResumenRendObras(SGF):
                 dplyr.across(base.c[f.importe_bruto:], base.as_double),
                 retenciones = f.gcias + f.sellos + f.lp + 
                 f.iibb + f.suss + f.seguro + f.salud + f.mutual
-            )
+            ) >> \
+            dplyr.relocate(f.retenciones, _before = f.importe_neto)
 
         df['fecha'] = pd.to_datetime(
             df['fecha'], format='%d/%m/%Y'
