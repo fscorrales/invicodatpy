@@ -110,6 +110,23 @@ class SIIFModel():
             Column('beneficiario', String(50))
         )
 
+        self.mayor_contable_rcocc31 = Table(
+            'mayor_contable_rcocc31', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('mes', String(7)),
+            Column('fecha', Date()),
+            Column('fecha_aprobado', Date()),
+            Column('cta_contable', String(8)),
+            Column('nro_entrada', String(6)),
+            Column('auxiliar_1', String(50)),
+            Column('auxiliar_2', String(50)),
+            Column('tipo_comprobante', String(3)),
+            Column('creditos', Numeric(12,2)),
+            Column('debitos', Numeric(12,2)),
+            Column('saldo', Numeric(12,2))
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
