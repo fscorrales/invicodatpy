@@ -38,8 +38,8 @@ class MayorContableRcocc31(SIIF):
         df['ejercicio'] = df.iloc[3,1][-4:]
         df['cta_contable'] = (df.iloc[10,6] + '-' + 
         df.iloc[10,11] + '-' + df.iloc[10,12])
-        self.df = self.df.replace(to_replace='', value=None)      
-        df = self.df >> \
+        df = df.replace(to_replace='', value=None)      
+        df = df >> \
             base.tail(-20) >> \
             tidyr.drop_na(f['3']) >> \
             dplyr.transmute(

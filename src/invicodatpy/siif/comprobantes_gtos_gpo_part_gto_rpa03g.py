@@ -36,8 +36,8 @@ class ComprobantesGtosGpoPartGtoRpa03g(SIIF):
         """"Transform read xls file"""
         df = self.df
         df['ejercicio'] = df.iloc[3,18][-4:]
-        self.df = self.df.replace(to_replace='', value=None)      
-        df = self.df >> \
+        df = df.replace(to_replace='', value=None)      
+        df = df >> \
             base.tail(-21) >> \
             tidyr.drop_na(f['1']) >> \
             dplyr.transmute(

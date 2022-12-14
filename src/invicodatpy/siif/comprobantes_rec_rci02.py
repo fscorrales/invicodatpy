@@ -36,8 +36,8 @@ class ComprobantesRecRci02(SIIF):
         """"Transform read xls file"""
         df = self.df
         df['ejercicio'] = df.iloc[3,34]
-        self.df = self.df.replace(to_replace='', value=None)      
-        df = self.df >> \
+        df = df.replace(to_replace='', value=None)      
+        df = df >> \
             base.tail(-22) >> \
             tidyr.drop_na(f['2']) >> \
             dplyr.transmute(
