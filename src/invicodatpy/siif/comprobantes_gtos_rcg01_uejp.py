@@ -44,7 +44,7 @@ class ComprobantesGtosRcg01Uejp(SIIF):
 
         df.columns = [
             "nro_entrada", "nro_origen", "fuente", "clase_reg",
-            "clase_mod", "clase_gto", "fecha", "monto",
+            "clase_mod", "clase_gto", "fecha", "importe",
             "cuit", "beneficiario", "nro_expte","cta_cte",
             "comprometido", "verificado", "aprobado", "pagado",
             "nro_fondo", "ejercicio"
@@ -54,7 +54,7 @@ class ComprobantesGtosRcg01Uejp(SIIF):
             tidyr.drop_na(f.cuit) >> \
             tidyr.drop_na(f.nro_entrada) >> \
             dplyr.mutate(
-                monto = base.as_double(f.monto),
+                importe = base.as_double(f.importe),
                 beneficiario = f.beneficiario.str.replace("\t", ""),
                 comprometido = dplyr.if_else(f.comprometido == "S", True, False),
                 verificado = dplyr.if_else(f.verificado == "S", True, False),
@@ -71,7 +71,7 @@ class ComprobantesGtosRcg01Uejp(SIIF):
         df = df >> \
             dplyr.select(
                 f.ejercicio, f.mes, f.fecha,
-                f.nro_comprobante, f.monto,
+                f.nro_comprobante, f.importe,
                 f.fuente, f.cta_cte, f.cuit,
                 f.nro_expte, f.nro_fondo,
                 dplyr.everything()

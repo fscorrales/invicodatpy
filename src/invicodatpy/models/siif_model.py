@@ -75,7 +75,7 @@ class SIIFModel():
             Column('mes', String(7)),
             Column('fecha', Date()),
             Column('nro_comprobante', String(8)),
-            Column('monto', Numeric(12,2)),
+            Column('importe', Numeric(12,2)),
             Column('fuente', String(2)),
             Column('cta_cte', String(20)),
             Column('cuit', String(11)),
@@ -91,6 +91,23 @@ class SIIFModel():
             Column('verificado', Boolean()),
             Column('aprobado',Boolean()),
             Column('pagado', Boolean())
+        )
+
+        self.comprobantes_gtos_gpo_part_gto_rpa03g = Table(
+            'comprobantes_gtos_gpo_part_gto_rpa03g', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('mes', String(7)),
+            Column('fecha', Date()),
+            Column('nro_comprobante', String(8)),
+            Column('importe', Numeric(12,2)),
+            Column('grupo', String(3)),
+            Column('partida', String(3)),
+            Column('nro_entrada', String(5)),
+            Column('nro_origen', String(5)),
+            Column('nro_expte', String(12)),
+            Column('glosa', String(100)),
+            Column('beneficiario', String(50))
         )
 
     def create_engine(self):
