@@ -127,6 +127,24 @@ class SIIFModel():
             Column('saldo', Numeric(12,2))
         )
 
+        self.comprobantes_rec_rci02 = Table(
+            'comprobantes_rec_rci02', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('mes', String(7)),
+            Column('fecha', Date()),
+            Column('fuente', String(2)),
+            Column('cta_cte', String(20)),
+            Column('nro_entrada', String(6)),
+            Column('importe', Numeric(12,2)),
+            Column('glosa', String(100)),
+            Column('es_remanente', Boolean()),
+            Column('es_invico', Boolean()),
+            Column('es_verificado', Boolean()),
+            Column('clase_reg', String(3)),
+            Column('clase_mod', String(3))
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
