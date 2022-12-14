@@ -127,6 +127,21 @@ class SIIFModel():
             Column('saldo', Numeric(12,2))
         )
 
+        self.resumen_fdos_rfondo07tp = Table(
+            'resumen_fdos_rfondo07tp', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('mes', String(7)),
+            Column('fecha', Date()),
+            Column('tipo_comprobante', String(50)),
+            Column('nro_comprobante', String(8)),
+            Column('nro_fondo', String(6)),
+            Column('glosa', String(100)),
+            Column('ingresos', Numeric(12,2)),
+            Column('egresos', Numeric(12,2)),
+            Column('saldo', Numeric(12,2))
+        )
+
         self.comprobantes_rec_rci02 = Table(
             'comprobantes_rec_rci02', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
