@@ -160,6 +160,27 @@ class SIIFModel():
             Column('clase_mod', String(3))
         )
 
+        self.deuda_flotante_rdeu012 = Table(
+            'deuda_flotante_rdeu012', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('mes_hasta', String(7)),
+            Column('fecha_aprobado', Date()),
+            Column('fuente', String(2)),
+            Column('cta_cte', String(20)),
+            Column('nro_comprobante', String(8)),
+            Column('importe', Numeric(12,2)),
+            Column('saldo', Numeric(12,2)),
+            Column('cuit', String(11)),
+            Column('beneficiario', String(50)),
+            Column('glosa', String(100)),
+            Column('nro_expte', String(12)),
+            Column('nro_entrada', String(6)),
+            Column('nro_origen', String(6)),
+            Column('fecha_desde', Date()),
+            Column('fecha_hasta', Date()),
+            Column('org_fin', String(1))
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
