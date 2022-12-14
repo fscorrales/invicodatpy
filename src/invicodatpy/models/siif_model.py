@@ -87,10 +87,10 @@ class SIIFModel():
             Column('clase_mod', String(3)),
             Column('clase_gto', String(3)),
             Column('beneficiario', String(50)),
-            Column('comprometido', Boolean()),
-            Column('verificado', Boolean()),
-            Column('aprobado',Boolean()),
-            Column('pagado', Boolean())
+            Column('es_comprometido', Boolean()),
+            Column('es_verificado', Boolean()),
+            Column('es_aprobado',Boolean()),
+            Column('es_pagado', Boolean())
         )
 
         self.comprobantes_gtos_gpo_part_gto_rpa03g = Table(

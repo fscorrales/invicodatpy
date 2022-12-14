@@ -36,8 +36,8 @@ class JoinComprobantesGtosGpoPart():
         df_gtos_filtered = self.df_gtos[[
             'nro_comprobante', 'fuente', 'cta_cte',
             'cuit', 'clase_reg', 'clase_mod', 'clase_gto',
-            'comprometido', 'verificado', 'aprobado',
-            'pagado'
+            'es_comprometido', 'es_verificado', 'es_aprobado',
+            'es_pagado'
         ]]
         self.df = pd.merge(
             left=self.df_gtos_gpo_part,

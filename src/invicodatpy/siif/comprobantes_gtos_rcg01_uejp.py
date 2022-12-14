@@ -46,7 +46,7 @@ class ComprobantesGtosRcg01Uejp(SIIF):
             "nro_entrada", "nro_origen", "fuente", "clase_reg",
             "clase_mod", "clase_gto", "fecha", "importe",
             "cuit", "beneficiario", "nro_expte","cta_cte",
-            "comprometido", "verificado", "aprobado", "pagado",
+            "es_comprometido", "es_verificado", "es_aprobado", "es_pagado",
             "nro_fondo", "ejercicio"
         ]
 
@@ -56,10 +56,10 @@ class ComprobantesGtosRcg01Uejp(SIIF):
             dplyr.mutate(
                 importe = base.as_double(f.importe),
                 beneficiario = f.beneficiario.str.replace("\t", ""),
-                comprometido = dplyr.if_else(f.comprometido == "S", True, False),
-                verificado = dplyr.if_else(f.verificado == "S", True, False),
-                aprobado = dplyr.if_else(f.aprobado == "S", True, False),
-                pagado = dplyr.if_else(f.pagado == "S", True, False)
+                es_comprometido = dplyr.if_else(f.es_comprometido == "S", True, False),
+                es_verificado = dplyr.if_else(f.es_verificado == "S", True, False),
+                es_aprobado = dplyr.if_else(f.es_aprobado == "S", True, False),
+                es_pagado = dplyr.if_else(f.es_pagado == "S", True, False)
             )
 
         df['fecha'] = pd.to_datetime(
