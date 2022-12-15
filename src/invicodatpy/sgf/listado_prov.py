@@ -36,7 +36,7 @@ class ListadoProv(SGF):
         """"Transform read csv file"""
         df = self.df.iloc[:,9:16]
         df.columns = [
-            "codigo", "descripcion", "domicilio", "localidad",
+            "codigo", "desc_prov", "domicilio", "localidad",
             "telefono", "cuit", "condicion_iva"
         ]
         df['cuit']= df['cuit'].replace(to_replace='', value=None)

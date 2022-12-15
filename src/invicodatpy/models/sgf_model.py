@@ -29,7 +29,7 @@ class SGFModel():
             Column('id', Integer(), autoincrement=True, primary_key=True),
             Column('codigo', String(5)),
             Column('cuit', String(15)),
-            Column('descripcion', String(50)),
+            Column('desc_prov', String(50)),
             Column('domicilio', String(50)),
             Column('localidad', String(30)),
             Column('telefono', String(30)),
