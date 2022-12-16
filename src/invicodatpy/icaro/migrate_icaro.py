@@ -5,20 +5,24 @@ Purpose: Migrate from old Icaro.sqlite to new DB
 """
 
 import argparse
+import datetime as dt
 import inspect
 import os
-
 from dataclasses import dataclass
+
 import pandas as pd
-import datetime as dt
-from datar import base, dplyr, tidyr,f
-from .icaro import Icaro
+
+from ..models.icaro_model import IcaroModel
+from ..utils.rpw_utils import RPWUtils
+
 
 @dataclass
-class MigrateIcaro(Icaro):
+class MigrateIcaro(RPWUtils):
     """Migrate from old Icaro.sqlite to new DB"""
     path_old_icaro:str = 'ICARO.sqlite'
     path_new_icaro:str = 'icaro_new.sqlite'
+    _SQL_MODEL = IcaroModel
+    _INDEX_COL = None
 
     # --------------------------------------------------
     def migrate_all(self):
