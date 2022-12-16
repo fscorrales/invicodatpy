@@ -9,15 +9,16 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, tidyr,f
-from .sscc import SSCC
+from ..models.sscc_model import SSCCModel
+from ..utils.rpw_utils import RPWUtils
 
-class CtasCtes(SSCC):
+class CtasCtes(RPWUtils):
     """Read, process and write Cuentas Corrientes Mapper"""
     _REPORT_TITLE = 'map_to'
     _TABLE_NAME = 'ctas_ctes'
     _INDEX_COL = 'id'
     _FILTER_COL = ''
+    _SQL_MODEL = SSCCModel
 
     # --------------------------------------------------
     def from_external_report(self, path:str) -> pd.DataFrame:

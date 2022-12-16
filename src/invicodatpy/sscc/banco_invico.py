@@ -11,14 +11,16 @@ import os
 
 import pandas as pd
 from datar import base, dplyr, tidyr,f
-from .sscc import SSCC
+from ..models.sscc_model import SSCCModel
+from ..utils.rpw_utils import RPWUtils
 
-class BancoINVICO(SSCC):
+class BancoINVICO(RPWUtils):
     """Read, process and write SSCC's 'Consulta General de Movimientos' report"""
     _REPORT_TITLE = 'Consulta General de Movimientos'
     _TABLE_NAME = 'banco_invico'
     _INDEX_COL = 'id'
     _FILTER_COL = 'mes'
+    _SQL_MODEL = SSCCModel
 
     # --------------------------------------------------
     def from_external_report(self, csv_path:str) -> pd.DataFrame:
