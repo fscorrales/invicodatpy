@@ -16,10 +16,13 @@ class IcaroModel():
     sql_path:str
 
     def __post_init__(self):
-        self.metadata = MetaData()
-        self.model_tables()
-        self.create_engine()
-        self.create_database()
+        if not os.path.exists(self.sql_path):
+            self.metadata = MetaData()
+            self.model_tables()
+            self.create_engine()
+            self.create_database()
+        else:
+            self.create_engine()
 
     def model_tables(self):
         """Create table models"""
