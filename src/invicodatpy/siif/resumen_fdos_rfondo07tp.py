@@ -9,15 +9,19 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, tidyr,f
-from .siif import SIIF
+from datar import base, dplyr, f, tidyr
 
-class ResumenFdosRfondo07tp(SIIF):
+from ..models.siif_model import SIIFModel
+from ..utils.rpw_utils import RPWUtils
+
+
+class ResumenFdosRfondo07tp(RPWUtils):
     """Read, process and write SIIF's rfondo07tp report"""
     _REPORT_TITLE = 'RESUMEN DE FONDOS DEL EJERCICIO'
     _TABLE_NAME = 'resumen_fdos_rfondo07tp'
     _INDEX_COL = 'id'
     _FILTER_COL = ['mes', 'tipo_comprobante']
+    _SQL_MODEL = SIIFModel
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:

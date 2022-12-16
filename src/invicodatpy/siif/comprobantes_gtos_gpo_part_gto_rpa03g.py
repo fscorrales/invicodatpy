@@ -9,15 +9,19 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, tidyr,f
-from .siif import SIIF
+from datar import base, dplyr, f, tidyr
 
-class ComprobantesGtosGpoPartGtoRpa03g(SIIF):
+from ..models.siif_model import SIIFModel
+from ..utils.rpw_utils import RPWUtils
+
+
+class ComprobantesGtosGpoPartGtoRpa03g(RPWUtils):
     """Read, process and write SIIF's gto_rpa03g report"""
     _REPORT_TITLE = 'DETALLE DE DOCUMENTOS ORDENADOS. PARTIDA'
     _TABLE_NAME = 'comprobantes_gtos_gpo_part_gto_rpa03g'
     _INDEX_COL = 'id'
     _FILTER_COL = ['mes', 'grupo']
+    _SQL_MODEL = SIIFModel
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:

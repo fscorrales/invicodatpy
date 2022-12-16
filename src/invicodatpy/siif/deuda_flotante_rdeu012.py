@@ -9,15 +9,19 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, tidyr,f
-from .siif import SIIF
+from datar import base, dplyr, f, tidyr
 
-class DeudaFlotanteRdeu012(SIIF):
+from ..models.siif_model import SIIFModel
+from ..utils.rpw_utils import RPWUtils
+
+
+class DeudaFlotanteRdeu012(RPWUtils):
     """Read, process and write SIIF's rdeu012 report"""
     _REPORT_TITLE = 'DETALLE DE COMPROBANTES DE GASTOS ORDENADOS Y NO PAGADOS (DEUDA FLOTANTE)'
     _TABLE_NAME = 'deuda_flotante_rdeu012'
     _INDEX_COL = 'id'
     _FILTER_COL = 'mes_hasta'
+    _SQL_MODEL = SIIFModel
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:

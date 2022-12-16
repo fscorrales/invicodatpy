@@ -9,15 +9,19 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, tidyr,f
-from .siif import SIIF
+from datar import base, dplyr, f, tidyr
 
-class ComprobantesGtosRcg01Uejp(SIIF):
+from ..models.siif_model import SIIFModel
+from ..utils.rpw_utils import RPWUtils
+
+
+class ComprobantesGtosRcg01Uejp(RPWUtils):
     """Read, process and write SIIF's rcg01_uejp report"""
     _REPORT_TITLE = 'Resumen Diario de Comprobantes de Gastos Ingresados'
     _TABLE_NAME = 'comprobantes_gtos_rcg01_uejp'
     _INDEX_COL = 'id'
     _FILTER_COL = 'ejercicio'
+    _SQL_MODEL = SIIFModel
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:

@@ -9,15 +9,20 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, tidyr,f
-from .siif import SIIF
+from datar import base, dplyr, f, tidyr
 
-class MayorContableRcocc31(SIIF):
+from ..models.siif_model import SIIFModel
+from ..utils.rpw_utils import RPWUtils
+
+
+class MayorContableRcocc31(RPWUtils):
     """Read, process and write SIIF's rcocc31 report"""
     _REPORT_TITLE = 'DETALLES DE MOVIMIENTOS CONTABLES'
     _TABLE_NAME = 'mayor_contable_rcocc31'
     _INDEX_COL = 'id'
     _FILTER_COL = ['mes', 'cta_contable']
+    _SQL_MODEL = SIIFModel
+
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
