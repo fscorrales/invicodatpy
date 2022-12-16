@@ -20,7 +20,7 @@ class ComprobantesGtosGpoPartGtoRpa03g(SIIF):
     _FILTER_COL = ['mes', 'grupo']
 
     # --------------------------------------------------
-    def from_siif_xls_report(self, xls_path:str) -> pd.DataFrame:
+    def from_external_report(self, xls_path:str) -> pd.DataFrame:
         """"Read from xls SIIF's report"""
         df = self.read_xls(xls_path)
         read_title = df['18'].iloc[5][:40]
@@ -93,7 +93,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     siif_gto_rpa03g = ComprobantesGtosGpoPartGtoRpa03g()
-    siif_gto_rpa03g.from_siif_xls_report(dir_path + '/' + args.file)
+    siif_gto_rpa03g.from_external_report(dir_path + '/' + args.file)
     # siif_gto_rpa03g.test_sql(dir_path + '/test.sqlite')
     siif_gto_rpa03g.to_sql(dir_path + '/siif.sqlite')
     siif_gto_rpa03g.print_tidyverse()

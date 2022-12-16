@@ -21,7 +21,7 @@ class BancoINVICO(SSCC):
     _FILTER_COL = 'mes'
 
     # --------------------------------------------------
-    def from_sscc_csv_report(self, csv_path:str) -> pd.DataFrame:
+    def from_external_report(self, csv_path:str) -> pd.DataFrame:
         """"Read from csv SSCC's report"""
         df = self.read_csv(csv_path)
         read_title = df['1'].iloc[0]
@@ -101,7 +101,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     sscc_banco_invico = BancoINVICO()
-    sscc_banco_invico.from_sscc_csv_report(dir_path + '/' + args.file)
+    sscc_banco_invico.from_external_report(dir_path + '/' + args.file)
     # sscc_banco_invico.test_sql(dir_path + '/test.sqlite')
     sscc_banco_invico.to_sql(dir_path + '/sscc.sqlite')
     sscc_banco_invico.print_tidyverse()

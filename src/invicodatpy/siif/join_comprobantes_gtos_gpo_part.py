@@ -21,8 +21,8 @@ class JoinComprobantesGtosGpoPart():
     def from_siif_xls_report(
         self, gtos_gpo_part_xls_path:str, gtos_xls_path:str
     ) -> pd.DataFrame:
-        self.df_gtos_gpo_part = ComprobantesGtosGpoPartGtoRpa03g().from_siif_xls_report(gtos_gpo_part_xls_path)
-        self.df_gtos = ComprobantesGtosRcg01Uejp().from_siif_xls_report(gtos_xls_path)
+        self.df_gtos_gpo_part = ComprobantesGtosGpoPartGtoRpa03g().from_external_report(gtos_gpo_part_xls_path)
+        self.df_gtos = ComprobantesGtosRcg01Uejp().from_external_report(gtos_xls_path)
         self.join_df()
 
     # --------------------------------------------------

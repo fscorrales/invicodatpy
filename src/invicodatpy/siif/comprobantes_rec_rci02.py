@@ -20,7 +20,7 @@ class ComprobantesRecRci02(SIIF):
     _FILTER_COL = ['mes']
 
     # --------------------------------------------------
-    def from_siif_xls_report(self, xls_path:str) -> pd.DataFrame:
+    def from_external_report(self, xls_path:str) -> pd.DataFrame:
         """"Read from xls SIIF's report"""
         df = self.read_xls(xls_path)
         read_title = df['25'].iloc[6]
@@ -94,7 +94,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     siif_rci02 = ComprobantesRecRci02()
-    siif_rci02.from_siif_xls_report(dir_path + '/' + args.file)
+    siif_rci02.from_external_report(dir_path + '/' + args.file)
     # siif_rci02.test_sql(dir_path + '/test.sqlite')
     siif_rci02.to_sql(dir_path + '/siif.sqlite')
     siif_rci02.print_tidyverse()

@@ -21,8 +21,8 @@ class JoinPptoGtosFteDesc():
     def from_siif_xls_report(
         self, ppto_fte_xls_path:str, ppto_desc_xls_path:str
     ) -> pd.DataFrame:
-        self.df_ppto_fte = PptoGtosFteRf602().from_siif_xls_report(ppto_fte_xls_path)
-        self.df_ppto_desc = PptoGtosDescRf610().from_siif_xls_report(ppto_desc_xls_path)
+        self.df_ppto_fte = PptoGtosFteRf602().from_external_report(ppto_fte_xls_path)
+        self.df_ppto_desc = PptoGtosDescRf610().from_external_report(ppto_desc_xls_path)
         self.join_df()
 
     # --------------------------------------------------

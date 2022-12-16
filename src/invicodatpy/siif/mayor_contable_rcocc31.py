@@ -20,7 +20,7 @@ class MayorContableRcocc31(SIIF):
     _FILTER_COL = ['mes', 'cta_contable']
 
     # --------------------------------------------------
-    def from_siif_xls_report(self, xls_path:str) -> pd.DataFrame:
+    def from_external_report(self, xls_path:str) -> pd.DataFrame:
         """"Read from xls SIIF's report"""
         df = self.read_xls(xls_path)
         read_title = df['2'].iloc[9][:33]
@@ -100,7 +100,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     siif_rcocc31 = MayorContableRcocc31()
-    siif_rcocc31.from_siif_xls_report(dir_path + '/' + args.file)
+    siif_rcocc31.from_external_report(dir_path + '/' + args.file)
     # siif_rcocc31.test_sql(dir_path + '/test.sqlite')
     siif_rcocc31.to_sql(dir_path + '/siif.sqlite')
     siif_rcocc31.print_tidyverse()

@@ -20,7 +20,7 @@ class CertificadosObras(SGF):
     _FILTER_COL = 'ejercicio'
 
     # --------------------------------------------------
-    def from_sgf_csv_report(self, csv_path:str) -> pd.DataFrame:
+    def from_external_report(self, csv_path:str) -> pd.DataFrame:
         """"Read from csv SGF's report"""
         df = self.read_csv(csv_path, names = list(range(0,70)))
         read_title = df['1'].iloc[0]
@@ -148,7 +148,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     sgf_informe_contable = CertificadosObras()
-    sgf_informe_contable.from_sgf_csv_report(dir_path + '/' + args.file)
+    sgf_informe_contable.from_external_report(dir_path + '/' + args.file)
     # sgf_informe_contable.test_sql(dir_path + '/test.sqlite')
     sgf_informe_contable.to_sql(dir_path + '/sgf.sqlite')
     sgf_informe_contable.print_tidyverse()

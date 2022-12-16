@@ -20,7 +20,7 @@ class ComprobantesGtosRcg01Uejp(SIIF):
     _FILTER_COL = 'ejercicio'
 
     # --------------------------------------------------
-    def from_siif_xls_report(self, xls_path:str) -> pd.DataFrame:
+    def from_external_report(self, xls_path:str) -> pd.DataFrame:
         """"Read from xls SIIF's report"""
         df = self.read_xls(xls_path)
         read_title = df['1'].iloc[4]
@@ -105,7 +105,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     siif_rcg01_uejp = ComprobantesGtosRcg01Uejp()
-    siif_rcg01_uejp.from_siif_xls_report(dir_path + '/' + args.file)
+    siif_rcg01_uejp.from_external_report(dir_path + '/' + args.file)
     # siif_rcg01_uejp.test_sql(dir_path + '/test.sqlite')
     siif_rcg01_uejp.to_sql(dir_path + '/siif.sqlite')
     siif_rcg01_uejp.print_tidyverse()
