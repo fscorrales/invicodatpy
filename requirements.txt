@@ -6,6 +6,7 @@ datar-numpy==0.0.0
 datar-pandas==0.0.0
 df2gspread==1.0.4
 diot==0.1.6
+et-xmlfile==1.1.0
 executing==1.2.0
 google-api-python-client==1.6.7
 google-auth==2.15.0
@@ -19,6 +20,7 @@ inflection==0.5.1
 numpy==1.23.5
 oauth2client==4.1.3
 oauthlib==3.2.2
+openpyxl==3.0.10
 pandas==1.5.2
 pdtypes==0.0.4
 pipda==0.10.0
