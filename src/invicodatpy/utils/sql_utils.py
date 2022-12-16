@@ -51,7 +51,7 @@ class SQLUtils():
         """
         metadata = MetaData()
         sql_table = Table(self._TABLE_NAME, 
-        metadata, autoload=True, autoload_with=engine)
+        metadata, autoload=True, autoload_with=self.engine)
         connection = self.engine.connect()
         u = delete(sql_table)
         result = connection.execute(u)
