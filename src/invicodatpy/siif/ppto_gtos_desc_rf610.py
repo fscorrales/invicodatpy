@@ -146,12 +146,13 @@ def main():
                 inspect.currentframe())))
     siif_rf610 = PptoGtosDescRf610()
     siif_rf610.from_external_report(dir_path + '/' + args.file)
+    # siif_rf610.test_sql(dir_path + '/test.sqlite', siif_rf610.df)
     siif_rf610.to_sql(dir_path + '/siif.sqlite')
     siif_rf610.print_tidyverse()
     siif_rf610.from_sql(dir_path + '/siif.sqlite')
     siif_rf610.print_tidyverse()
-    # siif_rf610.test_sql(dir_path + '/test.sqlite', siif_rf610.df)
-    # print(siif_rf610.df.head(10))
+    # dir = '/home/kanou/IT/R Apps/R Gestion INVICO/invicoDB/Base de Datos/Reportes SIIF/Ejecucion Presupuestaria con Descripcion (rf610)'
+    # siif_rf610.update_sql_db(dir, dir_path + '/siif.sqlite', True)
 
 # --------------------------------------------------
 if __name__ == '__main__':

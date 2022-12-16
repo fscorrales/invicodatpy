@@ -16,14 +16,14 @@ class SQLUtils():
     _SQL_MODEL = None
     
     # --------------------------------------------------
-    """Delete rows from a table with one or multiple conditions
-    :param engine: sqlalchemy engine to connect to
-    :param df: pandas DataFrame to look up for unique values
-    :param table_filter: Table name from where to delete rows
-    :param col_filter: column (str) or multiple columns (str) to
-    look for unique values
-    """
-    def delete_rows_with_df_col(self):
+    def from_external_report(self):
+        """To be defined on specific modules"""
+        pass
+
+    # --------------------------------------------------
+    """Delete rows from a table with one or multiple conditions"""
+    def delete_rows_with_df_col(self, sql_path:str):
+        self.engine = self._SQL_MODEL(sql_path).engine 
         connection = self.engine.connect()
         metadata = MetaData()
         sql_table = Table(self._TABLE_NAME, 
@@ -44,11 +44,9 @@ class SQLUtils():
         return result
 
     # --------------------------------------------------
-    def delete_all_rows(self):
-        """Delete all rows from a table
-        :param engine: sqlalchemy engine to connect to
-        :param table_filter: Table name from where to delete rows
-        """
+    def delete_all_rows(self, sql_path:str):
+        """Delete all rows from a table"""
+        self.engine = self._SQL_MODEL(sql_path).engine   
         metadata = MetaData()
         sql_table = Table(self._TABLE_NAME, 
         metadata, autoload=True, autoload_with=self.engine)
@@ -59,12 +57,11 @@ class SQLUtils():
 
     # --------------------------------------------------
     def to_sql(self, sql_path:str, replace:bool = False):
-        """From DataFrame to sql DataBase"""
-        self.engine = self._SQL_MODEL(sql_path).engine        
+        """From DataFrame to sql DataBase"""     
         if replace:
-            self.delete_all_rows()            
+            self.delete_all_rows(sql_path)            
         else:
-            self.delete_rows_with_df_col()
+            self.delete_rows_with_df_col(sql_path)
         
         self.df.to_sql(
             name = self._TABLE_NAME,
@@ -98,3 +95,13 @@ class SQLUtils():
         )
         engine.dispose()
         print('Sqlite test done')
+
+    # --------------------------------------------------
+    def update_sql_db(self, input_path:str, output_path:str, 
+    clean_first:bool=False):
+        files = self.get_list_of_files(input_path)
+        if clean_first:
+            self.delete_all_rows(output_path)
+        for file in files:
+            self.from_external_report(file)
+            self.to_sql(output_path)
