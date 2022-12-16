@@ -9,15 +9,19 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, tidyr,f
-from .sgf import SGF
+from datar import base, dplyr, f, tidyr
 
-class CertificadosObras(SGF):
+from ..models.sgf_model import SGFModel
+from ..utils.rpw_utils import RPWUtils
+
+
+class CertificadosObras(RPWUtils):
     """Read, process and write SGF's 'Informe para Contable' report"""
     _REPORT_TITLE = 'Resumen de Certificaciones: '
     _TABLE_NAME = 'certificados_obras'
     _INDEX_COL = 'id'
     _FILTER_COL = 'ejercicio'
+    _SQL_MODEL = SGFModel
 
     # --------------------------------------------------
     def from_external_report(self, csv_path:str) -> pd.DataFrame:

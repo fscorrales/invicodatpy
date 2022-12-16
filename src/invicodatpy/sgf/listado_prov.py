@@ -9,15 +9,19 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, tidyr,f
-from .sgf import SGF
+from datar import base, dplyr, f, tidyr
 
-class ListadoProv(SGF):
+from ..models.sgf_model import SGFModel
+from ..utils.rpw_utils import RPWUtils
+
+
+class ListadoProv(RPWUtils):
     """Read, process and write SGF's 'Listado de Proveedores' report"""
     _REPORT_TITLE = 'Listado de Proveedores'
     _TABLE_NAME = 'listado_prov'
     _INDEX_COL = 'id'
     _FILTER_COL = ''
+    _SQL_MODEL = SGFModel
 
     # --------------------------------------------------
     def from_external_report(self, csv_path:str) -> pd.DataFrame:

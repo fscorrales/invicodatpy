@@ -12,16 +12,18 @@ import os
 import pandas as pd
 from datar import dplyr, f
 
-from .sgf import SGF
+from ..models.sgf_model import SGFModel
+from ..utils.rpw_utils import RPWUtils
 
 
-class ResumenRendProv(SGF):
+class ResumenRendProv(RPWUtils):
     """Read, process and write SGF's 'Resumen de Rendiciones 
     por Proveedores' report"""
     _REPORT_TITLE = 'Resumen de Rendiciones (Detalle)'
     _TABLE_NAME = 'resumen_rend_prov'
     _INDEX_COL = 'id'
     _FILTER_COL = ['origen', 'mes']
+    _SQL_MODEL = SGFModel
 
     # --------------------------------------------------
     def from_external_report(self, csv_path:str) -> pd.DataFrame:
