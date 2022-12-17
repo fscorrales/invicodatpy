@@ -14,4 +14,18 @@ setup(
     author_email='corrales_fernando@hotmail.com',
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
+    install_requires=[
+        'datar',
+        'datar-numpy',
+        'datar-pandas',
+        'df2gspread',
+        'google-api-python-client',
+        'google-auth',
+        'google-auth-oauthlib',
+        'SQLAlchemy',
+        'pandas',
+        'gspread',
+        'xlrd',
+        'openpyxl',
+    ]
 )
