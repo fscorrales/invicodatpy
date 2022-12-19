@@ -123,6 +123,8 @@ class IcaroModel():
             Column('id', String(9), primary_key=True, unique = True, 
             nullable = False),
             Column('nro_comprobante', String(8), nullable = False),
+            Column('ejercicio', String(4)),
+            Column('mes', String(7)),
             Column('fecha', Date(), nullable = False),
             Column('cuit', String(11), nullable = False),
             Column('obra', ForeignKey('obras.obra', 

@@ -196,6 +196,8 @@ class MigrateIcaro(RPWUtils):
         self.df['fecha'] = pd.TimedeltaIndex(self.df['fecha'], unit='d') + dt.datetime(1970,1,1)
         self.df['id'] = self.df['nro_comprobante'] + 'C'
         self.df.loc[self.df['tipo'] == 'PA6', 'id'] = self.df['nro_comprobante'] + 'F'
+        self.df['ejercicio'] = self.df['fecha'].dt.year.astype(str)
+        self.df['mes'] = self.df['fecha'].dt.month.astype(str).str.zfill(2) + '/' +  self.df['ejercicio']
         self._TABLE_NAME = 'carga'
         self.to_sql(self.path_new_icaro, True)
 
