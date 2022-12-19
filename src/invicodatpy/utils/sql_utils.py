@@ -72,11 +72,13 @@ class SQLUtils():
         self.engine.dispose()
 
     # --------------------------------------------------
-    def from_sql(self, sql_path:str) -> pd.DataFrame:
+    def from_sql(self, sql_path:str, table_name:str = None) -> pd.DataFrame:
         """From sql DataBase to sql DataFrame"""
         engine = create_engine(f'sqlite:///{sql_path}')
+        if table_name == None:
+            table_name = self._TABLE_NAME
         self.df = pd.read_sql_table(
-            table_name = self._TABLE_NAME,
+            table_name = table_name,
             con = engine,
             index_col = self._INDEX_COL
         )

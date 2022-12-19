@@ -318,6 +318,8 @@ def main():
     migrate_icaro = MigrateIcaro(dir_path +"/"+ args.old_icaro, 
                                 dir_path +"/"+ args.new_icaro)
     migrate_icaro.migrate_all()
+    # df = migrate_icaro.from_sql(dir_path +"/"+ args.new_icaro, 'carga')
+    # print(df.head(5))
 
 # --------------------------------------------------
 if __name__ == '__main__':
