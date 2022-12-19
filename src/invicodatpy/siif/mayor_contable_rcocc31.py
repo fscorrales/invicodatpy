@@ -63,6 +63,11 @@ class MayorContableRcocc31(RPWUtils):
         df['fecha_aprobado'] = pd.to_datetime(
             df['fecha_aprobado'], format='%Y-%m-%d'
         )
+        # df['fecha'] = df['fecha_aprobado'].dt.year.astype(str).apply(
+        #     lambda x: df['fecha_aprobado'] 
+        #     if x == df['ejercicio'] 
+        #     else pd.to_datetime(df['ejercicio'] + '-12-31', format='%Y-%m-%d')
+        #     )
         df.loc[df['fecha_aprobado'].dt.year.astype(str) == df['ejercicio'], 'fecha'] = df['fecha_aprobado']
         df.loc[df['fecha_aprobado'].dt.year.astype(str) != df['ejercicio'], 'fecha'] = pd.to_datetime(
             df['ejercicio'] + '-12-31', format='%Y-%m-%d'

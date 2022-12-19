@@ -90,6 +90,8 @@ def main():
     sgf_listado_prov.from_sql(dir_path + '/sgf.sqlite')
     sgf_listado_prov.print_tidyverse()
     # print(sgf_listado_prov.df.head(10))
+    # dir = '/home/kanou/IT/R Apps/R Gestion INVICO/invicoDB/Base de Datos/Sistema Gestion Financiera/Otros Reportes/Listado de Proveedores.csv'
+    # sgf_listado_prov.update_sql_db(dir, dir_path + '/sgf.sqlite', True)
 
 # --------------------------------------------------
 if __name__ == '__main__':

@@ -104,4 +104,7 @@ class SQLUtils():
             self.delete_all_rows(output_path)
         for file in files:
             self.from_external_report(file)
-            self.to_sql(output_path)
+            if self._FILTER_COL != '':
+                self.to_sql(output_path)
+            else:
+                self.to_sql(output_path, True)
