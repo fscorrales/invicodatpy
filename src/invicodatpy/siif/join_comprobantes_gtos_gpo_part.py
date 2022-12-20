@@ -17,6 +17,8 @@ from .comprobantes_gtos_rcg01_uejp import ComprobantesGtosRcg01Uejp
 
 class JoinComprobantesGtosGpoPart():
     """Join gto_rpa03g (gtos_gpo_part) with rcg01_uejp (gtos)"""
+    df:pd.DataFrame = None
+    
     # --------------------------------------------------
     def from_siif_xls_report(
         self, gtos_gpo_part_xls_path:str, gtos_xls_path:str
@@ -24,12 +26,14 @@ class JoinComprobantesGtosGpoPart():
         self.df_gtos_gpo_part = ComprobantesGtosGpoPartGtoRpa03g().from_external_report(gtos_gpo_part_xls_path)
         self.df_gtos = ComprobantesGtosRcg01Uejp().from_external_report(gtos_xls_path)
         self.join_df()
+        return self.df
 
     # --------------------------------------------------
     def from_sql_db(self, sql_path:str) -> pd.DataFrame:
         self.df_gtos_gpo_part = ComprobantesGtosGpoPartGtoRpa03g().from_sql(sql_path)
         self.df_gtos = ComprobantesGtosRcg01Uejp().from_sql(sql_path)
         self.join_df()
+        return self.df
 
     # --------------------------------------------------
     def join_df(self) -> pd.DataFrame:

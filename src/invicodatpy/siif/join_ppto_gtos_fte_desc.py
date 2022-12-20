@@ -17,6 +17,8 @@ from .ppto_gtos_fte_rf602 import PptoGtosFteRf602
 
 class JoinPptoGtosFteDesc():
     """Join rf602 (ppto_gtos_fte) with rf610 (ppto_gtos_desc)"""
+    df:pd.DataFrame = None
+    
     # --------------------------------------------------
     def from_siif_xls_report(
         self, ppto_fte_xls_path:str, ppto_desc_xls_path:str
@@ -24,12 +26,14 @@ class JoinPptoGtosFteDesc():
         self.df_ppto_fte = PptoGtosFteRf602().from_external_report(ppto_fte_xls_path)
         self.df_ppto_desc = PptoGtosDescRf610().from_external_report(ppto_desc_xls_path)
         self.join_df()
+        return self.df
 
     # --------------------------------------------------
     def from_sql_db(self, sql_path:str) -> pd.DataFrame:
         self.df_ppto_fte = PptoGtosFteRf602().from_sql(sql_path)
         self.df_ppto_desc = PptoGtosDescRf610().from_sql(sql_path)
         self.join_df()
+        return self.df
 
     # --------------------------------------------------
     def join_df(self) -> pd.DataFrame:
