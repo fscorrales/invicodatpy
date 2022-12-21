@@ -38,7 +38,7 @@ class JoinComprobantesGtosGpoPart():
     # --------------------------------------------------
     def join_df(self) -> pd.DataFrame:
         df_gtos_filtered = self.df_gtos[[
-            'nro_comprobante', 'fuente', 'cta_cte',
+            'nro_comprobante', 'nro_fondo', 'fuente', 'cta_cte',
             'cuit', 'clase_reg', 'clase_mod', 'clase_gto',
             'es_comprometido', 'es_verificado', 'es_aprobado',
             'es_pagado'
