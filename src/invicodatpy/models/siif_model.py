@@ -166,8 +166,9 @@ class SIIFModel():
         self.deuda_flotante_rdeu012 = Table(
             'deuda_flotante_rdeu012', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
             Column('mes_hasta', String(7)),
-            Column('fecha_aprobado', Date()),
+            Column('fecha', Date()),
             Column('fuente', String(2)),
             Column('cta_cte', String(20)),
             Column('nro_comprobante', String(8)),
@@ -179,6 +180,7 @@ class SIIFModel():
             Column('nro_expte', String(12)),
             Column('nro_entrada', String(6)),
             Column('nro_origen', String(6)),
+            Column('fecha_aprobado', Date()),
             Column('fecha_desde', Date()),
             Column('fecha_hasta', Date()),
             Column('org_fin', String(1))
