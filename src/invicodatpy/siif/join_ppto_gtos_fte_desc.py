@@ -20,7 +20,7 @@ class JoinPptoGtosFteDesc():
     df:pd.DataFrame = None
     
     # --------------------------------------------------
-    def from_siif_xls_report(
+    def from_external_report(
         self, ppto_fte_xls_path:str, ppto_desc_xls_path:str
     ) -> pd.DataFrame:
         self.df_ppto_fte = PptoGtosFteRf602().from_external_report(ppto_fte_xls_path)
@@ -29,7 +29,7 @@ class JoinPptoGtosFteDesc():
         return self.df
 
     # --------------------------------------------------
-    def from_sql_db(self, sql_path:str) -> pd.DataFrame:
+    def from_sql(self, sql_path:str) -> pd.DataFrame:
         self.df_ppto_fte = PptoGtosFteRf602().from_sql(sql_path)
         self.df_ppto_desc = PptoGtosDescRf610().from_sql(sql_path)
         self.join_df()
@@ -79,7 +79,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     siif_join_ppto_gtos = JoinPptoGtosFteDesc()
-    siif_join_ppto_gtos.from_sql_db(dir_path + '/' + args.sql_file)
+    siif_join_ppto_gtos.from_sql(dir_path + '/' + args.sql_file)
     siif_join_ppto_gtos.print_tidyverse()
 
 # --------------------------------------------------

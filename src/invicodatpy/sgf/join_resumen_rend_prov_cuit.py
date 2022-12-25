@@ -29,7 +29,7 @@ class JoinResumenRendProvCuit():
         return self.df
 
     # --------------------------------------------------
-    def from_sql_db(self, sql_path:str) -> pd.DataFrame:
+    def from_sql(self, sql_path:str) -> pd.DataFrame:
         self.df_resumen_rend = ResumenRendProv().from_sql(sql_path)
         self.df_listado_prov = ListadoProv().from_sql(sql_path)
         self.join_df()
@@ -78,7 +78,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     sgf_join_resumen_rend_cuit = JoinResumenRendProvCuit()
-    sgf_join_resumen_rend_cuit.from_sql_db(dir_path + '/' + args.sql_file)
+    sgf_join_resumen_rend_cuit.from_sql(dir_path + '/' + args.sql_file)
     sgf_join_resumen_rend_cuit.print_tidyverse()
 
 # --------------------------------------------------

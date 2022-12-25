@@ -20,7 +20,7 @@ class JoinComprobantesGtosGpoPart():
     df:pd.DataFrame = None
     
     # --------------------------------------------------
-    def from_siif_xls_report(
+    def from_external_report(
         self, gtos_gpo_part_xls_path:str, gtos_xls_path:str
     ) -> pd.DataFrame:
         self.df_gtos_gpo_part = ComprobantesGtosGpoPartGtoRpa03g().from_external_report(gtos_gpo_part_xls_path)
@@ -29,7 +29,7 @@ class JoinComprobantesGtosGpoPart():
         return self.df
 
     # --------------------------------------------------
-    def from_sql_db(self, sql_path:str) -> pd.DataFrame:
+    def from_sql(self, sql_path:str) -> pd.DataFrame:
         self.df_gtos_gpo_part = ComprobantesGtosGpoPartGtoRpa03g().from_sql(sql_path)
         self.df_gtos = ComprobantesGtosRcg01Uejp().from_sql(sql_path)
         self.join_df()
@@ -80,7 +80,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
     siif_join_comprobantes_gtos = JoinComprobantesGtosGpoPart()
-    siif_join_comprobantes_gtos.from_sql_db(dir_path + '/' + args.sql_file)
+    siif_join_comprobantes_gtos.from_sql(dir_path + '/' + args.sql_file)
     siif_join_comprobantes_gtos.print_tidyverse()
 
 # --------------------------------------------------
