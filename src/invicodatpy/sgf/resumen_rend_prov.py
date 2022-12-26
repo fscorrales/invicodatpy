@@ -10,7 +10,7 @@ import inspect
 import os
 
 import pandas as pd
-from datar import dplyr, f
+from datar import dplyr, f, base
 
 from ..models.sgf_model import SGFModel
 from ..utils.rpw_utils import RPWUtils
@@ -101,7 +101,9 @@ class ResumenRendProv(RPWUtils):
             dplyr.relocate(f.retenciones, _before = f.importe_neto) >> \
             dplyr.mutate(
                 ejercicio = f.fecha.str[-4:],
-                mes = f.fecha.str[3:5] + '/' + f.ejercicio
+                mes = f.fecha.str[3:5] + '/' + f.ejercicio,
+                cta_cte = dplyr.if_else(f.beneficiario == 'CREDITO ESPECIAL',
+                                        "130832-07", f.cta_cte),
             )  >> \
             dplyr.select(
                 f.origen, f.ejercicio, f.mes, f.fecha,
