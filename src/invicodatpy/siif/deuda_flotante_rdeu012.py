@@ -86,12 +86,16 @@ class DeudaFlotanteRdeu012(RPWUtils):
                 fecha = dplyr.if_else(f.fecha_aprobado > f.fecha_hasta,
                                         f.fecha_hasta, f.fecha_aprobado)
             )
+
+        df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce')
         
-        df['ejercicio'] = df['fecha_hasta'].dt.year.astype(str)
+        df['ejercicio'] = df['fecha'].dt.year.astype(str)
+        df['mes'] = df['fecha'].dt.strftime('%m/%Y')
 
         df = df >>\
             dplyr.select(
-                f.ejercicio, f.mes_hasta, f.fecha, f.fuente,
+                f.ejercicio, f.mes, f.fecha, 
+                f.mes_hasta, f.fuente,
                 f.cta_cte, f.nro_comprobante,
                 f.importe, f.saldo,
                 f.cuit, f.beneficiario,
