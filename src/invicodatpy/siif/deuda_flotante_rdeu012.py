@@ -63,8 +63,6 @@ class DeudaFlotanteRdeu012(RPWUtils):
                 fecha_hasta = f.fecha_hasta,
                 mes_hasta = f.mes_hasta,
                 nro_entrada = f['2'],
-                nro_comprobante = (f['nro_entrada'].str.zfill(5) + 
-                                '/' + f['mes_hasta'].str[-2:]),
                 nro_origen = f['4'],
                 fecha_aprobado = f['7'],
                 org_fin = f['9'],
@@ -87,12 +85,26 @@ class DeudaFlotanteRdeu012(RPWUtils):
                                         f.fecha_hasta, f.fecha_aprobado)
             )
 
-        df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce')
+        # CYO aprobados en enero correspodientes al ejercicio anterior
+        df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce') 
+        df['fecha'] = df['fecha'].dt.strftime('%Y-%m-%d')
+        condition = ((df['mes_hasta'].str[0:2] == '01') & 
+                    (df['nro_entrada'].astype(int) > 1500))
+        df.loc[condition, 'fecha'] = (
+            (pd.to_numeric(df['mes_hasta'].loc[condition].str[-4:]) - 1).astype(str) + "-12-31")
+
+        df['fecha'] = pd.to_datetime(
+            df['fecha'],  format='%Y-%m-%d', errors='coerce'
+        ) 
         
         df['ejercicio'] = df['fecha'].dt.year.astype(str)
         df['mes'] = df['fecha'].dt.strftime('%m/%Y')
 
         df = df >>\
+            dplyr.mutate(
+                nro_comprobante = (f['nro_entrada'].str.zfill(5) + 
+                                '/' + f['mes'].str[-2:]),
+            ) >> \
             dplyr.select(
                 f.ejercicio, f.mes, f.fecha, 
                 f.mes_hasta, f.fuente,
