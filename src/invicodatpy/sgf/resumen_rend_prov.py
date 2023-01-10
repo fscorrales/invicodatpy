@@ -98,6 +98,13 @@ class ResumenRendProv(RPWUtils):
         df['retenciones'] = df.loc[:,'gcias':'otras'].sum(axis=1)
 
         df = df >> \
+            dplyr.mutate(
+                importe_bruto = dplyr.if_else( #SGF no suma 3% en bruto
+                    f.origen == 'EPAM', 
+                    f.importe_bruto + f.invico,
+                    f.importe_bruto
+                )
+            ) >> \
             dplyr.relocate(f.retenciones, _before = f.importe_neto) >> \
             dplyr.mutate(
                 ejercicio = f.fecha.str[-4:],
