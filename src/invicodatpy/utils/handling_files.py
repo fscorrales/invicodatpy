@@ -11,9 +11,9 @@ import pandas as pd
 class HandlingFiles():
 
     # --------------------------------------------------
-    def read_csv(self, PATH:str, names=None) -> pd.DataFrame:
+    def read_csv(self, PATH:str, names=None, header=None) -> pd.DataFrame:
         """"Read from csv SGF's report"""
-        df = pd.read_csv(PATH, index_col=None, header=None, 
+        df = pd.read_csv(PATH, index_col=None, header=header, 
         na_filter = False, dtype=str, encoding = 'ISO-8859-1',
         on_bad_lines='warn', names=names)
         n_col = df.shape[1]
