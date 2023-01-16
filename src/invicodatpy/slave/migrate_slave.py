@@ -98,23 +98,13 @@ class MigrateSlave(RPWUtils):
             df = self.read_csv(csv_output, header=0)
         elif sys.platform.startswith('win32'):
             pass
-        # Table comprobantes_siif
-        siif = df.loc[:,['4', '0', '5']]
-        siif.rename(columns={
-            "4":"nro_comprobante",
-            "0":"fecha",
-            "5":"tipo"
-            }, inplace=True)
-        siif.drop_duplicates(inplace=True)
-        self._TABLE_NAME = 'comprobantes_siif'
-        self.df = siif
-        self.to_sql(self.path_new_slave, True)
         # Table honorarios_factureros
-        honorarios = df.drop(['0', '5'],axis=1)
-        honorarios.rename(columns={
+        df.rename(columns={
+            "0":"fecha",
             "1":"razon_social",
             "2":"sellos",
             "3":"seguro",
+            "5":"tipo",
             "4":"nro_comprobante",
             "6":"importe_bruto",
             "7":"iibb",
@@ -125,10 +115,15 @@ class MigrateSlave(RPWUtils):
             "12":"actividad",
             "13":"partida",
             }, inplace=True)
-        honorarios['mutual'] = 0
-        honorarios['embargo'] = 0
+        df['fecha'] = pd.to_datetime(
+            df['fecha'], format='%m/%d/%y %H:%M:%S'
+        )
+        df['ejercicio'] = df['fecha'].dt.year.astype(str)
+        df['mes'] = df['fecha'].dt.strftime('%m/%Y')
+        df['mutual'] = 0
+        df['embargo'] = 0
         self._TABLE_NAME = 'honorarios_factureros'
-        self.df = honorarios
+        self.df = df
         self.to_sql(self.path_new_slave, True)
 
 # --------------------------------------------------
