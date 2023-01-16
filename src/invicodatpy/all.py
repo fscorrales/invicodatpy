@@ -1,5 +1,7 @@
 from .icaro import *
 from .icaro.migrate_icaro import *
+from .slave import *
+from .slave.migrate_slave import *
 from .models import *
 from .models.all import *
 # from .models.icaro_model import *
