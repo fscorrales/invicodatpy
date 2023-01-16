@@ -66,7 +66,7 @@ class MigrateSlave(RPWUtils):
         """"Migrate table PRECARIZADOS"""
         if sys.platform.startswith('linux'):
             csv_output = os.path.join(
-                os.path.dirname(self.path_new_slave),
+                os.path.dirname(self.path_old_slave),
                 'precarizados.csv'
             )
             self.mdbtools_export(
@@ -90,7 +90,7 @@ class MigrateSlave(RPWUtils):
         """"Migrate table HONORARIOS"""
         if sys.platform.startswith('linux'):
             csv_output = os.path.join(
-                os.path.dirname(self.path_new_slave),
+                os.path.dirname(self.path_old_slave),
                 'honorarios_factureros.csv'
             )
             self.mdbtools_export(
