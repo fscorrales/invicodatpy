@@ -2,20 +2,21 @@
 """
 Author: Fernando Corrales <fscorrales@gmail.com>
 Purpose: Migrate from slave.mdb to slave.sqlite
-csv files creation: 
-    details: exported from .mdb with MDBTOOLS (sudo apt install mdbtools).
+Linux system read mdb requirements: 
+    details: csv exported from .mdb with MDBTOOLS (sudo apt install mdbtools).
     example: 
-        mdb-export Slave.mdb PRECARIZADOS -d '|' > precarizados.csv
-        mdb-export Slave.mdb LIQUIDACIONHONORARIOS -d '|' > honorarios.csv
+        mdb-export Slave.mdb PRECARIZADOS -d '\t' > precarizados.csv
+        mdb-export Slave.mdb LIQUIDACIONHONORARIOS -d '\t' > honorarios.csv
     MDBTOOLS info: https://github.com/mdbtools/mdbtools
 """
 
 import argparse
-import csv #https://www.pythontutorial.net/python-basics/python-write-csv-file/
+import csv  # https://www.pythontutorial.net/python-basics/python-write-csv-file/
 import datetime as dt
 import inspect
 import os
-import subprocess #https://www.section.io/engineering-education/how-to-execute-linux-commands-in-python/
+import subprocess  # https://www.section.io/engineering-education/how-to-execute-linux-commands-in-python/
+import sys
 from dataclasses import dataclass
 
 import pandas as pd
@@ -29,7 +30,6 @@ class MigrateSlave(RPWUtils):
     """Migrate from slave.mdb to slave.sqlite"""
     path_old_slave:str = 'Slave.mdb'
     path_new_slave:str = 'slave.sqlite'
-    use_mdbtools:bool = True
     _SQL_MODEL = SlaveModel
     _INDEX_COL = None
 
@@ -64,7 +64,7 @@ class MigrateSlave(RPWUtils):
     # --------------------------------------------------
     def migrate_factureros(self) -> pd.DataFrame:
         """"Migrate table PRECARIZADOS"""
-        if self.use_mdbtools:
+        if sys.platform.startswith('linux'):
             csv_output = os.path.join(
                 os.path.dirname(self.path_new_slave),
                 'precarizados.csv'
@@ -72,6 +72,8 @@ class MigrateSlave(RPWUtils):
             self.mdbtools_export(
                 self.path_old_slave, 'PRECARIZADOS', csv_output)
             df = self.read_csv(csv_output, header=0)
+        elif sys.platform.startswith('win32'):
+            pass
         df.rename(columns={
             "0":"razon_social",
             "1":"actividad",
@@ -86,7 +88,7 @@ class MigrateSlave(RPWUtils):
     # --------------------------------------------------
     def migrate_honorarios_factureros(self) -> pd.DataFrame:
         """"Migrate table HONORARIOS"""
-        if self.use_mdbtools:
+        if sys.platform.startswith('linux'):
             csv_output = os.path.join(
                 os.path.dirname(self.path_new_slave),
                 'honorarios_factureros.csv'
@@ -94,6 +96,8 @@ class MigrateSlave(RPWUtils):
             self.mdbtools_export(
                 self.path_old_slave, 'LIQUIDACIONHONORARIOS', csv_output)
             df = self.read_csv(csv_output, header=0)
+        elif sys.platform.startswith('win32'):
+            pass
         # Table comprobantes_siif
         siif = df.loc[:,['4', '0', '5']]
         siif.rename(columns={
