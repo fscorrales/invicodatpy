@@ -122,6 +122,8 @@ class MigrateSlave(RPWUtils):
         df['mes'] = df['fecha'].dt.strftime('%m/%Y')
         df['mutual'] = 0
         df['embargo'] = 0
+        keep = ['NoSIIF']
+        df = df.loc[~df.nro_comprobante.str.contains('|'.join(keep))]
         self._TABLE_NAME = 'honorarios_factureros'
         self.df = df
         self.to_sql(self.path_new_slave, True)

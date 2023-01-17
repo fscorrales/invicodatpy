@@ -21,6 +21,9 @@ __pycache__/
 # Json extensions
 *.json
 
+# Microsoft Access extension
+*.mdb
+
 # Distribution / packaging
 .Python
 build/
