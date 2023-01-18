@@ -57,6 +57,21 @@ class MigrateSlave(RPWUtils):
             writer.writerows(output)
 
     # --------------------------------------------------
+    # def connect_mdb(self, file:str, table_name:str):
+    # """Inicializa la conexión a la BD de slave y refleja las tablas de la misma"""
+    # parser = argparse.ArgumentParser(description='Convert slave.mdb file to .sqlite')
+    # parser.add_argument('-f', '--file', metavar='Name', default='Slave.mdb', help='.mdb File to convert')
+    # args = parser.parse_args()
+    # metadata = MetaData()
+    # connection_string = (
+    #     r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
+    #     r"DBQ=D:\Datos INVICO\Python INVICO\Lectura archivos\read_mdb"
+    #     + "\\" + args.file +
+    #     r";"
+    #     r"ExtendedAnsiSQL=1;"
+    # )
+
+    # --------------------------------------------------
     def migrate_all(self):
         self.migrate_factureros()
         self.migrate_honorarios_factureros()
@@ -72,13 +87,19 @@ class MigrateSlave(RPWUtils):
             self.mdbtools_export(
                 self.path_old_slave, 'PRECARIZADOS', csv_output)
             df = self.read_csv(csv_output, header=0)
+            df.rename(columns={
+                "0":"razon_social",
+                "1":"actividad",
+                "2":"partida"
+                }, inplace=True)
         elif sys.platform.startswith('win32'):
-            pass
-        df.rename(columns={
-            "0":"razon_social",
-            "1":"actividad",
-            "2":"partida"
-            }, inplace=True)
+            self._TABLE_NAME = 'PRECARIZADOS'
+            df = self.from_mdb(self.path_old_slave)
+            df.rename(columns={
+                "Agentes":"razon_social",
+                "Actividad":"actividad",
+                "Partida":"partida"
+                }, inplace=True)
         df.drop_duplicates(inplace=True)
         df['actividad'] = df['actividad'].str[0:3] + '00-' + df['actividad'].str[3:]
         self._TABLE_NAME = 'factureros'
@@ -96,28 +117,46 @@ class MigrateSlave(RPWUtils):
             self.mdbtools_export(
                 self.path_old_slave, 'LIQUIDACIONHONORARIOS', csv_output)
             df = self.read_csv(csv_output, header=0)
+            df.rename(columns={
+                    "0":"fecha",
+                    "1":"razon_social",
+                    "2":"sellos",
+                    "3":"seguro",
+                    "5":"tipo",
+                    "4":"nro_comprobante",
+                    "6":"importe_bruto",
+                    "7":"iibb",
+                    "8":"lp",
+                    "9":"otras_retenciones",
+                    "10":"anticipo",
+                    "11":"descuento",
+                    "12":"actividad",
+                    "13":"partida",
+                    }, inplace=True)
+            df['fecha'] = pd.to_datetime(
+                df['fecha'], format='%m/%d/%y %H:%M:%S'
+            )
         elif sys.platform.startswith('win32'):
-            pass
+            self._TABLE_NAME = 'LIQUIDACIONHONORARIOS'
+            df = self.from_mdb(self.path_old_slave)
+            df.rename(columns={
+                    "Fecha":"fecha",
+                    "Proveedor":"razon_social",
+                    "Sellos":"sellos",
+                    "Seguro":"seguro",
+                    "Tipo":"tipo",
+                    "Comprobante":"nro_comprobante",
+                    "MontoBruto":"importe_bruto",
+                    "IIBB":"iibb",
+                    "LibramientoPago":"lp",
+                    "OtraRetencion":"otras_retenciones",
+                    "Anticipo":"anticipo",
+                    "Descuento":"descuento",
+                    "Actividad":"actividad",
+                    "Partida":"partida",
+                }, inplace=True)
+
         # Table honorarios_factureros
-        df.rename(columns={
-            "0":"fecha",
-            "1":"razon_social",
-            "2":"sellos",
-            "3":"seguro",
-            "5":"tipo",
-            "4":"nro_comprobante",
-            "6":"importe_bruto",
-            "7":"iibb",
-            "8":"lp",
-            "9":"otras_retenciones",
-            "10":"anticipo",
-            "11":"descuento",
-            "12":"actividad",
-            "13":"partida",
-            }, inplace=True)
-        df['fecha'] = pd.to_datetime(
-            df['fecha'], format='%m/%d/%y %H:%M:%S'
-        )
         df['ejercicio'] = df['fecha'].dt.year.astype(str)
         df['mes'] = df['fecha'].dt.strftime('%m/%Y')
         df['mutual'] = 0
@@ -160,8 +199,8 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
 
-    migrate_slave = MigrateSlave(dir_path +"/"+ args.old_slave, 
-                                dir_path +"/"+ args.new_slave)
+    migrate_slave = MigrateSlave(os.path.join(dir_path, args.old_slave), 
+                                os.path.join(dir_path, args.new_slave))
     migrate_slave.migrate_all()
     #df = migrate_slave.from_sql(dir_path +"/"+ args.new_icaro, 'carga')
     #print(df.head(5))

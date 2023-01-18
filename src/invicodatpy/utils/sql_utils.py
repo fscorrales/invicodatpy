@@ -86,6 +86,35 @@ class SQLUtils():
         return self.df
 
     # --------------------------------------------------
+    def from_mdb(self, mdb_path:str, table_name:str = None) -> pd.DataFrame:
+        """From mdb DataBase to sql DataFrame
+        Package requirement:
+            -   pip install sqlalchemy-access
+        """
+        connection_string = (
+            r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
+            r"DBQ=" + mdb_path +
+            r";"
+            r"ExtendedAnsiSQL=1;"
+        )
+
+        connection_url = engine.URL.create(
+            "access+pyodbc",
+            query={"odbc_connect": connection_string}
+        )
+        
+        engine_mdb = create_engine(connection_url)
+        if table_name == None:
+            table_name = self._TABLE_NAME
+        self.df = pd.read_sql_table(
+            table_name = table_name,
+            con = engine_mdb,
+            index_col = self._INDEX_COL
+        )
+        engine_mdb.dispose()
+        return self.df
+
+    # --------------------------------------------------
     def test_sql(self, sql_path:str):
         """Create DB for testing purposes"""
         engine = create_engine(f'sqlite:///{sql_path}')
