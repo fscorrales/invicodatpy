@@ -27,5 +27,6 @@ setup(
         'gspread',
         'xlrd',
         'openpyxl',
+        'sqlalchemy-access'
     ]
 )
