@@ -46,7 +46,7 @@ class PptoGtosFteRf602(RPWUtils):
                 proyecto =  f['6'].str.zfill(2),
                 actividad =  f['7'].str.zfill(2),
                 partida = f['8'],
-                grupo = f['8'].str[1] + '00',
+                grupo = f.partida.str[0] + '00',
                 fuente = f['9'],
                 org = f['10'],
                 credito_original = f['13'],
