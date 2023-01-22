@@ -193,6 +193,7 @@ class MigrateIcaro(RPWUtils):
             "Imputacion":"actividad",
             "Partida":"partida",
             }, inplace=True)
+        self.df = self.df.loc[~self.df.actividad.isnull()]
         self.df['fecha'] = pd.TimedeltaIndex(self.df['fecha'], unit='d') + dt.datetime(1970,1,1)
         self.df['id'] = self.df['nro_comprobante'] + 'C'
         self.df.loc[self.df['tipo'] == 'PA6', 'id'] = self.df['nro_comprobante'] + 'F'
