@@ -46,6 +46,16 @@ class SSCCModel():
             Column('imputacion', String(50))
         )
 
+        self.sdo_final_banco_invico = Table(
+            'sdo_final_banco_invico', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('cta_cte', String(20)),
+            Column('desc_cta_cte', String(50)),
+            Column('desc_banco', String(50)),
+            Column('saldo', Numeric(12,2))
+        )
+
         self.ctas_ctes = Table(
             'ctas_ctes', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
