@@ -7,6 +7,7 @@ Source: https://realpython.com/working-with-files-in-python/#:~:text=To%20get%20
 
 import os
 import pandas as pd
+import tabula
 
 class HandlingFiles():
 
@@ -28,6 +29,17 @@ class HandlingFiles():
         if header == None:
             n_col = df.shape[1]
             df.columns = [str(x) for x in range(n_col)]
+        return df
+
+    # --------------------------------------------------
+    def read_pdf(self, PATH:str) -> pd.DataFrame:
+        """"Read from pdf report"""
+        df = tabula.read_pdf(PATH)
+        # df = pd.read_excel(PATH, index_col=None, header=header, 
+        # na_filter = False, dtype=str)
+        # if header == None:
+        #     n_col = df.shape[1]
+        #     df.columns = [str(x) for x in range(n_col)]
         return df
     
     # --------------------------------------------------

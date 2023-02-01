@@ -21,6 +21,9 @@ __pycache__/
 # Json extensions
 *.json
 
+# pdf extensions
+*.pdf
+
 # Microsoft Access extension
 *.mdb
 
