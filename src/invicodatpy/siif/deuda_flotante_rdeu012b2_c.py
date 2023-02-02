@@ -16,10 +16,10 @@ from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
 
 
-class DeudaFlotanteRdeu012b2Cuit(RPWUtils):
+class DeudaFlotanteRdeu012b2C(RPWUtils):
     """Read, process and write SIIF's rdeu012 report"""
     _REPORT_TITLE = 'DETALLE DE COMPROBANTES DE GASTOS ORDENADOS Y NO PAGADOS (DEUDA FLOTANTE)'
-    _TABLE_NAME = 'deuda_flotante_rdeu012b2_cuit'
+    _TABLE_NAME = 'deuda_flotante_rdeu012b2_c'
     _INDEX_COL = 'id'
     _FILTER_COL = 'mes_hasta'
     _SQL_MODEL = SIIFModel
@@ -103,15 +103,15 @@ class DeudaFlotanteRdeu012b2Cuit(RPWUtils):
 def get_args():
     """Get needed params from user input"""
     parser = argparse.ArgumentParser(
-        description = "Read, process and write SIIF's rdeu012b2_cuit report",
+        description = "Read, process and write SIIF's rdeu012b2_c report",
         formatter_class = argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument(
         '-f', '--file', 
         metavar = "pdf_file or csv_file",
-        default='202212-rdeu012b2_Cuit.csv',
+        default='202212-rdeu012b2_C.csv',
         type=str,
-        help = "SIIF' rdeu012b2_cuit report. Must be in the same folder. CSV extension for Windows")
+        help = "SIIF' rdeu012b2_C report. Must be in the same folder. CSV extension for Windows")
 
     return parser.parse_args()
 
@@ -123,7 +123,7 @@ def main():
         os.path.abspath(
             inspect.getfile(
                 inspect.currentframe())))
-    siif_rdeu012 = DeudaFlotanteRdeu012b2Cuit()
+    siif_rdeu012 = DeudaFlotanteRdeu012b2C()
     siif_rdeu012.from_external_report(dir_path + '/' + args.file)
     # siif_rdeu012.test_sql(dir_path + '/test.sqlite')
     siif_rdeu012.to_sql(dir_path + '/siif.sqlite')
@@ -135,4 +135,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.deuda_flotante_rdeu012b2_cuit -f 202212-rdeu012b2_Cuit.csv
+    # python -m invicodatpy.siif.deuda_flotante_rdeu012b2_c -f 202212-rdeu012b2_C.csv

@@ -187,8 +187,8 @@ class SIIFModel():
             Column('org_fin', String(1))
         )
 
-        self.deuda_flotante_rdeu012b2_cuit = Table(
-            'deuda_flotante_rdeu012b2_cuit', self.metadata,
+        self.deuda_flotante_rdeu012b2_c = Table(
+            'deuda_flotante_rdeu012b2_c', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
             Column('ejercicio', String(4)),
             Column('mes_hasta', String(7)),
