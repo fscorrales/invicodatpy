@@ -32,14 +32,24 @@ class HandlingFiles():
         return df
 
     # --------------------------------------------------
-    def read_pdf(self, PATH:str) -> pd.DataFrame:
+    def read_pdf(self, PATH:str, names=None, header=None) -> pd.DataFrame:
         """"Read from pdf report"""
-        df = tabula.read_pdf(PATH)
-        # df = pd.read_excel(PATH, index_col=None, header=header, 
-        # na_filter = False, dtype=str)
-        # if header == None:
-        #     n_col = df.shape[1]
-        #     df.columns = [str(x) for x in range(n_col)]
+        tables = tabula.read_pdf(
+            PATH, pages='all', multiple_tables=False,
+            pandas_options={
+                'index_col':None, 'header':header,'na_filter':False, 
+                'dtype':str, 'on_bad_lines':'warn', 'names':names
+            }
+        )
+        df = pd.DataFrame()
+        # n_col = df.shape[1]
+        # df.columns = [str(x) for x in range(n_col)]
+        # return df
+        for i in range(len(tables)):
+            table = tables[i]
+            n_col = table.shape[1]
+            table.columns = [str(x) for x in range(n_col)]
+            df=pd.concat([df, table],)
         return df
     
     # --------------------------------------------------

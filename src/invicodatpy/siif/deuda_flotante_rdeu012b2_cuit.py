@@ -7,6 +7,7 @@ Purpose: Read, process and write SIIF's rdeu012b2_cuit report
 import argparse
 import inspect
 import os
+import sys
 
 import pandas as pd
 from datar import base, dplyr, f, tidyr
@@ -24,9 +25,15 @@ class DeudaFlotanteRdeu012b2Cuit(RPWUtils):
     _SQL_MODEL = SIIFModel
 
     # --------------------------------------------------
-    def from_external_report(self, pdf_path:str) -> pd.DataFrame:
-        """"Read from xls SIIF's report"""
-        df = self.read_pdf(pdf_path)
+    def from_external_report(self, path:str) -> pd.DataFrame:
+        """"Read from pdf or csv SIIF's report"""
+        ext = os.path.splitext(path)[1]
+        if ext == '.pdf':
+            df = self.read_pdf(path)
+            df = df.iloc[2:]
+        elif ext == '.csv':
+            df = self.read_csv(path)
+            df = df.iloc[9:,0:9]
         self.df = df
         return df
         # read_title = df['2'].iloc[9]
@@ -130,10 +137,10 @@ def get_args():
 
     parser.add_argument(
         '-f', '--file', 
-        metavar = "pdf_file",
-        default='202212-rdeu012b2_Cuit.pdf',
+        metavar = "pdf_file or csv_file",
+        default='202212-rdeu012b2_Cuit.csv',
         type=str,
-        help = "SIIF' rdeu012b2_cuit.pdf report. Must be in the same folder")
+        help = "SIIF' rdeu012b2_cuit report. Must be in the same folder. CSV extension for Windows")
 
     return parser.parse_args()
 
@@ -157,4 +164,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.deuda_flotante_rdeu012b2_cuit
+    # python -m invicodatpy.siif.deuda_flotante_rdeu012b2_cuit -f 202212-rdeu012b2_Cuit.csv
