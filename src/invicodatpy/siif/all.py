@@ -2,6 +2,7 @@ from .comprobantes_gtos_gpo_part_gto_rpa03g import *
 from .comprobantes_gtos_rcg01_uejp import *
 from .comprobantes_rec_rci02 import *
 from .deuda_flotante_rdeu012 import *
+from .deuda_flotante_rdeu012b2_cuit import *
 from .join_comprobantes_gtos_gpo_part import *
 from .join_ppto_gtos_fte_desc import *
 from .mayor_contable_rcocc31 import *
