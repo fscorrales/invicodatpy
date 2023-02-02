@@ -1,1 +1,1 @@
-__all__ = ['banco_invico', 'ctas_ctes']
+__all__ = ['banco_invico', 'ctas_ctes', 'sdo_final_banco_invico']
