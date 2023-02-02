@@ -27,6 +27,7 @@ setup(
         'gspread',
         'xlrd',
         'openpyxl',
-        'sqlalchemy-access'
+        'sqlalchemy-access',
+        'tabula-py'
     ]
 )
