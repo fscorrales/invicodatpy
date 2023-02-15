@@ -10,9 +10,8 @@ Source:
 import argparse
 from dataclasses import dataclass, field
 
-import gspread
+import gspread #https://docs.gspread.org/en/latest/index.html#
 import pandas as pd
-from df2gspread import df2gspread as d2g
 from oauth2client.service_account import ServiceAccountCredentials
 
 # --------------------------------------------------
@@ -49,11 +48,22 @@ class GoogleSheets():
         spreadsheet_key:str, wks_name:str = 'Hoja 1',
         col_names:bool = True, row_names:bool = False
     ):
-        d2g.upload(
-            df, spreadsheet_key, wks_name, 
-            credentials=self.credentials, 
-            col_names=col_names, row_names=row_names
-        )
+        sheet = self.gc.open_by_key(spreadsheet_key)
+        worksheet = sheet.worksheet(wks_name)
+        worksheet.update([df.columns.values.tolist()] + df.values.tolist())
+
+    #https://github.com/maybelinot/df2gspread/issues/41#issuecomment-1154527949
+
+    # def upload_pandas_df(self, df:pd.DataFrame):
+    #   values = [df.columns.values.tolist()]
+    #   values.extend(df.values.tolist())
+    #   sheet.values_update(
+    #     self.title,
+    #     params = { 'valueInputOption': 'USER_ENTERED' },
+    #     body = { 'values': values }
+    #   )
+
+    # gspread.Worksheet.upload_pandas_df = upload_pandas_df
 
 # --------------------------------------------------
 def get_args():
