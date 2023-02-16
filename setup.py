@@ -18,7 +18,6 @@ setup(
         'datar',
         'datar-numpy',
         'datar-pandas',
-        'df2gspread',
         'google-api-python-client',
         'google-auth',
         'google-auth-oauthlib',
