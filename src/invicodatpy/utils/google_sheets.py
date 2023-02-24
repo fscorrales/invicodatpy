@@ -50,6 +50,7 @@ class GoogleSheets():
     ):
         sheet = self.gc.open_by_key(spreadsheet_key)
         worksheet = sheet.worksheet(wks_name)
+        worksheet.clear()
         worksheet.update([df.columns.values.tolist()] + df.values.tolist())
 
     #https://github.com/maybelinot/df2gspread/issues/41#issuecomment-1154527949
