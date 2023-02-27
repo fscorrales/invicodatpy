@@ -50,12 +50,22 @@ class SGVModel():
             Column('saldo_final', Numeric(12,2)),
         )
 
-        self.saldo_motivo_variacion = Table(
-            'saldo_motivo_variacion', self.metadata,
+        self.saldo_motivo = Table(
+            'saldo_motivo', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
             Column('ejercicio', String(4)),
             Column('cod_motivo', String(5)),
             Column('motivo', String(150)),
+            Column('importe', Numeric(12,2)),
+        )
+
+        self.saldo_motivo_entrega_viviendas = Table(
+            'saldo_motivo_entrega_viviendas', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('motivo', String(20)),
+            Column('cod_barrio', String(5)),
+            Column('barrio', String(150)),
             Column('importe', Numeric(12,2)),
         )
 

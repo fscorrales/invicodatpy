@@ -16,10 +16,10 @@ from ..models.sgv_model import SGVModel
 from ..utils.rpw_utils import RPWUtils
 
 
-class SaldoMotivoVariacion(RPWUtils):
+class SaldoMotivo(RPWUtils):
     """Read, process and write Gestion Viviendas's Informe Evolucion De Saldos Por Motivos report"""
     _REPORT_TITLE = 'EVOLUCIÓN DE SALDOS POR MOTIVO'
-    _TABLE_NAME = 'saldo_motivo_variacion'
+    _TABLE_NAME = 'saldo_motivo'
     _INDEX_COL = 'id'
     _FILTER_COL = ['ejercicio']
     _SQL_MODEL = SGVModel
@@ -81,7 +81,7 @@ def main():
         os.path.abspath(
             inspect.getfile(
                 inspect.currentframe())))
-    sgv = SaldoMotivoVariacion()
+    sgv = SaldoMotivo()
     sgv.from_external_report(dir_path + '/' + args.file)
     # sgv.test_sql(dir_path + '/test.sqlite')
     sgv.to_sql(dir_path + '/sgv.sqlite')
@@ -93,4 +93,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.sgv.saldo_motivo_variacion
+    # python -m invicodatpy.sgv.saldo_motivo
