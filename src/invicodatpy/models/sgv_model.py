@@ -50,6 +50,15 @@ class SGVModel():
             Column('saldo_final', Numeric(12,2)),
         )
 
+        self.saldo_motivo_variacion = Table(
+            'saldo_motivo_variacion', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('cod_motivo', String(5)),
+            Column('motivo', String(150)),
+            Column('importe', Numeric(12,2)),
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')

@@ -1,1 +1,1 @@
-__all__ = ['barrios_nuevos']
+__all__ = ['barrios_nuevos', 'saldo_barrio_variacion', 'saldo_motivo_variacion']
