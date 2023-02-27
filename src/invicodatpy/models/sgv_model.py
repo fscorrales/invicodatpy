@@ -30,21 +30,24 @@ class SGVModel():
             'barrios_nuevos', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
             Column('ejercicio', String(4)),
-            Column('estructura', String(15)),
-            Column('fuente', String(2)),
-            Column('programa', String(2)),
-            Column('subprograma', String(2)),
-            Column('proyecto', String(2)),
-            Column('actividad', String(2)),
-            Column('grupo', String(3)),
-            Column('partida', String(3)),
-            Column('org', String(1)),
-            Column('credito_original', Numeric(12,2)),
-            Column('credito_vigente', Numeric(12,2)),
-            Column('comprometido', Numeric(12,2)),
-            Column('ordenado', Numeric(12,2)),
-            Column('saldo', Numeric(12,2)),
-            Column('pendiente', Numeric(12,2))
+            Column('cod_barrio', String(5)),
+            Column('barrio', String(150)),
+            Column('localidad', String(50)),
+            Column('q_entregadas', Numeric(5,0)),
+            Column('importe_total', Numeric(12,2)),
+            Column('importe_promedio', Numeric(12,2)),
+        )
+
+        self.saldo_barrio_variacion = Table(
+            'saldo_barrio_variacion', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('cod_barrio', String(5)),
+            Column('barrio', String(150)),
+            Column('saldo_inicial', Numeric(12,2)),
+            Column('amortizacion',Numeric(12,2)),
+            Column('cambios', Numeric(12,2)),
+            Column('saldo_final', Numeric(12,2)),
         )
 
     def create_engine(self):
