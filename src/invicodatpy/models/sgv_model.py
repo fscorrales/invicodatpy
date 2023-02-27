@@ -86,6 +86,24 @@ class SGVModel():
             Column('facturado_total', Numeric(12,2)),
         )
 
+        self.resumen_recaudado = Table(
+            'resumen_recaudado', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('mes', String(4)),
+            Column('amortizacion', Numeric(12,2)),
+            Column('int_financiero', Numeric(12,2)),
+            Column('int_mora', Numeric(12,2)),
+            Column('gtos_adm', Numeric(12,2)),
+            Column('seg_incendio', Numeric(12,2)),
+            Column('seg_vida', Numeric(12,2)),
+            Column('subsidio', Numeric(12,2)),
+            Column('pago_amigable', Numeric(12,2)),
+            Column('escritura', Numeric(12,2)),
+            Column('pend_acreditacion', Numeric(12,2)),
+            Column('recaudado_total', Numeric(12,2)),
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
