@@ -5,3 +5,4 @@ from .saldo_motivo_entrega_viviendas import *
 from .resumen_facturado import *
 from .resumen_recaudado import *
 from .saldo_barrio import *
+from .saldo_recuperos_cobrar_variacion import *
