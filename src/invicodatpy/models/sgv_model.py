@@ -104,6 +104,17 @@ class SGVModel():
             Column('recaudado_total', Numeric(12,2)),
         )
 
+        self.saldo_barrio = Table(
+            'saldo_barrio', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('cod_barrio', String(5)),
+            Column('barrio', String(150)),
+            Column('saldo_vencido', Numeric(12,2)),
+            Column('saldo_actual',Numeric(12,2)),
+            Column('localidad', String(50)),
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
