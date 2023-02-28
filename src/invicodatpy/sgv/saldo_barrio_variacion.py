@@ -53,6 +53,7 @@ class SaldoBarrioVariacion(RPWUtils):
         cols = ['saldo_inicial', 'amortizacion', 'cambios', 'saldo_final']
         for col in cols:
             df[col] = df[col].astype(float)
+        df['amortizacion'] = df['amortizacion'] * (-1)
         cols = df.columns.tolist()
         cols = cols[-1:] + cols[:-1]
         df = df[cols]

@@ -115,6 +115,14 @@ class SGVModel():
             Column('localidad', String(50)),
         )
 
+        self.saldo_recuperos_cobrar_variacion = Table(
+            'saldo_recuperos_cobrar_variacion', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('concepto', String(50)),
+            Column('importe', Numeric(12,2)),
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')

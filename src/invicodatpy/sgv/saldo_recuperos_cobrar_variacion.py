@@ -10,6 +10,7 @@ import inspect
 import os
 
 import pandas as pd
+import numpy as np
 from datar import base, dplyr, f, tidyr
 
 from ..models.sgv_model import SGVModel
@@ -40,18 +41,20 @@ class SaldoRecuperosCobrarVariacion(RPWUtils):
     def transform_df(self) -> pd.DataFrame:
         """"Transform read xls file"""
         df = self.df
+        df = df.iloc[:, [0, 5, 6]]
+        df.replace('', np.NaN, inplace=True)
+        df.dropna(axis=0, how='all', inplace=True)
         df['ejercicio'] = df.iloc[0,0][-4:]
-        df = df.iloc[4:, [0, 5, 6, 7]]
-        # df = df.iloc[4:-1, [1, 2, 3, 4]]
-        # df.rename({
-        #     '1': 'cod_motivo', 
-        #     '2': 'motivo',
-        #     '3': 'importe',
-        #     }, axis='columns', inplace=True)
-        # cols = ['importe']
-        # for col in cols:
-        #     df[col] = df[col].astype(float)
-        # cols = df.columns.tolist()
+        df.columns = ['concepto', 'importe_borrar', 'importe', 'ejercicio']
+        df.concepto.fillna(value=None, method="ffill", inplace=True)
+        df.importe.fillna(value=df["importe_borrar"], inplace=True)
+        df.drop("importe_borrar", axis = 1,inplace=True)
+        df.dropna(axis=0, how='any', inplace=True)        
+        cols = ['importe']
+        for col in cols:
+            df[col] = df[col].astype(float)
+        df.loc[df['concepto'] == 'COBRANZA:', 'importe'] = df['importe'] * (-1)
+        cols = df.columns.tolist()
         cols = cols[-1:] + cols[:-1]
         df = df[cols]
 
@@ -84,11 +87,11 @@ def main():
                 inspect.currentframe())))
     sgv = SaldoRecuperosCobrarVariacion()
     sgv.from_external_report(dir_path + '/' + args.file)
-    sgv.test_sql(dir_path + '/test.sqlite')
-    # sgv.to_sql(dir_path + '/sgv.sqlite')
-    # sgv.print_tidyverse()
-    # sgv.from_sql(dir_path + '/sgv.sqlite')
-    # sgv.print_tidyverse()
+    # sgv.test_sql(dir_path + '/test.sqlite')
+    sgv.to_sql(dir_path + '/sgv.sqlite')
+    sgv.print_tidyverse()
+    sgv.from_sql(dir_path + '/sgv.sqlite')
+    sgv.print_tidyverse()
 
 # --------------------------------------------------
 if __name__ == '__main__':
