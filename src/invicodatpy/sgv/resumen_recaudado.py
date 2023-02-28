@@ -29,7 +29,6 @@ class ResumenRecaudado(RPWUtils):
         """"Read from xls SGV's report"""
         df = self.read_xls(xls_path)
         read_title = df.iloc[3,6][:17]
-        print(read_title)
         if read_title == self._REPORT_TITLE:
             self.df = df
             self.transform_df()
