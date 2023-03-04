@@ -13,6 +13,7 @@ import pandas as pd
 from ..utils.print_tidyverse import PrintTidyverse
 from .comprobantes_gtos_gpo_part_gto_rpa03g import ComprobantesGtosGpoPartGtoRpa03g
 from .comprobantes_gtos_rcg01_uejp import ComprobantesGtosRcg01Uejp
+from .detalle_partidas_rog01 import DetallePartidasRog01
 
 
 class JoinComprobantesGtosGpoPart():
@@ -21,10 +22,11 @@ class JoinComprobantesGtosGpoPart():
     
     # --------------------------------------------------
     def from_external_report(
-        self, gtos_gpo_part_xls_path:str, gtos_xls_path:str
+        self, gtos_gpo_part_xls_path:str, gtos_xls_path:str, part_xlx_path:str
     ) -> pd.DataFrame:
         self.df_gtos_gpo_part = ComprobantesGtosGpoPartGtoRpa03g().from_external_report(gtos_gpo_part_xls_path)
         self.df_gtos = ComprobantesGtosRcg01Uejp().from_external_report(gtos_xls_path)
+        self.df_part = DetallePartidasRog01().from_external_report(part_xlx_path)
         self.join_df()
         return self.df
 
@@ -32,6 +34,7 @@ class JoinComprobantesGtosGpoPart():
     def from_sql(self, sql_path:str) -> pd.DataFrame:
         self.df_gtos_gpo_part = ComprobantesGtosGpoPartGtoRpa03g().from_sql(sql_path)
         self.df_gtos = ComprobantesGtosRcg01Uejp().from_sql(sql_path)
+        self.df_part = DetallePartidasRog01().from_sql(sql_path)
         self.join_df()
         return self.df
 
@@ -47,6 +50,12 @@ class JoinComprobantesGtosGpoPart():
             left=self.df_gtos_gpo_part,
             right=df_gtos_filtered,
             on=['nro_comprobante'],
+            how='left'
+        )
+        self.df = pd.merge(
+            left=self.df,
+            right=self.df_part,
+            on=['partida'],
             how='left'
         )
         return self.df
