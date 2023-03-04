@@ -207,6 +207,16 @@ class SIIFModel():
             Column('fecha_hasta', Date()),
         )
 
+        self.detalle_partidas = Table(
+            'detalle_partidas', self.metadata,
+            Column('partida', String(3), primary_key=True),
+            Column('desc_partida', String(75)),
+            Column('part_parcial', String(3)),
+            Column('desc_part_parcial', String(50)),
+            Column('grupo', String(3)),
+            Column('desc_grupo', String(50)),
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
