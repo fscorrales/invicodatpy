@@ -52,6 +52,7 @@ class JoinComprobantesGtosGpoPart():
             on=['nro_comprobante'],
             how='left'
         )
+        self.df.drop(['grupo'], axis=1, inplace=True)
         self.df = pd.merge(
             left=self.df,
             right=self.df_part,
