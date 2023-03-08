@@ -2,7 +2,7 @@
 """
 Author: Fernando Corrales <fscorrales@gmail.com>
 Purpose: Read, process and write Gestion Viviendas's 
-        Informe Motivo Entrega Viviendas report
+        Informe Motivo Actualización Semestral report
 """
 
 import argparse
@@ -16,8 +16,8 @@ from ..models.sgv_model import SGVModel
 from ..utils.rpw_utils import RPWUtils
 
 
-class SaldoMotivoEntregaViviendas(RPWUtils):
-    """Read, process and write Gestion Viviendas's Informe Motivo Entrega Viviendas report"""
+class SaldoMotivoActualizacionSemestral(RPWUtils):
+    """Read, process and write Gestion Viviendas's Informe Motivo Actualización Semestral report"""
     _REPORT_TITLE = 'INFORME EVOLUCION SALDOS POR MOTIVOS'
     _TABLE_NAME = 'saldo_motivo_individual'
     _INDEX_COL = 'id'
@@ -41,8 +41,8 @@ class SaldoMotivoEntregaViviendas(RPWUtils):
         """"Transform read xls file"""
         df = self.df
         df['ejercicio'] = df.iloc[0,0][-5:][0:4]
-        df['cod_motivo'] = '1'
-        df['motivo'] = 'entrega de viviendas'
+        df['cod_motivo'] = '0'
+        df['motivo'] = 'actualizacion semestral'
         df = df.iloc[4:-1, [1, 2, 3, 4, 5, 6]]
         df.rename({
             '1': 'cod_barrio', 
@@ -61,7 +61,7 @@ class SaldoMotivoEntregaViviendas(RPWUtils):
 
     def from_sql(self, sql_path: str, table_name: str = None) -> pd.DataFrame:
         df = super().from_sql(sql_path, table_name)
-        df = df.loc[df['cod_motivo'] == '1']
+        df = df.loc[df['cod_motivo'] == '0']
         self.df = df
         return self.df
 
@@ -69,15 +69,15 @@ class SaldoMotivoEntregaViviendas(RPWUtils):
 def get_args():
     """Get needed params from user input"""
     parser = argparse.ArgumentParser(
-        description = "Read, process and write GV's Informe Motivo Entrega Viviendas report",
+        description = "Read, process and write GV's Informe Motivo Actualización Semestral report",
         formatter_class = argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument(
         '-f', '--file', 
         metavar = 'xlsx_file',
-        default='InformeMotivoEntregaViviendas.xlsx',
+        default='InformeMotivoActualizacionSemestral.xlsx',
         type=str,
-        help = "SGV' Informe Evolucion Motivo Entrega Viviendas.xlsx report. Must be in the same folder")
+        help = "SGV' Informe Actualizacion Semestral.xlsx report. Must be in the same folder")
 
     return parser.parse_args()
 
@@ -89,7 +89,7 @@ def main():
         os.path.abspath(
             inspect.getfile(
                 inspect.currentframe())))
-    sgv = SaldoMotivoEntregaViviendas()
+    sgv = SaldoMotivoActualizacionSemestral()
     sgv.from_external_report(dir_path + '/' + args.file)
     # sgv.test_sql(dir_path + '/test.sqlite')
     sgv.to_sql(dir_path + '/sgv.sqlite')
@@ -101,4 +101,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.sgv.saldo_motivo_entrega_viviendas
+    # python -m invicodatpy.sgv.saldo_motivo_actualizacion_semestral
