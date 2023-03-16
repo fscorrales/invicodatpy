@@ -18,8 +18,17 @@ __pycache__/
 # csv extensions
 *.csv
 
+# exe extensions
+*.exe
+
+#crdownload file
+*.crdownload
+
 # Json extensions
 *.json
+
+# jupyter notebook files
+*.ipynb
 
 # pdf extensions
 *.pdf
