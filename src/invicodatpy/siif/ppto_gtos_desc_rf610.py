@@ -50,7 +50,9 @@ class PptoGtosDescRf610(RPWUtils):
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
 
             # Seleccionar módulo Gastos
-            cmb_modulos = Select(self.siif.driver.find_element(By.TAG_NAME, 'select'))
+            cmb_modulos = Select(
+                self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
+            )
             cmb_modulos.select_by_visible_text('SUB - SISTEMA DE CONTROL DE GASTOS')
             time.sleep(1)
 

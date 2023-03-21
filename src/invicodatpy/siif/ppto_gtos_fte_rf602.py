@@ -30,12 +30,26 @@ class PptoGtosFteRf602(RPWUtils):
     Read, process and write SIIF's rf602 report
     :param siif_connection must be initialized first in order to download from SIIF
     """
-    _REPORT_TITLE:str = field(init=False, repr=False, default='DETALLE DE LA EJECUCION PRESUESTARIA')
-    _TABLE_NAME:str = field(init=False, repr=False, default='ppto_gtos_fte_rf602')
-    _INDEX_COL:str = field(init=False, repr=False, default='id')
-    _FILTER_COL:str = field(init=False, repr=False, default='ejercicio')
-    _SQL_MODEL:SIIFModel = field(init=False, repr=False, default=SIIFModel)
-    siif:ConnectSIIF = field(init=True, repr=False, default=None)
+    _REPORT_TITLE:str = field(
+        init=False, repr=False, 
+        default='DETALLE DE LA EJECUCION PRESUESTARIA'
+    )
+    _TABLE_NAME:str = field(
+        init=False, repr=False, 
+        default='ppto_gtos_fte_rf602'
+    )
+    _INDEX_COL:str = field(
+        init=False, repr=False, default='id'
+    )
+    _FILTER_COL:str = field(
+        init=False, repr=False, default='ejercicio'
+    )
+    _SQL_MODEL:SIIFModel = field(
+        init=False, repr=False, default=SIIFModel
+    )
+    siif:ConnectSIIF = field(
+        init=True, repr=False, default=None
+    )
 
     # --------------------------------------------------
     def download_report(
@@ -50,7 +64,9 @@ class PptoGtosFteRf602(RPWUtils):
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
 
             # Seleccionar módulo Gastos
-            cmb_modulos = Select(self.siif.driver.find_element(By.TAG_NAME, 'select'))
+            cmb_modulos = Select(
+                self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
+            )
             cmb_modulos.select_by_visible_text('SUB - SISTEMA DE CONTROL DE GASTOS')
             time.sleep(1)
 

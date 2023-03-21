@@ -70,7 +70,10 @@ class ConnectSIIF():
             # Wait for the new window or tab
             self.wait.until(EC.number_of_windows_to_be(2))
             self.driver.switch_to.window(self.driver.window_handles[1])
-            time.sleep(1)
+            self.wait.until(EC.presence_of_element_located(
+                (By.XPATH, "//select[@id='pt1:socModulo::content']"))
+            )
+            # time.sleep(1)
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
             self.disconnect() 

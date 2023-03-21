@@ -27,6 +27,7 @@ setup(
         'xlrd',
         'openpyxl',
         'sqlalchemy-access',
-        'tabula-py'
+        'tabula-py',
+        'selenium'
     ]
 )
