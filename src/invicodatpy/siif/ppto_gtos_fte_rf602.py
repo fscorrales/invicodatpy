@@ -16,6 +16,7 @@ import pandas as pd
 from datar import base, dplyr, f, tidyr
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
 from ..models.siif_model import SIIFModel
@@ -54,14 +55,18 @@ class PptoGtosFteRf602(RPWUtils):
             time.sleep(1)
 
             # Select rf602 report
-            input_filter = self.siif.driver.find_element(By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c2::content']")
+            input_filter = self.siif.driver.find_element(
+                By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c1::content']"
+            )
             input_filter.clear()
-            input_filter.send_keys('rf602', Keys.ENTER)
+            input_filter.send_keys('38', Keys.ENTER)
             btn_siguiente = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:pc1:btnSiguiente']")
             btn_siguiente.click()
-            time.sleep(1)
 
             # Llenado de inputs
+            self.siif.wait.until(EC.presence_of_element_located(
+                (By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']")
+            ))
             input_ejercicio = self.siif.driver.find_element(
                     By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']"
                 )
@@ -75,6 +80,10 @@ class PptoGtosFteRf602(RPWUtils):
                 input_ejercicio.send_keys(ejercicio)
                 btn_get_reporte.click()
                 self.siif.rename_report(dir_path, 'rf602.xls', ejercicio + '-rf602.xls')
+                self.siif.wait.until(EC.number_of_windows_to_be(3))
+                self.siif.driver.switch_to.window(self.siif.driver.window_handles[2])
+                self.siif.driver.close()
+                self.siif.driver.switch_to.window(self.siif.driver.window_handles[1])
             time.sleep(1)
             btn_volver = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
             btn_volver.click()
