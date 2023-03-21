@@ -207,9 +207,10 @@ def get_args():
     parser.add_argument(
         '-f', '--file', 
         metavar = "xls_file",
-        default='2022-rcg01_uejp.xls',
+        default='',
         type=str,
         help = "SIIF' rcg01_uejp.xls report. Must be in the same folder")
+    
     parser.add_argument(
         '-d', '--download', 
         metavar = "download",
@@ -248,6 +249,7 @@ def main():
         os.path.abspath(
             inspect.getfile(
                 inspect.currentframe())))
+                
     if args.download:
         json_path = dir_path + '/siif_credentials.json'
         if args.username != '' and args.password != '':
@@ -271,9 +273,9 @@ def main():
     if args.file != '':
         filename = args.file
     else:
-        filename = args.ejercicio + '-rf602.xls'
+        filename = args.ejercicio + '-rcg01_uejp.xls'
         
-    siif_rcg01_uejp.from_external_report(dir_path + '/' + args.file)
+    siif_rcg01_uejp.from_external_report(dir_path + '/' + filename)
     # siif_rcg01_uejp.test_sql(dir_path + '/test.sqlite')
     siif_rcg01_uejp.to_sql(dir_path + '/siif.sqlite')
     siif_rcg01_uejp.print_tidyverse()
