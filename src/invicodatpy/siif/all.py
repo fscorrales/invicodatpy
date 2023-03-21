@@ -10,3 +10,4 @@ from .ppto_gtos_desc_rf610 import *
 from .ppto_gtos_fte_rf602 import *
 from .resumen_fdos_rfondo07tp import *
 from .detalle_partidas_rog01 import *
+from .connect_siif import *
