@@ -55,7 +55,7 @@ class DeudaFlotanteRdeu012(RPWUtils):
     # --------------------------------------------------
     def download_report(
         self, dir_path:str, 
-        meses:list = dt.datetime.strftime(dt.datetime.now(), 'yyyymm')
+        meses:list = dt.datetime.strftime(dt.datetime.now(), '%Y-%m')
     ):
         try:
             # Path de salida
