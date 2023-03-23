@@ -192,12 +192,9 @@ def get_args():
         type=str,
         help = "SIIF' gto_rpa03g.xls report. Must be in the same folder")
 
-    parser.add_argument(
-        '-d', '--download', 
-        metavar = "download",
-        default=True,
-        type=bool,
-        help = "Download data")
+    parser.add_argument('--download', action='store_true')
+    parser.add_argument('--no-download', dest='download', action='store_false')
+    parser.set_defaults(download=True)
 
     parser.add_argument(
         '-u', '--username', 

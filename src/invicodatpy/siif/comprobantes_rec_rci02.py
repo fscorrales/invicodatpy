@@ -193,16 +193,13 @@ def get_args():
     parser.add_argument(
         '-f', '--file', 
         metavar = "xls_file",
-        default='2022-rci02.xls',
+        default='',
         type=str,
         help = "SIIF' rci02.xls report. Must be in the same folder")
 
-    parser.add_argument(
-        '-d', '--download', 
-        metavar = "download",
-        default=True,
-        type=bool,
-        help = "Download data")
+    parser.add_argument('--download', action='store_true')
+    parser.add_argument('--no-download', dest='download', action='store_false')
+    parser.set_defaults(download=True)
 
     parser.add_argument(
         '-u', '--username', 
@@ -236,6 +233,7 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
 
+    print(args.download)
     if args.download:
         json_path = dir_path + '/siif_credentials.json'
         if args.username != '' and args.password != '':
