@@ -5,23 +5,127 @@ Purpose: Read, process and write SIIF's rdeu012 report
 """
 
 import argparse
+import datetime as dt
+from datetime import timedelta
 import inspect
+import json
 import os
+import time
+from dataclasses import dataclass, field
 
 import pandas as pd
 from datar import base, dplyr, f, tidyr
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
+from .connect_siif import ConnectSIIF
 
 
+@dataclass
 class DeudaFlotanteRdeu012(RPWUtils):
-    """Read, process and write SIIF's rdeu012 report"""
-    _REPORT_TITLE = 'DETALLE DE COMPROBANTES DE GASTOS ORDENADOS Y NO PAGADOS (DEUDA FLOTANTE)'
-    _TABLE_NAME = 'deuda_flotante_rdeu012'
-    _INDEX_COL = 'id'
-    _FILTER_COL = 'mes_hasta'
-    _SQL_MODEL = SIIFModel
+    """
+    Read, process and write SIIF's rdeu012 report
+    :param siif_connection must be initialized first in order to download from SIIF
+    """
+    _REPORT_TITLE:str = field(
+        init=False, repr=False, 
+        default='DETALLE DE COMPROBANTES DE GASTOS ORDENADOS Y NO PAGADOS (DEUDA FLOTANTE)'
+    )
+    _TABLE_NAME:str = field(
+        init=False, repr=False, 
+        default='deuda_flotante_rdeu012'
+    )
+    _INDEX_COL:str = field(
+        init=False, repr=False, default='id'
+    )
+    _FILTER_COL:str = field(
+        init=False, repr=False, default='mes_hasta'
+    )
+    _SQL_MODEL:SIIFModel = field(
+        init=False, repr=False, default=SIIFModel
+    )
+    siif:ConnectSIIF = field(
+        init=True, repr=False, default=None
+    )
+
+    # --------------------------------------------------
+    def download_report(
+        self, dir_path:str, 
+        meses:list = dt.datetime.strftime(dt.datetime.now(), 'yyyymm')
+    ):
+        try:
+            # Path de salida
+            params = {
+            'behavior': 'allow',
+            'downloadPath': dir_path
+            }
+            self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
+
+            # Seleccionar módulo Gastos
+            cmb_modulos = Select(
+                self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
+            )
+            cmb_modulos.select_by_visible_text('SUB - SISTEMA DE CONTROL DE GASTOS')
+            time.sleep(1)
+
+            # Select rdeu012 report
+            input_filter = self.siif.driver.find_element(
+                By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c1::content']"
+            )
+            input_filter.clear()
+            input_filter.send_keys('267', Keys.ENTER)
+            btn_siguiente = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:pc1:btnSiguiente']")
+            btn_siguiente.click()
+
+            # Llenado de inputs
+            self.siif.wait.until(EC.presence_of_element_located(
+                (By.XPATH, "//input[@id='pt1:inputText3::content']")
+            ))
+            input_cod_fuente = self.siif.driver.find_element(
+                    By.XPATH, "//input[@id='pt1:inputText3::content']"
+                )
+            input_fecha_desde = self.siif.driver.find_element(
+                    By.XPATH, "//input[@id='pt1:idFechaDesde::content']"
+                )
+            input_fecha_hasta = self.siif.driver.find_element(
+                    By.XPATH, "//input[@id='pt1:idFechaHasta::content']"
+                )
+            input_cod_fuente.send_keys('0')
+            input_fecha_desde.send_keys('01/01/2010')
+            btn_get_reporte = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVerReporte']")
+            btn_xls = self.siif.driver.find_element(By.XPATH, "//input[@id='pt1:rbtnXLS::content']")
+            btn_xls.click()
+            if not isinstance(meses, list):
+                meses = [meses]
+            for mes in meses:
+                int_ejercicio = int(mes[0:4])
+                if int_ejercicio > 2010 and int_ejercicio <= dt.datetime.now().year:
+                    # Fecha Hasta
+                    input_fecha_hasta.clear()
+                    fecha_hasta = dt.datetime(year=(int_ejercicio), month=int(mes[-2:]), day=1)
+                    next_month = fecha_hasta.replace(day=28) + timedelta(days=4)
+                    fecha_hasta = next_month - timedelta(days=next_month.day)
+                    fecha_hasta = min(fecha_hasta.date(), dt.date.today())
+                    fecha_hasta = dt.datetime.strftime(fecha_hasta, '%d/%m/%Y')
+                    input_fecha_hasta.send_keys(fecha_hasta)
+                    btn_get_reporte.click()
+                    self.siif.rename_report(dir_path, 'rdeu012.xls', mes + '-rdeu012.xls')
+                    self.siif.wait.until(EC.number_of_windows_to_be(3))
+                    self.siif.driver.switch_to.window(self.siif.driver.window_handles[2])
+                    self.siif.driver.close()
+                    self.siif.driver.switch_to.window(self.siif.driver.window_handles[1])
+            time.sleep(1)
+            btn_volver = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
+            btn_volver.click()
+            time.sleep(1)
+
+        except Exception as e:
+            print(f"Ocurrió un error: {e}, {type(e)}")
+            self.siif.disconnect()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
@@ -129,9 +233,34 @@ def get_args():
     parser.add_argument(
         '-f', '--file', 
         metavar = "xls_file",
-        default='202210-rdeu012.xls',
+        default='',
         type=str,
         help = "SIIF' rdeu012.xls report. Must be in the same folder")
+
+    parser.add_argument('--download', action='store_true')
+    parser.add_argument('--no-download', dest='download', action='store_false')
+    parser.set_defaults(download=True)
+
+    parser.add_argument(
+        '-u', '--username', 
+        metavar = 'Username',
+        default = '',
+        type=str,
+        help = "Username to log in SIIF")
+
+    parser.add_argument(
+        '-p', '--password', 
+        metavar = 'Password',
+        default = '',
+        type=str,
+        help = "Password to log in SIIF")
+
+    parser.add_argument(
+        '-e', '--mes', 
+        metavar = 'Año y mes',
+        default = '202212',
+        type=str,
+        help = "Año y mes en formato yyyymm")
 
     return parser.parse_args()
 
@@ -143,8 +272,33 @@ def main():
         os.path.abspath(
             inspect.getfile(
                 inspect.currentframe())))
-    siif_rdeu012 = DeudaFlotanteRdeu012()
-    siif_rdeu012.from_external_report(dir_path + '/' + args.file)
+
+    if args.download:
+        json_path = dir_path + '/siif_credentials.json'
+        if args.username != '' and args.password != '':
+            siif_connection = ConnectSIIF(args.username, args.password)
+        else:
+            if os.path.isfile(json_path):
+                with open(json_path) as json_file:
+                    data_json = json.load(json_file)
+                    siif_connection = ConnectSIIF(
+                        data_json['username'], data_json['password']
+                    )
+                json_file.close()
+        siif_rdeu012 = DeudaFlotanteRdeu012(siif = siif_connection)
+        siif_rdeu012.download_report(
+            dir_path, meses=args.mes
+        )
+        siif_connection.disconnect()
+    else:
+        siif_rdeu012 = DeudaFlotanteRdeu012()
+
+    if args.file != '':
+        filename = args.file
+    else:
+        filename = args.mes + '-rdeu012.xls'
+
+    siif_rdeu012.from_external_report(dir_path + '/' + filename)
     # siif_rdeu012.test_sql(dir_path + '/test.sqlite')
     siif_rdeu012.to_sql(dir_path + '/siif.sqlite')
     siif_rdeu012.print_tidyverse()

@@ -132,7 +132,6 @@ class ComprobantesRecRci02(RPWUtils):
             print(f"Ocurrió un error: {e}, {type(e)}")
             self.siif.disconnect()
 
-
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
         """"Read from xls SIIF's report"""
@@ -233,7 +232,6 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
 
-    print(args.download)
     if args.download:
         json_path = dir_path + '/siif_credentials.json'
         if args.username != '' and args.password != '':
