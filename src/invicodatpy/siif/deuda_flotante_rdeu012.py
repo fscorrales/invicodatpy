@@ -113,7 +113,7 @@ class DeudaFlotanteRdeu012(RPWUtils):
                     fecha_hasta = dt.datetime.strftime(fecha_hasta, '%d/%m/%Y')
                     input_fecha_hasta.send_keys(fecha_hasta)
                     btn_get_reporte.click()
-                    self.siif.rename_report(dir_path, 'rdeu012.xls', mes + '-rdeu012.xls')
+                    self.siif.rename_report(dir_path, 'rdeu012.xls', mes[0:4] + mes[-2:] + '-rdeu012.xls')
                     self.siif.wait.until(EC.number_of_windows_to_be(3))
                     self.siif.driver.switch_to.window(self.siif.driver.window_handles[2])
                     self.siif.driver.close()
@@ -296,7 +296,7 @@ def main():
     if args.file != '':
         filename = args.file
     else:
-        filename = args.mes + '-rdeu012.xls'
+        filename = args.mes[0:4] + args.mes[-2:] + '-rdeu012.xls'
 
     siif_rdeu012.from_external_report(dir_path + '/' + filename)
     # siif_rdeu012.test_sql(dir_path + '/test.sqlite')
