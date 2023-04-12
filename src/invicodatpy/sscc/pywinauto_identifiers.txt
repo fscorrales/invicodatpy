@@ -1,0 +1,1418 @@
+Control Identifiers LOG IN:
+
+Dialog - 'Sistema de Seguimiento de Cuentas Corrientes (v. 1.8)'    (L-8, T-8, R1374, B736)
+['Sistema de Seguimiento de Cuentas Corrientes (v. 1.8)', 'Dialog', 'Sistema de Seguimiento de Cuentas Corrientes (v. 1.8)Dialog', 'Dialog0', 'Dialog1']
+child_window(title="Sistema de Seguimiento de Cuentas Corrientes (v. 1.8)", control_type="Window")
+   | 
+   | Dialog - 'Inicio de Sesión'    (L433, T284, R933, B484)
+   | ['Dialog2', 'Inicio de Sesión', 'Inicio de SesiónDialog']
+   | child_window(title="Inicio de Sesión", control_type="Window")
+   |    | 
+   |    | ComboBox - ''    (L709, T364, R902, B385)
+   |    | ['ComboBox', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code', 'ComboBoxBancos', 'ComboBoxR Gestion INVICO', 'ComboBox(20) How to automate apps using python (PyWinAuto Tutorial) - YouTube - Google Chrome - Fernando', 'ComboBoxBarra de tareas', 'ComboBoxPropiedades: Seguimiento de Cuentas Corrienes', 'ComboBoxPython', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes (v. 1.8)', 'ComboBoxProgram Manager']
+   |    | child_window(auto_id="1", control_type="ComboBox")
+   |    |    | 
+   |    |    | Static - ''    (L3, T3, R173, B18)
+   |    |    | ['Static']
+   |    |    | 
+   |    |    | Button - 'Abrir'    (L883, T366, R900, B383)
+   |    |    | ['AbrirButton', 'Button', 'Abrir', 'Button0', 'Button1']
+   |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    | 
+   |    | Edit - ''    (L709, T400, R902, B421)
+   |    | ['Edit']
+   |    | child_window(auto_id="2", control_type="Edit")
+   |    | 
+   |    | Button - 'Cancelar'    (L821, T438, R901, B463)
+   |    | ['Button2', 'CancelarButton', 'Cancelar']
+   |    | child_window(title="Cancelar", auto_id="3", control_type="Button")
+   |    | 
+   |    | Button - 'Aceptar'    (L709, T438, R789, B463)
+   |    | ['Aceptar', 'Button3', 'AceptarButton']
+   |    | child_window(title="Aceptar", auto_id="4", control_type="Button")
+   | 
+   | Pane - 'Área de trabajo'    (L0, T43, R1366, B728)
+   | ['Área de trabajoPane', 'Pane', 'Área de trabajo']
+   | child_window(title="Área de trabajo", auto_id="3244", control_type="Pane")
+   | 
+   | TitleBar - ''    (L16, T-5, R1366, B23)
+   | ['TitleBar']
+   |    | 
+   |    | Menu - 'Sistema'    (L0, T0, R22, B22)
+   |    | ['SistemaMenu', 'Menu', 'Sistema', 'Sistema0', 'Sistema1', 'Menu0', 'Menu1']
+   |    | child_window(title="Sistema", auto_id="MenuBar", control_type="MenuBar")
+   |    |    | 
+   |    |    | MenuItem - 'Sistema'    (L0, T0, R22, B22)
+   |    |    | ['SistemaMenuItem', 'Sistema2', 'MenuItem', 'MenuItem0', 'MenuItem1']
+   |    |    | child_window(title="Sistema", control_type="MenuItem")
+   |    | 
+   |    | Button - 'Minimizar'    (L1225, T8, R1272, B22)
+   |    | ['Button4', 'MinimizarButton', 'Minimizar']
+   |    | child_window(title="Minimizar", control_type="Button")
+   |    | 
+   |    | Button - 'Restaurar'    (L1272, T8, R1318, B22)
+   |    | ['RestaurarButton', 'Button5', 'Restaurar']
+   |    | child_window(title="Restaurar", control_type="Button")
+   |    | 
+   |    | Button - 'Cerrar'    (L1318, T8, R1374, B22)
+   |    | ['CerrarButton', 'Cerrar', 'Button6']
+   |    | child_window(title="Cerrar", control_type="Button")
+   | 
+   | Menu - 'Aplicación'    (L0, T23, R1366, B42)
+   | ['Aplicación', 'Menu2', 'AplicaciónMenu']
+   | child_window(title="Aplicación", auto_id="MenuBar", control_type="MenuBar")
+   |    | 
+   |    | MenuItem - 'Archivo'    (L0, T23, R59, B42)
+   |    | ['Archivo', 'MenuItem2', 'ArchivoMenuItem']
+   |    | child_window(title="Archivo", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Cuentas'    (L59, T23, R120, B42)
+   |    | ['CuentasMenuItem', 'MenuItem3', 'Cuentas']
+   |    | child_window(title="Cuentas", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Informes'    (L120, T23, R185, B42)
+   |    | ['InformesMenuItem', 'MenuItem4', 'Informes']
+   |    | child_window(title="Informes", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Herramientas'    (L185, T23, R274, B42)
+   |    | ['MenuItem5', 'Herramientas', 'HerramientasMenuItem']
+   |    | child_window(title="Herramientas", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Ventana'    (L274, T23, R334, B42)
+   |    | ['Ventana', 'MenuItem6', 'VentanaMenuItem']
+   |    | child_window(title="Ventana", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Ayuda'    (L334, T23, R386, B42)
+   |    | ['Ayuda', 'AyudaMenuItem', 'MenuItem7']
+   |    | child_window(title="Ayuda", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Salir'    (L386, T23, R426, B42)
+   |    | ['MenuItem8', 'Salir', 'SalirMenuItem']
+   |    | child_window(title="Salir", control_type="MenuItem")
+
+Control AFTER PRESS INFORMES:
+
+Dialog - 'Sistema de Seguimiento de Cuentas Corrientes'    (L-8, T-8, R1374, B736)
+['Sistema de Seguimiento de Cuentas Corrientes', 'Sistema de Seguimiento de Cuentas CorrientesDialog', 'Dialog', 'Dialog0', 'Dialog1']
+child_window(title="Sistema de Seguimiento de Cuentas Corrientes", control_type="Window")
+   | 
+   | Menu - 'Informes'    (L120, T42, R390, B378)
+   | ['Informes', 'Menu', 'InformesMenu', 'Menu0', 'Menu1', 'Informes0', 'Informes1', 'InformesMenu0', 'InformesMenu1']
+   | child_window(title="Informes", control_type="Menu")
+   |    | 
+   |    | MenuItem - 'Informe por Imputaciones'    (L123, T45, R387, B69)
+   |    | ['Informe por ImputacionesMenuItem', 'MenuItem', 'Informe por Imputaciones', 'MenuItem0', 'MenuItem1', 'Informe por ImputacionesMenuItem0', 'Informe por ImputacionesMenuItem1', 'Informe por Imputaciones0', 'Informe por Imputaciones1']
+   |    | child_window(title="Informe por Imputaciones", auto_id="43", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Detalle por Imputaciones'    (L123, T69, R387, B93)
+   |    | ['Detalle por ImputacionesMenuItem', 'MenuItem2', 'Detalle por Imputaciones', 'Detalle por ImputacionesMenuItem0', 'Detalle por ImputacionesMenuItem1', 'Detalle por Imputaciones0', 'Detalle por Imputaciones1']
+   |    | child_window(title="Detalle por Imputaciones", auto_id="44", control_type="MenuItem")
+   |    |
+   |    | MenuItem - 'Informe por Cuentas'    (L123, T96, R387, B120)
+   |    | ['MenuItem3', 'Informe por Cuentas', 'Informe por CuentasMenuItem', 'Informe por Cuentas0', 'Informe por Cuentas1', 'Informe por CuentasMenuItem0', 'Informe por CuentasMenuItem1']
+   |    | child_window(title="Informe por Cuentas", auto_id="46", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Informe por Beneficiarios'    (L123, T120, R387, B144)
+   |    | ['Informe por Beneficiarios', 'MenuItem4', 'Informe por BeneficiariosMenuItem', 'Informe por Beneficiarios0', 'Informe por Beneficiarios1', 'Informe por BeneficiariosMenuItem0', 'Informe por BeneficiariosMenuItem1']
+   |    | child_window(title="Informe por Beneficiarios", auto_id="47", control_type="MenuItem")
+   |    |
+   |    | MenuItem - 'Saldos por Día - Gráfico'    (L123, T147, R387, B171)
+   |    | ['Saldos por Día - Gráfico', 'MenuItem5', 'Saldos por Día - GráficoMenuItem', 'Saldos por Día - Gráfico0', 'Saldos por Día - Gráfico1', 'Saldos por Día - GráficoMenuItem0', 'Saldos por Día - GráficoMenuItem1']
+   |    | child_window(title="Saldos por Día - Gráfico", auto_id="49", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Saldos por Día - Tabla'    (L123, T171, R387, B195)
+   |    | ['Saldos por Día - TablaMenuItem', 'MenuItem6', 'Saldos por Día - Tabla', 'Saldos por Día - TablaMenuItem0', 'Saldos por Día - TablaMenuItem1', 'Saldos por Día - Tabla0', 'Saldos por Día - Tabla1']
+   |    | child_window(title="Saldos por Día - Tabla", auto_id="50", control_type="MenuItem")
+   |    |
+   |    | MenuItem - 'EPAM - Informe por Obra'    (L123, T198, R387, B222)
+   |    | ['EPAM - Informe por ObraMenuItem', 'MenuItem7', 'EPAM - Informe por Obra', 'EPAM - Informe por ObraMenuItem0', 'EPAM - 
+Informe por ObraMenuItem1', 'EPAM - Informe por Obra0', 'EPAM - Informe por Obra1']
+   |    | child_window(title="EPAM - Informe por Obra", auto_id="52", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'EPAM - Detalle de Imputaciones'    (L123, T222, R387, B246)
+   |    | ['EPAM - Detalle de ImputacionesMenuItem', 'MenuItem8', 'EPAM - Detalle de Imputaciones', 'EPAM - Detalle de ImputacionesMenuItem0', 'EPAM - Detalle de ImputacionesMenuItem1', 'EPAM - Detalle de Imputaciones0', 'EPAM - Detalle de Imputaciones1']     
+   |    | child_window(title="EPAM - Detalle de Imputaciones", auto_id="53", control_type="MenuItem")
+   |    |
+   |    | MenuItem - 'FONAVI - Informe Utilización de Fondos'    (L123, T249, R387, B273)
+   |    | ['MenuItem9', 'FONAVI - Informe Utilización de FondosMenuItem', 'FONAVI - Informe Utilización de Fondos', 'FONAVI - Informe Utilización de FondosMenuItem0', 'FONAVI - Informe Utilización de FondosMenuItem1', 'FONAVI - Informe Utilización de Fondos0', 'FONAVI - Informe Utilización de Fondos1']
+   |    | child_window(title="FONAVI - Informe Utilización de Fondos", auto_id="55", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'FONAVI - Detalle de Imputaciones'    (L123, T273, R387, B297)
+   |    | ['FONAVI - Detalle de Imputaciones', 'MenuItem10', 'FONAVI - Detalle de ImputacionesMenuItem', 'FONAVI - Detalle de Imputaciones0', 'FONAVI - Detalle de Imputaciones1', 'FONAVI - Detalle de ImputacionesMenuItem0', 'FONAVI - Detalle de ImputacionesMenuItem1']
+   |    | child_window(title="FONAVI - Detalle de Imputaciones", auto_id="56", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Informe de Recaudación'    (L123, T300, R387, B324)
+   |    | ['Informe de Recaudación', 'MenuItem11', 'Informe de RecaudaciónMenuItem', 'Informe de Recaudación0', 'Informe de Recaudación1', 'Informe de RecaudaciónMenuItem0', 'Informe de RecaudaciónMenuItem1']
+   |    | child_window(title="Informe de Recaudación", auto_id="58", control_type="MenuItem")
+   |    |
+   |    | MenuItem - 'Desagregado de Recaudación'    (L123, T324, R387, B348)
+   |    | ['Desagregado de Recaudación', 'MenuItem12', 'Desagregado de RecaudaciónMenuItem', 'Desagregado de Recaudación0', 'Desagregado de Recaudación1', 'Desagregado de RecaudaciónMenuItem0', 'Desagregado de RecaudaciónMenuItem1']
+   |    | child_window(title="Desagregado de Recaudación", auto_id="59", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Consulta General de Movimientos'    (L123, T351, R387, B375)
+   |    | ['MenuItem13', 'Consulta General de MovimientosMenuItem', 'Consulta General de Movimientos', 'Consulta General de MovimientosMenuItem0', 'Consulta General de MovimientosMenuItem1', 'Consulta General de Movimientos0', 'Consulta General de Movimientos1']
+   |    | child_window(title="Consulta General de Movimientos", auto_id="61", control_type="MenuItem")
+   | 
+   | Pane - 'Área de trabajo'    (L0, T43, R1366, B728)
+   | ['Área de trabajoPane', 'Área de trabajo', 'Pane']
+   | child_window(title="Área de trabajo", auto_id="3244", control_type="Pane")
+   |
+   | TitleBar - ''    (L16, T-5, R1366, B23)
+   | ['TitleBar']
+   |    | 
+   |    | Menu - 'Sistema'    (L0, T0, R22, B22)
+   |    | ['Sistema', 'Menu2', 'SistemaMenu', 'Sistema0', 'Sistema1']
+   |    | child_window(title="Sistema", auto_id="MenuBar", control_type="MenuBar")
+   |    |    | 
+   |    |    | MenuItem - 'Sistema'    (L0, T0, R22, B22)
+   |    |    | ['Sistema2', 'MenuItem14', 'SistemaMenuItem']
+   |    |    | child_window(title="Sistema", control_type="MenuItem")
+   |    | 
+   |    | Button - 'Minimizar'    (L1225, T8, R1272, B22)
+   |    | ['Minimizar', 'MinimizarButton', 'Button', 'Button0', 'Button1']
+   |    | child_window(title="Minimizar", control_type="Button")
+   |    |
+   |    | Button - 'Restaurar'    (L1272, T8, R1318, B22)
+   |    | ['RestaurarButton', 'Restaurar', 'Button2']
+   |    | child_window(title="Restaurar", control_type="Button")
+   |    | 
+   |    | Button - 'Cerrar'    (L1318, T8, R1374, B22)
+   |    | ['Cerrar', 'CerrarButton', 'Button3']
+   |    | child_window(title="Cerrar", control_type="Button")
+   | 
+   | Menu - 'Aplicación'    (L0, T23, R1366, B42)
+   | ['Aplicación', 'Menu3', 'AplicaciónMenu']
+   | child_window(title="Aplicación", auto_id="MenuBar", control_type="MenuBar")
+   |    | 
+   |    | MenuItem - 'Archivo'    (L0, T23, R59, B42)
+   |    | ['ArchivoMenuItem', 'Archivo', 'MenuItem15']
+   |    | child_window(title="Archivo", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Cuentas'    (L59, T23, R120, B42)
+   |    | ['Cuentas', 'MenuItem16', 'CuentasMenuItem']
+   |    | child_window(title="Cuentas", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Informes'    (L120, T23, R185, B42)
+   |    | ['Informes2', 'MenuItem17', 'InformesMenuItem']
+   |    | child_window(title="Informes", control_type="MenuItem")
+   |    |    | 
+   |    |    | Dialog - 'Informes'    (L120, T42, R390, B378)
+   |    |    | ['Informes3', 'InformesDialog', 'Dialog2']
+   |    |    | child_window(title="Informes", control_type="Window")
+   |    |    |    | 
+   |    |    |    | Menu - 'Informes'    (L123, T45, R387, B375)
+   |    |    |    | ['Informes4', 'Menu4', 'InformesMenu2']
+   |    |    |    | child_window(title="Informes", control_type="Menu")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Informe por Imputaciones'    (L123, T45, R387, B69)
+   |    |    |    |    | ['Informe por ImputacionesMenuItem2', 'MenuItem18', 'Informe por Imputaciones2']
+   |    |    |    |    | child_window(title="Informe por Imputaciones", auto_id="43", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Detalle por Imputaciones'    (L123, T69, R387, B93)
+   |    |    |    |    | ['Detalle por ImputacionesMenuItem2', 'MenuItem19', 'Detalle por Imputaciones2']
+   |    |    |    |    | child_window(title="Detalle por Imputaciones", auto_id="44", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Informe por Cuentas'    (L123, T96, R387, B120)
+   |    |    |    |    | ['MenuItem20', 'Informe por Cuentas2', 'Informe por CuentasMenuItem2']
+   |    |    |    |    | child_window(title="Informe por Cuentas", auto_id="46", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Informe por Beneficiarios'    (L123, T120, R387, B144)
+   |    |    |    |    | ['Informe por Beneficiarios2', 'MenuItem21', 'Informe por BeneficiariosMenuItem2']
+   |    |    |    |    | child_window(title="Informe por Beneficiarios", auto_id="47", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Saldos por Día - Gráfico'    (L123, T147, R387, B171)
+   |    |    |    |    | ['Saldos por Día - Gráfico2', 'MenuItem22', 'Saldos por Día - GráficoMenuItem2']
+   |    |    |    |    | child_window(title="Saldos por Día - Gráfico", auto_id="49", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Saldos por Día - Tabla'    (L123, T171, R387, B195)
+   |    |    |    |    | ['Saldos por Día - TablaMenuItem2', 'MenuItem23', 'Saldos por Día - Tabla2']
+   |    |    |    |    | child_window(title="Saldos por Día - Tabla", auto_id="50", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'EPAM - Informe por Obra'    (L123, T198, R387, B222)
+   |    |    |    |    | ['EPAM - Informe por ObraMenuItem2', 'MenuItem24', 'EPAM - Informe por Obra2']
+   |    |    |    |    | child_window(title="EPAM - Informe por Obra", auto_id="52", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'EPAM - Detalle de Imputaciones'    (L123, T222, R387, B246)
+   |    |    |    |    | ['EPAM - Detalle de ImputacionesMenuItem2', 'MenuItem25', 'EPAM - Detalle de Imputaciones2']
+   |    |    |    |    | child_window(title="EPAM - Detalle de Imputaciones", auto_id="53", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'FONAVI - Informe Utilización de Fondos'    (L123, T249, R387, B273)
+   |    |    |    |    | ['MenuItem26', 'FONAVI - Informe Utilización de FondosMenuItem2', 'FONAVI - Informe Utilización de Fondos2']
+   |    |    |    |    | child_window(title="FONAVI - Informe Utilización de Fondos", auto_id="55", control_type="MenuItem")      
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'FONAVI - Detalle de Imputaciones'    (L123, T273, R387, B297)
+   |    |    |    |    | ['FONAVI - Detalle de Imputaciones2', 'MenuItem27', 'FONAVI - Detalle de ImputacionesMenuItem2']
+   |    |    |    |    | child_window(title="FONAVI - Detalle de Imputaciones", auto_id="56", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Informe de Recaudación'    (L123, T300, R387, B324)
+   |    |    |    |    | ['Informe de Recaudación2', 'MenuItem28', 'Informe de RecaudaciónMenuItem2']
+   |    |    |    |    | child_window(title="Informe de Recaudación", auto_id="58", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Desagregado de Recaudación'    (L123, T324, R387, B348)
+   |    |    |    |    | ['Desagregado de Recaudación2', 'MenuItem29', 'Desagregado de RecaudaciónMenuItem2']
+   |    |    |    |    | child_window(title="Desagregado de Recaudación", auto_id="59", control_type="MenuItem")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Consulta General de Movimientos'    (L123, T351, R387, B375)
+   |    |    |    |    | ['MenuItem30', 'Consulta General de MovimientosMenuItem2', 'Consulta General de Movimientos2']
+   |    |    |    |    | child_window(title="Consulta General de Movimientos", auto_id="61", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Herramientas'    (L185, T23, R274, B42)
+   |    | ['Herramientas', 'HerramientasMenuItem', 'MenuItem31']
+   |    | child_window(title="Herramientas", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Ventana'    (L274, T23, R334, B42)
+   |    | ['MenuItem32', 'Ventana', 'VentanaMenuItem']
+   |    | child_window(title="Ventana", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Ayuda'    (L334, T23, R386, B42)
+   |    | ['MenuItem33', 'AyudaMenuItem', 'Ayuda']
+   |    | child_window(title="Ayuda", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Salir'    (L386, T23, R426, B42)
+   |    | ['Salir', 'MenuItem34', 'SalirMenuItem']
+   |    | child_window(title="Salir", control_type="MenuItem")
+
+Control AFTER PRESS Consulta General de Movimientos:
+
+Dialog - 'Sistema de Seguimiento de Cuentas Corrientes'    (L-8, T-8, R1374, B736)
+['Sistema de Seguimiento de Cuentas CorrientesDialog', 'Sistema de Seguimiento de Cuentas Corrientes', 'Dialog', 'Dialog0', 'Dialog1']
+child_window(title="Sistema de Seguimiento de Cuentas Corrientes", control_type="Window")
+   | 
+   | Dialog - 'Consulta General de Movimientos (Vista No Actualizada)'    (L301, T104, R1065, B663)
+   | ['Consulta General de Movimientos (Vista No Actualizada)', 'Consulta General de Movimientos (Vista No Actualizada)Dialog', 'Dialog2']
+   | child_window(title="Consulta General de Movimientos (Vista No Actualizada)", control_type="Window")
+   |    | 
+   |    | Pane - ''    (L318, T336, R665, B353)
+   |    | ['Pane', 'Pane0', 'Pane1']
+   |    | child_window(auto_id="1", control_type="Pane")
+   |    | 
+   |    | GroupBox - 'Filtrar por'    (L310, T176, R1055, B330)
+   |    | ['GroupBox', 'Filtrar porGroupBox', 'Filtrar por', 'GroupBox0', 'GroupBox1']
+   |    | child_window(title="Filtrar por", auto_id="2", control_type="Group")
+   |    |    | 
+   |    |    | CheckBox - 'Moneda'    (L690, T302, R757, B319)
+   |    |    | ['Moneda', 'MonedaCheckBox', 'CheckBox', 'CheckBox0', 'CheckBox1']
+   |    |    | child_window(title="Moneda", auto_id="3", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T300, R939, B321) #MONEDA
+   |    |    | ['ComboBox', 'ComboBox0', 'ComboBox1']
+   |    |    | child_window(auto_id="4", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R133, B18)
+   |    |    |    | ['Static', 'Static0', 'Static1']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L920, T302, R937, B319)
+   |    |    |    | ['Abrir', 'AbrirButton', 'Button', 'Abrir0', 'Abrir1', 'AbrirButton0', 'AbrirButton1', 'Button0', 'Button1']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T300, R645, B321) #BANCO
+   |    |    | ['ComboBox2']
+   |    |    | child_window(auto_id="5", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static2']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T302, R643, B319)
+   |    |    |    | ['Abrir2', 'AbrirButton2', 'Button2']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Banco'    (L330, T302, R395, B319)
+   |    |    | ['CheckBox2', 'Banco', 'BancoCheckBox']
+   |    |    | child_window(title="Banco", auto_id="6", control_type="CheckBox")
+   |    |    | 
+   |    |    | Edit - ''    (L786, T196, R1037, B217)
+   |    |    | ['Edit', 'Edit0', 'Edit1']
+   |    |    | child_window(auto_id="7", control_type="Edit")
+   |    |    | 
+   |    |    | CheckBox - 'Concepto/ SubConcepto'    (L690, T195, R779, B218)
+   |    |    | ['Concepto/ SubConcepto', 'Concepto/ SubConceptoCheckBox', 'CheckBox3']
+   |    |    | child_window(title="Concepto/ SubConcepto", auto_id="8", control_type="CheckBox")
+   |    |    | 
+   |    |    | Edit - ''    (L846, T274, R939, B295)
+   |    |    | ['Edit2']
+   |    |    | child_window(auto_id="10", control_type="Edit")
+   |    |    | 
+   |    |    | CheckBox - 'Importe'    (L690, T276, R751, B293)
+   |    |    | ['CheckBox4', 'ImporteCheckBox', 'Importe']
+   |    |    | child_window(title="Importe", auto_id="11", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T274, R841, B295) #SIGNO IMPORTE
+   |    |    | ['ComboBox3']
+   |    |    | child_window(auto_id="12", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R35, B18)
+   |    |    |    | ['Static3']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L822, T276, R839, B293)
+   |    |    |    | ['Abrir3', 'AbrirButton3', 'Button3']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | Edit - ''    (L846, T248, R939, B269)
+   |    |    | ['Edit3']
+   |    |    | child_window(auto_id="14", control_type="Edit")
+   |    |    | 
+   |    |    | CheckBox - 'Cheque'    (L690, T250, R751, B267)
+   |    |    | ['Cheque', 'ChequeCheckBox', 'CheckBox5']
+   |    |    | child_window(title="Cheque", auto_id="15", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T248, R841, B269) #SIGNO CHEQUE
+   |    |    | ['ComboBox4']
+   |    |    | child_window(auto_id="16", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R35, B18)
+   |    |    |    | ['Static4']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L822, T250, R839, B267)
+   |    |    |    | ['Abrir4', 'AbrirButton4', 'Button4']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Beneficiario/ Concepto'    (L690, T220, R779, B245)
+   |    |    | ['Beneficiario/ Concepto', 'Beneficiario/ ConceptoCheckBox', 'CheckBox6']
+   |    |    | child_window(title="Beneficiario/ Concepto", auto_id="17", control_type="CheckBox")
+   |    |    | 
+   |    |    | CheckBox - 'Imputación'    (L330, T276, R407, B293)
+   |    |    | ['CheckBox7', 'ImputaciónCheckBox', 'Imputación']
+   |    |    | child_window(title="Imputación", auto_id="18", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T274, R645, B295) #IMPUTACION
+   |    |    | ['ComboBox5']
+   |    |    | child_window(auto_id="19", control_type="ComboBox") 
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static5']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T276, R643, B293)
+   |    |    |    | ['Abrir5', 'AbrirButton5', 'Button5']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Fechas '    (L330, T198, R403, B215)
+   |    |    | ['CheckBox8', 'Fechas CheckBox', 'Fechas ']
+   |    |    | child_window(title="Fechas ", auto_id="20", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T248, R645, B269) #OPERACION
+   |    |    | ['ComboBox6']
+   |    |    | child_window(auto_id="21", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static6']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T250, R643, B267)
+   |    |    |    | ['Abrir6', 'AbrirButton6', 'Button6']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Operación'    (L330, T250, R407, B267)
+   |    |    | ['CheckBox9', 'Operación', 'OperaciónCheckBox']
+   |    |    | child_window(title="Operación", auto_id="22", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T222, R645, B243) #TIPO BENEFICIARIO
+   |    |    | ['ComboBox7']
+   |    |    | child_window(auto_id="23", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static7']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T224, R643, B241)
+   |    |    |    | ['Abrir7', 'AbrirButton7', 'Button7']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Tipo Benef.'    (L330, T224, R407, B241)
+   |    |    | ['CheckBox10', 'Tipo Benef.CheckBox', 'Tipo Benef.']
+   |    |    | child_window(title="Tipo Benef.", auto_id="24", control_type="CheckBox")
+   |    |    | 
+   |    |    | Pane - '01/03/2023'    (L446, T196, R529, B217)
+   |    |    | ['01/03/2023', '01/03/2023Pane', 'Pane2']
+   |    |    | child_window(title="01/03/2023", control_type="Pane")
+   |    |    | 
+   |    |    | Pane - '30/04/2023'    (L562, T196, R645, B217)
+   |    |    | ['30/04/2023Pane', '30/04/2023', 'Pane3']
+   |    |    | child_window(title="30/04/2023", control_type="Pane")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243) #BENEFICIARIO / Concepto
+   |    |    | ['ComboBoxBarra de tareas', 'ComboBoxProgram Manager', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando', 'ComboBox*Sin título: Bloc de notas', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes', 'ComboBox8', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code', 'ComboBoxR Gestion INVICO', 'ComboBoxForm1', 'ComboBoxBarra de tareas0', 'ComboBoxBarra de tareas1', 'ComboBoxProgram Manager0', 'ComboBoxProgram Manager1', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox0', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox1', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando0', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando1', 'ComboBox*Sin título: Bloc de notas0', 'ComboBox*Sin título: Bloc de notas1', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes0', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes1', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code0', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code1', 'ComboBoxR Gestion INVICO0', 'ComboBoxR Gestion INVICO1', 'ComboBoxForm10', 'ComboBoxForm11']
+   |    |    | child_window(auto_id="25", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static8']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Abrir8', 'AbrirButton8', 'Button8']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243) #BENEFICIARIO / Concepto
+   |    |    | ['ComboBoxBarra de tareas2', 'ComboBoxProgram Manager2', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox2', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando2', 'ComboBox*Sin título: Bloc de notas2', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes2', 'ComboBox9', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code2', 'ComboBoxR Gestion INVICO2', 'ComboBoxForm12']
+   |    |    | child_window(auto_id="26", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static9']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Abrir9', 'AbrirButton9', 'Button9']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243) #BENEFICIARIO / Concepto
+   |    |    | ['ComboBoxBarra de tareas3', 'ComboBoxProgram Manager3', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox3', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando3', 'ComboBox*Sin título: Bloc de notas3', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes3', 'ComboBox10', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code3', 'ComboBoxR Gestion INVICO3', 'ComboBoxForm13']
+   |    |    | child_window(auto_id="27", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static10']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Abrir10', 'AbrirButton10', 'Button10']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243) #BENEFICIARIO / Concepto
+   |    |    | ['ComboBoxBarra de tareas4', 'ComboBoxProgram Manager4', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox4', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando4', 'ComboBox*Sin título: Bloc de notas4', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes4', 'ComboBox11', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code4', 'ComboBoxR Gestion INVICO4', 'ComboBoxForm14']
+   |    |    | child_window(auto_id="28", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static11']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Abrir11', 'AbrirButton11', 'Button11']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243) #BENEFICIARIO / Concepto
+   |    |    | ['ComboBoxBarra de tareas5', 'ComboBoxProgram Manager5', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox5', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando5', 'ComboBox*Sin título: Bloc de notas5', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes5', 'ComboBox12', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code5', 'ComboBoxR Gestion INVICO5', 'ComboBoxForm15']
+   |    |    | child_window(auto_id="29", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static12']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Abrir12', 'AbrirButton12', 'Button12']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    |  
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243) #BENEFICIARIO / Concepto
+   |    |    | ['ComboBoxBarra de tareas6', 'ComboBoxProgram Manager6', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox6', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando6', 'ComboBox*Sin título: Bloc de notas6', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes6', 'ComboBox13', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code6', 'ComboBoxR Gestion INVICO6', 'ComboBoxForm16']
+   |    |    | child_window(auto_id="30", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static13']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Abrir13', 'AbrirButton13', 'Button13']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | Edit - ''    (L786, T222, R1037, B243) #BENEFICIARIO / Concepto
+   |    |    | ['Edit4']
+   |    |    | child_window(auto_id="31", control_type="Edit")
+   |    | 
+   |    | Pane - ''    (L304, T639, R1062, B660)
+   |    | ['Pane4']
+   |    | 
+   |    | Pane - ''    (L304, T130, R1062, B170)
+   |    | ['Pane5']
+   |    |    | 
+   |    |    | Pane - ''    (L304, T132, R1062, B170)
+   |    |    | ['Pane6']
+   |    | 
+   |    | Pane - ''    (L310, T608, R1055, B629)
+   |    | ['Pane7']
+   |    | 
+   |    | Pane - ''    (L310, T354, R1055, B611)
+   |    | ['Pane8']
+   |    |    | 
+   |    |    | Pane - ''    (L310, T354, R1055, B611)
+   |    |    | ['Pane9']
+   |    |    |    | 
+   |    |    |    | Pane - ''    (L313, T357, R1054, B377)
+   |    |    |    | ['Pane10']
+   |    |    |    | 
+   |    |    |    | ScrollBar - 'Horizontal'    (L313, T591, R1052, B608)
+   |    |    |    | ['ScrollBar', 'Horizontal', 'HorizontalScrollBar']
+   |    |    |    | child_window(title="Horizontal", auto_id="NonClientHorizontalScrollBar", control_type="ScrollBar")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Columna a la izquierda'    (L313, T591, R330, B608)
+   |    |    |    |    | ['Columna a la izquierda', 'Button14', 'Columna a la izquierdaButton']
+   |    |    |    |    | child_window(title="Columna a la izquierda", auto_id="UpButton", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Thumb - 'Posición'    (L330, T591, R873, B608)
+   |    |    |    |    | ['Posición', 'Thumb', 'PosiciónThumb']
+   |    |    |    |    | child_window(title="Posición", auto_id="ScrollbarThumb", control_type="Thumb")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Página a la derecha'    (L873, T591, R1035, B608)
+   |    |    |    |    | ['Página a la derecha', 'Button15', 'Página a la derechaButton']
+   |    |    |    |    | child_window(title="Página a la derecha", auto_id="DownPageButton", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Columna a la derecha'    (L1035, T591, R1052, B608)
+   |    |    |    |    | ['Columna a la derechaButton', 'Button16', 'Columna a la derecha']
+   |    |    |    |    | child_window(title="Columna a la derecha", auto_id="DownButton", control_type="Button")
+   |    |    | 
+   |    |    | Pane - ''    (L334, T396, R439, B417)
+   |    |    | ['Pane11']
+   |    | 
+   |    | Pane - ''    (L892, T336, R1051, B349)
+   |    | ['Pane12']
+   |    | 
+   |    | GroupBox - ''    (L310, T336, R1055, B344)
+   |    | ['GroupBox2']
+   |    | child_window(auto_id="34", control_type="Group")
+   |    |    | 
+   |    |    | CheckBox - 'Sólo Cuentas Recuperos'    (L786, T356, R871, B381)
+   |    |    | ['Sólo Cuentas RecuperosCheckBox', 'Sólo Cuentas Recuperos', 'CheckBox11']
+   |    |    | child_window(title="Sólo Cuentas Recuperos", auto_id="35", control_type="CheckBox")
+   |    |    | 
+   |    |    | CheckBox - 'Sólo Cuentas EPAM'    (L882, T356, R967, B381)
+   |    |    | ['Sólo Cuentas EPAM', 'Sólo Cuentas EPAMCheckBox', 'CheckBox12']
+   |    |    | child_window(title="Sólo Cuentas EPAM", auto_id="36", control_type="CheckBox")
+   |    |    | 
+   |    |    | CheckBox - 'Ver Cuentas Inactivas'    (L690, T356, R775, B381)
+   |    |    | ['Ver Cuentas InactivasCheckBox', 'Ver Cuentas Inactivas', 'CheckBox13']
+   |    |    | child_window(title="Ver Cuentas Inactivas", auto_id="37", control_type="CheckBox")
+   |    |    | 
+   |    |    | CheckBox - 'Cuenta'    (L330, T360, R391, B377)
+   |    |    | ['CheckBox14', 'CuentaCheckBox', 'Cuenta']
+   |    |    | child_window(title="Cuenta", auto_id="38", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T358, R645, B379)
+   |    |    | ['ComboBoxBarra de tareas7', 'ComboBoxProgram Manager7', 'ComboBoxModificacion Presupuestaria — Mozilla Firefox7', 'ComboBoxpywinauto real python - Buscar con Google - Google Chrome - Fernando7', 'ComboBox*Sin título: Bloc de notas7', 'ComboBoxSistema de Seguimiento de Cuentas Corrientes7', 'ComboBox14', 'ComboBoxpywinauto.ipynb - invicodatpy - Visual Studio Code7', 'ComboBoxR Gestion INVICO7', 'ComboBoxForm17']
+   |    |    | child_window(auto_id="39", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static14']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T360, R643, B377)
+   |    |    |    | ['Abrir14', 'AbrirButton14', 'Button17']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    | 
+   |    | TitleBar - ''    (L304, T107, R1062, B130)
+   |    | ['TitleBar', 'TitleBar0', 'TitleBar1']
+   | 
+   | Pane - 'Área de trabajo'    (L0, T43, R1366, B728)
+   | ['Área de trabajoPane', 'Pane13', 'Área de trabajo']
+   | child_window(title="Área de trabajo", auto_id="3244", control_type="Pane")
+   | 
+   | TitleBar - ''    (L16, T-5, R1366, B23)
+   | ['TitleBar2']
+   |    | 
+   |    | Menu - 'Sistema'    (L0, T0, R22, B22)
+   |    | ['Menu', 'SistemaMenu', 'Sistema', 'Sistema0', 'Sistema1', 'Menu0', 'Menu1']
+   |    | child_window(title="Sistema", auto_id="MenuBar", control_type="MenuBar")
+   |    |    | 
+   |    |    | MenuItem - 'Sistema'    (L0, T0, R22, B22)
+   |    |    | ['MenuItem', 'Sistema2', 'SistemaMenuItem', 'MenuItem0', 'MenuItem1']
+   |    |    | child_window(title="Sistema", control_type="MenuItem")
+   |    | 
+   |    | Button - 'Minimizar'    (L1225, T8, R1272, B22)
+   |    | ['MinimizarButton', 'Minimizar', 'Button18']
+   |    | child_window(title="Minimizar", control_type="Button")
+   |    | 
+   |    | Button - 'Restaurar'    (L1272, T8, R1318, B22)
+   |    | ['RestaurarButton', 'Restaurar', 'Button19']
+   |    | child_window(title="Restaurar", control_type="Button")
+   |    | 
+   |    | Button - 'Cerrar'    (L1318, T8, R1374, B22)
+   |    | ['Cerrar', 'Button20', 'CerrarButton']
+   |    | child_window(title="Cerrar", control_type="Button")
+   | 
+   | Menu - 'Aplicación'    (L0, T23, R1366, B42)
+   | ['Menu2', 'AplicaciónMenu', 'Aplicación']
+   | child_window(title="Aplicación", auto_id="MenuBar", control_type="MenuBar")
+   |    | 
+   |    | MenuItem - 'Archivo'    (L0, T23, R59, B42)
+   |    | ['Archivo', 'ArchivoMenuItem', 'MenuItem2']
+   |    | child_window(title="Archivo", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Cuentas'    (L59, T23, R120, B42)
+   |    | ['CuentasMenuItem', 'Cuentas', 'MenuItem3']
+   |    | child_window(title="Cuentas", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Informes'    (L120, T23, R185, B42)
+   |    | ['InformesMenuItem', 'Informes', 'MenuItem4']
+   |    | child_window(title="Informes", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Herramientas'    (L185, T23, R274, B42)
+   |    | ['HerramientasMenuItem', 'Herramientas', 'MenuItem5']
+   |    | child_window(title="Herramientas", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Ventana'    (L274, T23, R334, B42)
+   |    | ['VentanaMenuItem', 'MenuItem6', 'Ventana']
+   |    | child_window(title="Ventana", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Ayuda'    (L334, T23, R386, B42)
+   |    | ['Ayuda', 'AyudaMenuItem', 'MenuItem7']
+   |    | child_window(title="Ayuda", control_type="MenuItem")
+   |    | 
+   |    | MenuItem - 'Salir'    (L386, T23, R426, B42)
+   |    | ['SalirMenuItem', 'Salir', 'MenuItem8']
+   |    | child_window(title="Salir", control_type="MenuItem")
+
+Control Identifiers AFTER F7 (Export):
+
+Dialog - 'Sistema de Seguimiento de Cuentas Corrientes'    (L-8, T-8, R1374, B736)
+['Sistema de Seguimiento de Cuentas Corrientes', 'Dialog', 'Sistema de Seguimiento de Cuentas CorrientesDialog', 'Dialog0', 'Dialog1']
+child_window(title="Sistema de Seguimiento de Cuentas Corrientes", control_type="Window")
+   | 
+   | Dialog - 'Consulta General de Movimientos (Vista No Actualizada)'    (L301, T104, R1065, B663)
+   | ['Consulta General de Movimientos (Vista No Actualizada)Dialog', 'Consulta General de Movimientos (Vista No Actualizada)', 'Dialog2']
+   | child_window(title="Consulta General de Movimientos (Vista No Actualizada)", control_type="Window")
+   |    | 
+   |    | Dialog - 'Opciones de Exportación'    (L521, T261, R845, B506)
+   |    | ['Opciones de Exportación', 'Opciones de ExportaciónDialog', 'Dialog3']
+   |    | child_window(title="Opciones de Exportación", control_type="Window")
+   |    |    | 
+   |    |    | GroupBox - ''    (L532, T295, R833, B431)
+   |    |    | ['GroupBox', 'GroupBox0', 'GroupBox1']
+   |    |    | child_window(auto_id="1", control_type="Group")
+   |    |    |    | 
+   |    |    |    | RadioButton - 'Correo Electrónico (Como archivo adjunto)'    (L556, T399, R781, B416)
+   |    |    |    | ['RadioButton', 'Correo Electrónico (Como archivo adjunto)RadioButton', 'Correo Electrónico (Como archivo adjunto)', 'RadioButton0', 'RadioButton1']
+   |    |    |    | child_window(title="Correo Electrónico (Como archivo adjunto)", auto_id="2", control_type="RadioButton")
+   |    |    |    | 
+   |    |    |    | RadioButton - 'Aplicación'    (L556, T371, R629, B388)
+   |    |    |    | ['Aplicación', 'RadioButton2', 'AplicaciónRadioButton', 'Aplicación0', 'Aplicación1']
+   |    |    |    | child_window(title="Aplicación", auto_id="3", control_type="RadioButton")
+   |    |    |    | 
+   |    |    |    | ComboBox - ''    (L648, T369, R777, B390)
+   |    |    |    | ['ComboBox', 'ComboBox0', 'ComboBox1']
+   |    |    |    | child_window(auto_id="4", control_type="ComboBox")
+   |    |    |    |    | 
+   |    |    |    |    | Static - ''    (L3, T3, R109, B18)
+   |    |    |    |    | ['Static', 'Static0', 'Static1']
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Abrir'    (L758, T371, R775, B388)
+   |    |    |    |    | ['Button', 'Abrir', 'AbrirButton', 'Button0', 'Button1', 'Abrir0', 'Abrir1', 'AbrirButton0', 'AbrirButton1']
+   |    |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    |    | 
+   |    |    |    | RadioButton - 'Archivo ...'    (L556, T343, R629, B360)
+   |    |    |    | ['RadioButton3', 'Archivo ...', 'Archivo ...RadioButton']
+   |    |    |    | child_window(title="Archivo ...", auto_id="5", control_type="RadioButton")
+   |    |    |    | 
+   |    |    |    | RadioButton - 'Acrobat PDF'    (L556, T315, R645, B332)
+   |    |    |    | ['Acrobat PDFRadioButton', 'RadioButton4', 'Acrobat PDF']
+   |    |    |    | child_window(title="Acrobat PDF", auto_id="6", control_type="RadioButton")
+   |    |    | 
+   |    |    | GroupBox - ''    (L532, T435, R833, B493)
+   |    |    | ['GroupBox2']
+   |    |    | child_window(auto_id="7", control_type="Group")
+   |    |    |    | 
+   |    |    |    | Button - 'Cancelar'    (L733, T455, R813, B480)
+   |    |    |    | ['Cancelar', 'Button2', 'CancelarButton']
+   |    |    |    | child_window(title="Cancelar", auto_id="8", control_type="Button")
+   |    |    |    | 
+   |    |    |    | Button - 'Aceptar'    (L633, T455, R713, B480)
+   |    |    |    | ['Aceptar', 'Button3', 'AceptarButton']
+   |    |    |    | child_window(title="Aceptar", auto_id="9", control_type="Button")
+   |    |    | 
+   |    |    | TitleBar - ''    (L540, T264, R842, B287)
+   |    |    | ['TitleBar', 'TitleBar0', 'TitleBar1']
+   |    |    |    | 
+   |    |    |    | Menu - 'Sistema'    (L529, T269, R551, B291)
+   |    |    |    | ['Sistema', 'SistemaMenu', 'Menu', 'Sistema0', 'Sistema1', 'SistemaMenu0', 'SistemaMenu1', 'Menu0', 'Menu1']
+   |    |    |    | child_window(title="Sistema", auto_id="MenuBar", control_type="MenuBar")
+   |    |    |    |    | 
+   |    |    |    |    | MenuItem - 'Sistema'    (L529, T269, R551, B291)
+   |    |    |    |    | ['Sistema2', 'SistemaMenuItem', 'MenuItem', 'SistemaMenuItem0', 'SistemaMenuItem1', 'MenuItem0', 'MenuItem1']
+   |    |    |    |    | child_window(title="Sistema", control_type="MenuItem")
+   |    |    |    | 
+   |    |    |    | Button - 'Cerrar'    (L809, T262, R843, B287)
+   |    |    |    | ['Button4', 'Cerrar', 'CerrarButton', 'Cerrar0', 'Cerrar1', 'CerrarButton0', 'CerrarButton1']
+   |    |    |    | child_window(title="Cerrar", control_type="Button")
+   |    | 
+   |    | Pane - ''    (L318, T336, R665, B353)
+   |    | ['Pane', 'Pane0', 'Pane1']
+   |    | child_window(auto_id="1", control_type="Pane")
+   |    | 
+   |    | GroupBox - 'Filtrar por'    (L310, T176, R1055, B330)
+   |    | ['Filtrar por', 'GroupBox3', 'Filtrar porGroupBox']
+   |    | child_window(title="Filtrar por", auto_id="2", control_type="Group")
+   |    |    | 
+   |    |    | CheckBox - 'Moneda'    (L690, T302, R757, B319)
+   |    |    | ['MonedaCheckBox', 'Moneda', 'CheckBox', 'CheckBox0', 'CheckBox1']
+   |    |    | child_window(title="Moneda", auto_id="3", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T300, R939, B321)
+   |    |    | ['ComboBox2']
+   |    |    | child_window(auto_id="4", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R133, B18)
+   |    |    |    | ['Static2']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L920, T302, R937, B319)
+   |    |    |    | ['Button5', 'Abrir2', 'AbrirButton2']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T300, R645, B321)
+   |    |    | ['ComboBox3']
+   |    |    | child_window(auto_id="5", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static3']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T302, R643, B319)
+   |    |    |    | ['Button6', 'Abrir3', 'AbrirButton3']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Banco'    (L330, T302, R395, B319)
+   |    |    | ['Banco', 'CheckBox2', 'BancoCheckBox']
+   |    |    | child_window(title="Banco", auto_id="6", control_type="CheckBox")
+   |    |    | 
+   |    |    | Edit - ''    (L786, T196, R1037, B217)
+   |    |    | ['Edit', 'Edit0', 'Edit1']
+   |    |    | child_window(auto_id="7", control_type="Edit")
+   |    |    | 
+   |    |    | CheckBox - 'Concepto/ SubConcepto'    (L690, T195, R779, B218)
+   |    |    | ['Concepto/ SubConcepto', 'CheckBox3', 'Concepto/ SubConceptoCheckBox']
+   |    |    | child_window(title="Concepto/ SubConcepto", auto_id="8", control_type="CheckBox")
+   |    |    | 
+   |    |    | Edit - ''    (L846, T274, R939, B295)
+   |    |    | ['Edit2']
+   |    |    | child_window(auto_id="10", control_type="Edit")
+   |    |    | 
+   |    |    | CheckBox - 'Importe'    (L690, T276, R751, B293)
+   |    |    | ['CheckBox4', 'ImporteCheckBox', 'Importe']
+   |    |    | child_window(title="Importe", auto_id="11", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T274, R841, B295)
+   |    |    | ['ComboBox4']
+   |    |    | child_window(auto_id="12", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R35, B18)
+   |    |    |    | ['Static4']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L822, T276, R839, B293)
+   |    |    |    | ['Button7', 'Abrir4', 'AbrirButton4']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | Edit - ''    (L846, T248, R939, B269)
+   |    |    | ['Edit3']
+   |    |    | child_window(auto_id="14", control_type="Edit")
+   |    |    | 
+   |    |    | CheckBox - 'Cheque'    (L690, T250, R751, B267)
+   |    |    | ['ChequeCheckBox', 'CheckBox5', 'Cheque']
+   |    |    | child_window(title="Cheque", auto_id="15", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T248, R841, B269)
+   |    |    | ['ComboBox5']
+   |    |    | child_window(auto_id="16", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R35, B18)
+   |    |    |    | ['Static5']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L822, T250, R839, B267)
+   |    |    |    | ['Button8', 'Abrir5', 'AbrirButton5']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Beneficiario/ Concepto'    (L690, T220, R779, B245)
+   |    |    | ['Beneficiario/ ConceptoCheckBox', 'Beneficiario/ Concepto', 'CheckBox6']
+   |    |    | child_window(title="Beneficiario/ Concepto", auto_id="17", control_type="CheckBox")
+   |    |    | 
+   |    |    | CheckBox - 'Imputación'    (L330, T276, R407, B293)
+   |    |    | ['ImputaciónCheckBox', 'Imputación', 'CheckBox7']
+   |    |    | child_window(title="Imputación", auto_id="18", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T274, R645, B295)
+   |    |    | ['ComboBox6']
+   |    |    | child_window(auto_id="19", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static6']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T276, R643, B293)
+   |    |    |    | ['Button9', 'Abrir6', 'AbrirButton6']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Fechas '    (L330, T198, R403, B215)
+   |    |    | ['Fechas ', 'CheckBox8', 'Fechas CheckBox']
+   |    |    | child_window(title="Fechas ", auto_id="20", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T248, R645, B269)
+   |    |    | ['ComboBox7']
+   |    |    | child_window(auto_id="21", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static7']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T250, R643, B267)
+   |    |    |    | ['Button10', 'Abrir7', 'AbrirButton7']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Operación'    (L330, T250, R407, B267)
+   |    |    | ['OperaciónCheckBox', 'Operación', 'CheckBox9']
+   |    |    | child_window(title="Operación", auto_id="22", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T222, R645, B243)
+   |    |    | ['ComboBox8']
+   |    |    | child_window(auto_id="23", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static8']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T224, R643, B241)
+   |    |    |    | ['Button11', 'Abrir8', 'AbrirButton8']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | CheckBox - 'Tipo Benef.'    (L330, T224, R407, B241)
+   |    |    | ['Tipo Benef.', 'Tipo Benef.CheckBox', 'CheckBox10']
+   |    |    | child_window(title="Tipo Benef.", auto_id="24", control_type="CheckBox")
+   |    |    | 
+   |    |    | Pane - '01/01/2023'    (L446, T196, R529, B217)
+   |    |    | ['Pane2', '01/01/2023', '01/01/2023Pane']
+   |    |    | child_window(title="01/01/2023", control_type="Pane")
+   |    |    | 
+   |    |    | Pane - '31/03/2023'    (L562, T196, R645, B217)
+   |    |    | ['31/03/2023', 'Pane3', '31/03/2023Pane']
+   |    |    | child_window(title="31/03/2023", control_type="Pane")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243)
+   |    |    | ['ComboBox9']
+   |    |    | child_window(auto_id="25", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static9']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Button12', 'Abrir9', 'AbrirButton9']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243)
+   |    |    | ['ComboBox10']
+   |    |    | child_window(auto_id="26", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static10']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Button13', 'Abrir10', 'AbrirButton10']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243)
+   |    |    | ['ComboBox11']
+   |    |    | child_window(auto_id="27", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static11']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Button14', 'Abrir11', 'AbrirButton11']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243)
+   |    |    | ['ComboBox12']
+   |    |    | child_window(auto_id="28", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static12']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Button15', 'Abrir12', 'AbrirButton12']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243)
+   |    |    | ['ComboBox13']
+   |    |    | child_window(auto_id="29", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static13']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Button16', 'Abrir13', 'AbrirButton13']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | ComboBox - ''    (L786, T222, R1037, B243)
+   |    |    | ['ComboBox14']
+   |    |    | child_window(auto_id="30", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R231, B18)
+   |    |    |    | ['Static14']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L1018, T224, R1035, B241)
+   |    |    |    | ['Button17', 'Abrir14', 'AbrirButton14']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    |    | 
+   |    |    | Edit - ''    (L786, T222, R1037, B243)
+   |    |    | ['Edit4']
+   |    |    | child_window(auto_id="31", control_type="Edit")
+   |    | 
+   |    | Pane - ''    (L304, T639, R1062, B660)
+   |    | ['Pane4']
+   |    | 
+   |    | Pane - ''    (L304, T130, R1062, B170)
+   |    | ['Pane5']
+   |    |    | 
+   |    |    | Pane - ''    (L304, T132, R1062, B170)
+   |    |    | ['Pane6']
+   |    | 
+   |    | Pane - ''    (L310, T608, R1055, B629)
+   |    | ['Pane7']
+   |    | 
+   |    | Pane - ''    (L310, T354, R1055, B611)
+   |    | ['Pane8']
+   |    |    | 
+   |    |    | Pane - ''    (L317, T367, R440, B382)
+   |    |    | ['Pane9']
+   |    |    | child_window(auto_id="3", control_type="Pane")
+   |    |    | 
+   |    |    | Pane - ''    (L310, T354, R1055, B611)
+   |    |    | ['Pane10']
+   |    | 
+   |    | Pane - ''    (L892, T336, R1051, B349)
+   |    | ['Pane11']
+   |    | 
+   |    | GroupBox - ''    (L310, T336, R1055, B344)
+   |    | ['GroupBox4']
+   |    | child_window(auto_id="34", control_type="Group")
+   |    |    | 
+   |    |    | CheckBox - 'Sólo Cuentas Recuperos'    (L786, T356, R871, B381)
+   |    |    | ['Sólo Cuentas RecuperosCheckBox', 'Sólo Cuentas Recuperos', 'CheckBox11']
+   |    |    | child_window(title="Sólo Cuentas Recuperos", auto_id="35", control_type="CheckBox")
+   |    |    | 
+   |    |    | CheckBox - 'Sólo Cuentas EPAM'    (L882, T356, R967, B381)
+   |    |    | ['Sólo Cuentas EPAM', 'CheckBox12', 'Sólo Cuentas EPAMCheckBox']
+   |    |    | child_window(title="Sólo Cuentas EPAM", auto_id="36", control_type="CheckBox")
+   |    |    | 
+   |    |    | CheckBox - 'Ver Cuentas Inactivas'    (L690, T356, R775, B381)
+   |    |    | ['Ver Cuentas Inactivas', 'CheckBox13', 'Ver Cuentas InactivasCheckBox']
+   |    |    | child_window(title="Ver Cuentas Inactivas", auto_id="37", control_type="CheckBox")
+   |    |    | 
+   |    |    | CheckBox - 'Cuenta'    (L330, T360, R391, B377)
+   |    |    | ['Cuenta', 'CuentaCheckBox', 'CheckBox14']
+   |    |    | child_window(title="Cuenta", auto_id="38", control_type="CheckBox")
+   |    |    | 
+   |    |    | ComboBox - ''    (L422, T358, R645, B379)
+   |    |    | ['ComboBox15']
+   |    |    | child_window(auto_id="39", control_type="ComboBox")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L3, T3, R203, B18)
+   |    |    |    | ['Static15']
+   |    |    |    | 
+   |    |    |    | Button - 'Abrir'    (L626, T360, R643, B377)
+   |    |    |    | ['Button18', 'Abrir15', 'AbrirButton15']
+   |    |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    | 
+   |    | TitleBar - ''    (L304, T107, R1062, B130)
+   |    | ['TitleBar2']
+   | 
+   | Pane - 'Área de trabajo'    (L0, T43, R1366, B728)
+   | ['Pane12', 'Área de trabajoPane', 'Área de trabajo']
+   | child_window(title="Área de trabajo", auto_id="3244", control_type="Pane")
+   | 
+   | TitleBar - ''    (L16, T-5, R1366, B23)
+   | ['TitleBar3']
+   |    | 
+   |    | Menu - 'Sistema'    (L0, T0, R22, B22)
+   |    | ['Sistema3', 'SistemaMenu2', 'Menu2']
+   |    | child_window(title="Sistema", auto_id="MenuBar", control_type="MenuBar")
+   |    |    | 
+   |    |    | MenuItem - 'Sistema'    (L0, T0, R22, B22)
+   |    |    | ['Sistema4', 'SistemaMenuItem2', 'MenuItem2']
+   |    |    | child_window(title="Sistema", control_type="MenuItem")
+   |    | 
+   |    | Button - 'Minimizar'    (L1225, T8, R1272, B22)
+   |    | ['Button19', 'Minimizar', 'MinimizarButton']
+   |    | child_window(title="Minimizar", control_type="Button")
+   |    | 
+   |    | Button - 'Restaurar'    (L1272, T8, R1318, B22)
+   |    | ['RestaurarButton', 'Button20', 'Restaurar']
+   |    | child_window(title="Restaurar", control_type="Button")
+   |    | 
+   |    | Button - 'Cerrar'    (L1318, T8, R1374, B22)
+   |    | ['Button21', 'Cerrar2', 'CerrarButton2']
+   |    | child_window(title="Cerrar", control_type="Button")
+   | 
+   | Menu - 'Aplicación'    (L0, T23, R1366, B42)
+   | ['Aplicación2', 'AplicaciónMenu', 'Menu3']
+   | child_window(title="Aplicación", auto_id="MenuBar", control_type="MenuBar")
+   |    | 
+   |    | MenuItem - ''    (L0, T23, R59, B42)
+   |    | ['MenuItem3']
+   |    | 
+   |    | MenuItem - ''    (L59, T23, R120, B42)
+   |    | ['MenuItem4']
+   |    | 
+   |    | MenuItem - ''    (L120, T23, R185, B42)
+   |    | ['MenuItem5']
+   |    | 
+   |    | MenuItem - ''    (L185, T23, R274, B42)
+   |    | ['MenuItem6']
+   |    | 
+   |    | MenuItem - ''    (L274, T23, R334, B42)
+   |    | ['MenuItem7']
+   |    | 
+   |    | MenuItem - ''    (L334, T23, R386, B42)
+   |    | ['MenuItem8']
+   |    | 
+   |    | MenuItem - ''    (L386, T23, R426, B42)
+   |    | ['MenuItem9']
+
+Control Identifiers AFTER PRESSING Accept:
+
+Dialog - 'Exportar'    (L52, T52, R735, B532)
+['Exportar', 'Dialog', 'ExportarDialog']
+child_window(title="Exportar", control_type="Window")
+   | 
+   | Pane - ''    (L60, T125, R727, B472)
+   | ['Pane', 'Ningún elemento coincide con el criterio de búsqueda.Pane', 'Pane0', 'Pane1']
+   |    | 
+   |    | Toolbar - 'Módulo de comandos'    (L60, T125, R727, B156)
+   |    | ['Módulo de comandosToolbar', 'Módulo de comandos', 'Toolbar', 'Toolbar0', 'Toolbar1']
+   |    | child_window(title="Módulo de comandos", auto_id="FolderBandModuleInner", control_type="ToolBar")
+   |    |    | 
+   |    |    | Button - 'Ay&uda'    (L690, T127, R718, B153)
+   |    |    | ['Ay&udaButton', 'Button', 'Ay&uda', 'Button0', 'Button1']
+   |    |    | child_window(title="Ay&uda", auto_id="HelpButton", control_type="Button")
+   |    |    | 
+   |    |    | SplitButton - 'Vistas'    (L627, T127, R682, B153)
+   |    |    | ['Vistas', 'SplitButton', 'VistasSplitButton', 'SplitButton0', 'SplitButton1']
+   |    |    | child_window(title="Vistas", auto_id="ViewControl", control_type="SplitButton")
+   |    |    |    | 
+   |    |    |    | Button - 'Control deslizante de vista'    (L654, T127, R672, B153)
+   |    |    |    | ['Control deslizante de vista', 'Button2', 'Control deslizante de vistaButton']
+   |    |    |    | child_window(title="Control deslizante de vista", auto_id="SplitMenuButton", control_type="Button")
+   |    |    | 
+   |    |    | Button - 'Organizar'    (L63, T127, R158, B153)
+   |    |    | ['Button3', 'OrganizarButton', 'Organizar']
+   |    |    | child_window(title="Organizar", auto_id="{7DDC1264-7E4D-4F74-BBC0-D191987C8D0F}", control_type="Button")
+   |    |    | 
+   |    |    | Button - 'Nueva carpeta'    (L158, T127, R264, B153)
+   |    |    | ['Button4', 'Nueva carpeta', 'Nueva carpetaButton']
+   |    |    | child_window(title="Nueva carpeta", auto_id="{E44616AD-6DF1-4B94-85A4-E465AE8A19DB}", control_type="Button")
+   |    | 
+   |    | Pane - 'Controlar host'    (L60, T156, R243, B406)
+   |    | ['Pane2', 'Controlar hostPane', 'Controlar host']
+   |    | child_window(title="Controlar host", auto_id="ProperTreeHost", control_type="Pane")
+   |    |    | 
+   |    |    | TreeView - 'Vista en árbol'    (L60, T156, R243, B406)
+   |    |    | ['TreeView', 'Vista en árbolTreeView', 'Vista en árbol', 'TreeView0', 'TreeView1']
+   |    |    | child_window(title="Vista en árbol", auto_id="100", control_type="Tree")
+   |    |    |    | 
+   |    |    |    | ScrollBar - 'Vertical'    (L226, T156, R243, B406)
+   |    |    |    | ['ScrollBar', 'VerticalScrollBar', 'Vertical', 'ScrollBar0', 'ScrollBar1']
+   |    |    |    | child_window(title="Vertical", auto_id="NonClientVerticalScrollBar", control_type="ScrollBar")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Línea arriba'    (L226, T156, R243, B173)
+   |    |    |    |    | ['Línea arribaButton', 'Línea arriba', 'Button5']
+   |    |    |    |    | child_window(title="Línea arriba", auto_id="UpButton", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Re Pág'    (L226, T173, R243, B271)
+   |    |    |    |    | ['Button6', 'Re PágButton', 'Re Pág']
+   |    |    |    |    | child_window(title="Re Pág", auto_id="UpPageButton", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Thumb - 'Posición'    (L226, T271, R243, B364)
+   |    |    |    |    | ['PosiciónThumb', 'Posición', 'Thumb', 'PosiciónThumb0', 'PosiciónThumb1', 'Posición0', 'Posición1', 'Thumb0', 'Thumb1']
+   |    |    |    |    | child_window(title="Posición", auto_id="ScrollbarThumb", control_type="Thumb")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Av Pág'    (L226, T364, R243, B389)
+   |    |    |    |    | ['Button7', 'Av PágButton', 'Av Pág']
+   |    |    |    |    | child_window(title="Av Pág", auto_id="DownPageButton", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Línea abajo'    (L226, T389, R243, B406)
+   |    |    |    |    | ['Línea abajoButton', 'Button8', 'Línea abajo']
+   |    |    |    |    | child_window(title="Línea abajo", auto_id="DownButton", control_type="Button")
+   |    |    |    | 
+   |    |    |    | TreeItem - 'Acceso rápido'    (L0, T0, R0, B0)
+   |    |    |    | ['Acceso rápido', 'TreeItem', 'Acceso rápidoTreeItem', 'TreeItem0', 'TreeItem1']
+   |    |    |    | child_window(title="Acceso rápido", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Escritorio (anclado)'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Escritorio (anclado)', 'TreeItem2', 'Escritorio (anclado)TreeItem']
+   |    |    |    |    | child_window(title="Escritorio (anclado)", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Descargas (anclado)'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Descargas (anclado)TreeItem', 'Descargas (anclado)', 'TreeItem3']
+   |    |    |    |    | child_window(title="Descargas (anclado)", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Documentos (anclado)'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Documentos (anclado)', 'TreeItem4', 'Documentos (anclado)TreeItem']
+   |    |    |    |    | child_window(title="Documentos (anclado)", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Imágenes (anclado)'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Imágenes (anclado)TreeItem', 'TreeItem5', 'Imágenes (anclado)']
+   |    |    |    |    | child_window(title="Imágenes (anclado)", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Agregar cta_cte'    (L0, T0, R0, B0)
+   |    |    |    |    | ['TreeItem6', 'Agregar cta_cteTreeItem', 'Agregar cta_cte']
+   |    |    |    |    | child_window(title="Agregar cta_cte", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Cuenta Ahorro Inversión y Financiamiento'    (L0, T0, R0, B0)
+   |    |    |    |    | ['TreeItem7', 'Cuenta Ahorro Inversión y Financiamiento', 'Cuenta Ahorro Inversión y FinanciamientoTreeItem']
+   |    |    |    |    | child_window(title="Cuenta Ahorro Inversión y Financiamiento", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Modelos más utilizados'    (L0, T0, R0, B0)
+   |    |    |    |    | ['TreeItem8', 'Modelos más utilizadosTreeItem', 'Modelos más utilizados']
+   |    |    |    |    | child_window(title="Modelos más utilizados", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Remanente'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Remanente', 'TreeItem9', 'RemanenteTreeItem']
+   |    |    |    |    | child_window(title="Remanente", control_type="TreeItem")
+   |    |    |    | 
+   |    |    |    | TreeItem - 'Escritorio'    (L0, T0, R0, B0)
+   |    |    |    | ['Escritorio', 'TreeItem10', 'EscritorioTreeItem', 'Escritorio0', 'Escritorio1', 'EscritorioTreeItem0', 'EscritorioTreeItem1']
+   |    |    |    | child_window(title="Escritorio", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'OneDrive'    (L0, T0, R0, B0)
+   |    |    |    |    | ['TreeItem11', 'OneDrive', 'OneDriveTreeItem']
+   |    |    |    |    | child_window(title="OneDrive", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Este equipo'    (L103, T164, R168, B188)
+   |    |    |    |    | ['Este equipoTreeItem', 'Este equipo', 'TreeItem12']
+   |    |    |    |    | child_window(title="Este equipo", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'Descargas'    (L111, T188, R168, B212)
+   |    |    |    |    |    | ['DescargasTreeItem', 'TreeItem13', 'Descargas']
+   |    |    |    |    |    | child_window(title="Descargas", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'Documentos'    (L111, T212, R183, B236)
+   |    |    |    |    |    | ['TreeItem14', 'DocumentosTreeItem', 'Documentos']
+   |    |    |    |    |    | child_window(title="Documentos", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'Escritorio'    (L111, T236, R164, B260)
+   |    |    |    |    |    | ['Escritorio2', 'TreeItem15', 'EscritorioTreeItem2']
+   |    |    |    |    |    | child_window(title="Escritorio", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'Imágenes'    (L111, T260, R166, B284)
+   |    |    |    |    |    | ['Imágenes', 'TreeItem16', 'ImágenesTreeItem']
+   |    |    |    |    |    | child_window(title="Imágenes", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'Música'    (L111, T284, R153, B308)
+   |    |    |    |    |    | ['MúsicaTreeItem', 'Música', 'TreeItem17']
+   |    |    |    |    |    | child_window(title="Música", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'Objetos 3D'    (L111, T308, R173, B332)
+   |    |    |    |    |    | ['Objetos 3DTreeItem', 'TreeItem18', 'Objetos 3D']
+   |    |    |    |    |    | child_window(title="Objetos 3D", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'Vídeos'    (L111, T332, R150, B356)
+   |    |    |    |    |    | ['TreeItem19', 'VídeosTreeItem', 'Vídeos']
+   |    |    |    |    |    | child_window(title="Vídeos", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'SYS_FINANCIERA33 (C:)'    (L111, T356, R226, B380)
+   |    |    |    |    |    | ['SYS_FINANCIERA33 (C:)', 'TreeItem20', 'SYS_FINANCIERA33 (C:)TreeItem']
+   |    |    |    |    |    | child_window(title="SYS_FINANCIERA33 (C:)", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'DATOS_FINANCIERA33 (D:)'    (L111, T380, R226, B404)
+   |    |    |    |    |    | ['TreeItem21', 'DATOS_FINANCIERA33 (D:)TreeItem', 'DATOS_FINANCIERA33 (D:)']
+   |    |    |    |    |    | child_window(title="DATOS_FINANCIERA33 (D:)", control_type="TreeItem")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | TreeItem - 'Recursos por Area (R:)'    (L111, T404, R226, B406)
+   |    |    |    |    |    | ['Recursos por Area (R:)TreeItem', 'Recursos por Area (R:)', 'TreeItem22']
+   |    |    |    |    |    | child_window(title="Recursos por Area (R:)", control_type="TreeItem")
+   |    |    |    |    | 
+   |    |    |    |    | TreeItem - 'Red'    (L0, T0, R0, B0)
+   |    |    |    |    | ['TreeItem23', 'Red', 'RedTreeItem']
+   |    |    |    |    | child_window(title="Red", control_type="TreeItem")
+   |    | 
+   |    | Pane - 'Vista de carpetas Shell'    (L247, T156, R727, B406)
+   |    | ['Vista de carpetas Shell', 'Pane3', 'Vista de carpetas ShellPane']
+   |    | child_window(title="Vista de carpetas Shell", auto_id="listview", control_type="Pane")
+   |    |    | 
+   |    |    | ListBox - 'Vista Elementos'    (L247, T156, R727, B406)
+   |    |    | ['ListBox', 'Vista Elementos', 'Vista ElementosListBox']
+   |    |    | child_window(title="Vista Elementos", control_type="List")
+   |    |    |    | 
+   |    |    |    | ScrollBar - 'Barra de desplazamiento horizontal'    (L247, T389, R727, B406)
+   |    |    |    | ['ScrollBar2', 'Barra de desplazamiento horizontal', 'Barra de desplazamiento horizontalScrollBar']
+   |    |    |    | child_window(title="Barra de desplazamiento horizontal", auto_id="HorizontalScrollBar", control_type="ScrollBar")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Columna a la izquierda'    (L247, T389, R264, B406)
+   |    |    |    |    | ['Columna a la izquierda', 'Columna a la izquierdaButton', 'Button9']
+   |    |    |    |    | child_window(title="Columna a la izquierda", auto_id="UpButton", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Thumb - 'Posición'    (L264, T389, R559, B406)
+   |    |    |    |    | ['PosiciónThumb2', 'Posición2', 'Thumb2']
+   |    |    |    |    | child_window(title="Posición", auto_id="ScrollbarThumb", control_type="Thumb")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Página a la derecha'    (L559, T389, R710, B406)
+   |    |    |    |    | ['Página a la derechaButton', 'Button10', 'Página a la derecha']
+   |    |    |    |    | child_window(title="Página a la derecha", auto_id="DownPageButton", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Columna a la derecha'    (L710, T389, R727, B406)
+   |    |    |    |    | ['Columna a la derecha', 'Button11', 'Columna a la derechaButton']
+   |    |    |    |    | child_window(title="Columna a la derecha", auto_id="DownButton", control_type="Button")
+   |    |    |    | 
+   |    |    |    | Header - 'Encabezado'    (L247, T156, R972, B181)
+   |    |    |    | ['Header', 'Encabezado', 'EncabezadoHeader']
+   |    |    |    | child_window(title="Encabezado", control_type="Header")
+   |    |    |    |    | 
+   |    |    |    |    | SplitButton - 'Nombre'    (L247, T156, R618, B181)
+   |    |    |    |    | ['NombreSplitButton', 'SplitButton2', 'Nombre']
+   |    |    |    |    | child_window(title="Nombre", auto_id="System.ItemNameDisplay", control_type="SplitButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Button - 'Lista desplegable Filtro'    (L602, T156, R617, B181)
+   |    |    |    |    |    | ['Lista desplegable FiltroButton', 'Button12', 'Lista desplegable Filtro', 'Lista desplegable FiltroButton0', 'Lista desplegable FiltroButton1', 'Lista desplegable Filtro0', 'Lista desplegable Filtro1']
+   |    |    |    |    |    | child_window(title="Lista desplegable Filtro", auto_id="DropDown", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | SplitButton - 'Fecha de modificación'    (L618, T156, R762, B181)
+   |    |    |    |    | ['SplitButton3', 'Fecha de modificaciónSplitButton', 'Fecha de modificación']
+   |    |    |    |    | child_window(title="Fecha de modificación", auto_id="System.DateModified", control_type="SplitButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Button - 'Lista desplegable Filtro'    (L746, T156, R761, B181)
+   |    |    |    |    |    | ['Lista desplegable FiltroButton2', 'Button13', 'Lista desplegable Filtro2']
+   |    |    |    |    |    | child_window(title="Lista desplegable Filtro", auto_id="DropDown", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | SplitButton - 'Tipo'    (L762, T156, R882, B181)
+   |    |    |    |    | ['SplitButton4', 'TipoSplitButton', 'Tipo']
+   |    |    |    |    | child_window(title="Tipo", auto_id="System.ItemTypeText", control_type="SplitButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Button - 'Lista desplegable Filtro'    (L866, T156, R881, B181)
+   |    |    |    |    |    | ['Lista desplegable FiltroButton3', 'Button14', 'Lista desplegable Filtro3']
+   |    |    |    |    |    | child_window(title="Lista desplegable Filtro", auto_id="DropDown", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | SplitButton - 'Tamaño'    (L882, T156, R962, B181)
+   |    |    |    |    | ['SplitButton5', 'Tamaño', 'TamañoSplitButton']
+   |    |    |    |    | child_window(title="Tamaño", auto_id="System.Size", control_type="SplitButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Button - 'Lista desplegable Filtro'    (L946, T156, R961, B181)
+   |    |    |    |    |    | ['Lista desplegable FiltroButton4', 'Button15', 'Lista desplegable Filtro4']
+   |    |    |    |    |    | child_window(title="Lista desplegable Filtro", auto_id="DropDown", control_type="Button")
+   |    |    |    | 
+   |    |    |    | Static - 'Ningún elemento coincide con el criterio de búsqueda.'    (L247, T187, R727, B220)
+   |    |    |    | ['Ningún elemento coincide con el criterio de búsqueda.', 'Static', 'Ningún elemento coincide con el criterio de búsqueda.Static', 'Static0', 'Static1']
+   |    |    |    | child_window(title="Ningún elemento coincide con el criterio de búsqueda.", auto_id="EmptyText", control_type="Text")
+   |    | 
+   |    | Static - 'Nombre:'    (L70, T417, R185, B440)
+   |    | ['Nombre:', 'Static2', 'Nombre:Static', 'Nombre:0', 'Nombre:1']
+   |    | child_window(title="Nombre:", auto_id="SaveDialogLabel", control_type="Text")
+   |    | 
+   |    | ComboBox - 'Nombre:'    (L185, T417, R722, B440)
+   |    | ['Nombre:2', 'Nombre:ComboBox', 'ComboBox', 'ComboBox0', 'ComboBox1']
+   |    | child_window(title="Nombre:", auto_id="FileNameControlHost", control_type="ComboBox")
+   |    |    | 
+   |    |    | Edit - 'Nombre:'    (L188, T420, R702, B437)
+   |    |    | ['Edit', 'Nombre:Edit', 'Edit0', 'Edit1']
+   |    |    | child_window(title="Nombre:", auto_id="1001", control_type="Edit")
+   |    |    | 
+   |    |    | Button - 'Abrir'    (L706, T418, R721, B439)
+   |    |    | ['Button16', 'Abrir', 'AbrirButton', 'Abrir0', 'Abrir1', 'AbrirButton0', 'AbrirButton1']
+   |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    | 
+   |    | Static - 'Tipo:'    (L70, T442, R185, B465)
+   |    | ['Tipo:', 'Static3', 'Tipo:Static', 'Tipo:0', 'Tipo:1']
+   |    | child_window(title="Tipo:", auto_id="SaveDialogLabel", control_type="Text")
+   |    | 
+   |    | ComboBox - 'Tipo:'    (L185, T442, R722, B465)
+   |    | ['Tipo:2', 'ComboBox2', 'Tipo:ComboBox']
+   |    | child_window(title="Tipo:", auto_id="FileTypeControlHost", control_type="ComboBox")
+   |    |    | 
+   |    |    | Static - ''    (L3, T3, R517, B20)
+   |    |    | ['Static4']
+   |    |    | 
+   |    |    | Button - 'Abrir'    (L706, T443, R721, B464)
+   |    |    | ['Button17', 'Abrir2', 'AbrirButton2']
+   |    |    | child_window(title="Abrir", auto_id="DropDown", control_type="Button")
+   |    | 
+   |    | TreeView - 'Guardar campos'    (L0, T0, R0, B0)
+   |    | ['TreeView2', 'Guardar campos', 'Guardar camposTreeView']
+   |    | child_window(title="Guardar campos", auto_id="SaveDialogPreviewMetadataInner", control_type="Tree")
+   |    | 
+   |    | TreeView - 'Controles de aplicación'    (L0, T0, R0, B0)
+   |    | ['Controles de aplicación', 'Controles de aplicaciónTreeView', 'TreeView3']
+   |    | child_window(title="Controles de aplicación", auto_id="AppControlsModuleInner", control_type="Tree")
+   | 
+   | Toolbar - ''    (L70, T491, R196, B512)
+   | ['Toolbar2', 'Tipo:Toolbar']
+   |    | 
+   |    | Button - 'Ocultar carpetas'    (L70, T491, R180, B513)
+   |    | ['Ocultar carpetas', 'Button18', 'Ocultar carpetasButton']
+   |    | child_window(title="Ocultar carpetas", control_type="Button")
+   | 
+   | Button - 'Guardar'    (L522, T486, R610, B512)
+   | ['Button19', 'Guardar', 'GuardarButton']
+   | child_window(title="Guardar", auto_id="1", control_type="Button")
+   | 
+   | Button - 'Cancelar'    (L622, T486, R710, B512)
+   | ['Cancelar', 'Button20', 'CancelarButton']
+   | child_window(title="Cancelar", auto_id="2", control_type="Button")
+   | 
+   | Thumb - ''    (L710, T507, R727, B524)
+   | ['Ningún elemento coincide con el criterio de búsqueda.Thumb', 'Thumb3']
+   | 
+   | Pane - ''    (L60, T83, R727, B125)
+   | ['Pane4']
+   | child_window(auto_id="40965", control_type="Pane")
+   |    | 
+   |    | Pane - ''    (L60, T86, R141, B118)
+   |    | ['Pane5']
+   |    |    | 
+   |    |    | Toolbar - 'Botones de navegación'    (L64, T88, R141, B118)
+   |    |    | ['Botones de navegación', 'Toolbar3', 'Botones de navegaciónToolbar']
+   |    |    | child_window(title="Botones de navegación", control_type="ToolBar")
+   |    |    |    | 
+   |    |    |    | Button - 'Atrás (Alt + Flecha izquierda)'    (L64, T88, R94, B118)
+   |    |    |    | ['Button21', 'Atrás (Alt + Flecha izquierda)', 'Atrás (Alt + Flecha izquierda)Button']
+   |    |    |    | child_window(title="Atrás (Alt + Flecha izquierda)", control_type="Button")
+   |    |    |    | 
+   |    |    |    | Button - 'Adelante (Alt + Flecha derecha)'    (L94, T88, R124, B118)
+   |    |    |    | ['Button22', 'Adelante (Alt + Flecha derecha)Button', 'Adelante (Alt + Flecha derecha)']
+   |    |    |    | child_window(title="Adelante (Alt + Flecha derecha)", control_type="Button")
+   |    |    |    | 
+   |    |    |    | Button - 'Ubicaciones recientes'    (L124, T88, R139, B118)
+   |    |    |    | ['Ubicaciones recientesButton', 'Button23', 'Ubicaciones recientes']
+   |    |    |    | child_window(title="Ubicaciones recientes", control_type="Button")
+   |    | 
+   |    | Pane - ''    (L141, T88, R165, B117)
+   |    | ['Pane6']
+   |    |    | 
+   |    |    | Toolbar - 'Barra de herramientas de área Subir'    (L141, T92, R165, B121)
+   |    |    | ['Barra de herramientas de área Subir', 'Toolbar4', 'Barra de herramientas de área SubirToolbar']
+   |    |    | child_window(title="Barra de herramientas de área Subir", control_type="ToolBar")
+   |    |    |    | 
+   |    |    |    | Button - 'Subir a "Sistema de Seguimiento de Cuentas Corrientes" (Alt + Flecha arriba)'    (L141, T92, R165, B116)
+   |    |    |    | ['Button24', 'Subir a "Sistema de Seguimiento de Cuentas Corrientes" (Alt + Flecha arriba)Button', 'Subir a "Sistema de Seguimiento de Cuentas Corrientes" (Alt + Flecha arriba)']
+   |    |    |    | child_window(title="Subir a "Sistema de Seguimiento de Cuentas Corrientes" (Alt + Flecha arriba)", control_type="Button")
+   |    | 
+   |    | Pane - ''    (L165, T83, R502, B122)
+   |    | ['Pane7']
+   |    | child_window(auto_id="41477", control_type="Pane")
+   |    |    | 
+   |    |    | Progress - ''    (L167, T88, R501, B118)
+   |    |    | ['Progress']
+   |    |    |    | 
+   |    |    |    | Pane - ''    (L167, T88, R435, B118)
+   |    |    |    | ['Pane8']
+   |    |    |    |    | 
+   |    |    |    |    | Toolbar - 'Dirección: D:\Datos INVICO\R Gestion INVICO\invicoDB\Base de Datos\Sistema de Seguimiento de Cuentas Corrientes\Movimientos Generales SSCC'    (L167, T88, R435, B118)
+   |    |    |    |    | ['Dirección: D:\\Datos INVICO\\R Gestion INVICO\\invicoDB\\Base de Datos\\Sistema de Seguimiento de Cuentas Corrientes\\Movimientos Generales SSCC', 'Toolbar5', 'Dirección: D:\\Datos INVICO\\R Gestion INVICO\\invicoDB\\Base de Datos\\Sistema de Seguimiento de Cuentas Corrientes\\Movimientos Generales SSCCToolbar']
+   |    |    |    |    | child_window(title="Dirección: D:\Datos INVICO\R Gestion INVICO\invicoDB\Base de Datos\Sistema de Seguimiento de Cuentas Corrientes\Movimientos Generales SSCC", auto_id="1001", control_type="ToolBar")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | SplitButton - 'Todas las ubicaciones'    (L167, T88, R202, B117)
+   |    |    |    |    |    | ['SplitButton6', 'Todas las ubicacionesSplitButton', 'Todas las ubicaciones']
+   |    |    |    |    |    | child_window(title="Todas las ubicaciones", control_type="SplitButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | SplitButton - '‎Sistema de Seguimiento de Cuentas Corrientes'    (L202, T88, R257, B117)
+   |    |    |    |    |    | ['SplitButton7', '\u200eSistema de Seguimiento de Cuentas CorrientesSplitButton', '\u200eSistema de Seguimiento de Cuentas Corrientes']
+   |    |    |    |    |    | child_window(title="‎Sistema de Seguimiento de Cuentas Corrientes", control_type="SplitButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | MenuItem - '‎Movimientos Generales SSCC'    (L257, T88, R399, B117)
+   |    |    |    |    |    | ['\u200eMovimientos Generales SSCCMenuItem', '\u200eMovimientos Generales SSCC', 'MenuItem', 'MenuItem0', 'MenuItem1']
+   |    |    |    |    |    | child_window(title="‎Movimientos Generales SSCC", control_type="MenuItem")
+   |    |    |    | 
+   |    |    |    | Toolbar - 'Barra de herramientas de área de dirección'    (L435, T88, R501, B118)
+   |    |    |    | ['Barra de herramientas de área de dirección', 'Barra de herramientas de área de direcciónToolbar', 'Toolbar6']
+   |    |    |    | child_window(title="Barra de herramientas de área de dirección", control_type="ToolBar")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Ubicaciones anteriores'    (L435, T88, R468, B118)
+   |    |    |    |    | ['Button25', 'Ubicaciones anterioresButton', 'Ubicaciones anteriores']
+   |    |    |    |    | child_window(title="Ubicaciones anteriores", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Button - 'Actualizar "Movimientos Generales SSCC" (F5)'    (L468, T88, R501, B118)
+   |    |    |    |    | ['Actualizar "Movimientos Generales SSCC" (F5)Button', 'Button26', 'Actualizar "Movimientos Generales SSCC" (F5)']
+   |    |    |    |    | child_window(title="Actualizar "Movimientos Generales SSCC" (F5)", control_type="Button")
+   |    | 
+   |    | Pane - ''    (L506, T102, R512, B103)
+   |    | ['Pane9']
+   |    | 
+   |    | Pane - ''    (L512, T84, R716, B120)
+   |    | ['Pane10']
+   |    |    | 
+   |    |    | Edit - 'SearchEditBox'    (L512, T87, R716, B119)
+   |    |    | ['Edit2']
+   |    |    | child_window(title="SearchEditBox", auto_id="SearchEditBox", control_type="Edit")
+   |    | 
+   |    | Pane - ''    (L720, T102, R727, B103)
+   |    | ['Pane11']
+   | 
+   | TitleBar - ''    (L76, T55, R727, B83)
+   | ['TitleBar']
+   |    | 
+   |    | Menu - 'Sistema'    (L60, T60, R82, B82)
+   |    | ['Sistema', 'SistemaMenu', 'Menu', 'Sistema0', 'Sistema1']
+   |    | child_window(title="Sistema", auto_id="MenuBar", control_type="MenuBar")
+   |    |    | 
+   |    |    | MenuItem - 'Sistema'    (L60, T60, R82, B82)
+   |    |    | ['Sistema2', 'SistemaMenuItem', 'MenuItem2']
+   |    |    | child_window(title="Sistema", control_type="MenuItem")
+   |    | 
+   |    | Button - 'Cerrar'    (L694, T53, R728, B83)
+   |    | ['Button27', 'Cerrar', 'CerrarButton']
+   |    | child_window(title="Cerrar", control_type="Button")

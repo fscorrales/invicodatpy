@@ -28,6 +28,7 @@ setup(
         'openpyxl',
         'sqlalchemy-access',
         'tabula-py',
-        'selenium'
+        'selenium',
+        'pywinauto'
     ]
 )
