@@ -102,7 +102,7 @@ class BancoINVICO(RPWUtils):
                     keyboard.send_keys('{F5}')
                     vertical_scroll = self.sscc.main.child_window(
                         title="Vertical", auto_id="NonClientVerticalScrollBar", control_type="ScrollBar",  found_index=0
-                    ).wait('exists', timeout='120')
+                    ).wait('exists enabled visible ready', timeout=120)
 
                     # Exportar
                     keyboard.send_keys('{F7}')
@@ -274,11 +274,11 @@ def main():
     else:
         filename = args.ejercicio + ' - Bancos - Consulta General de Movimientos.csv'
 
-    sscc_banco_invico.from_external_report(dir_path + '/' + filename)
-    sscc_banco_invico.to_sql(dir_path + '/sscc.sqlite')
-    sscc_banco_invico.print_tidyverse()
-    sscc_banco_invico.from_sql(dir_path + '/sscc.sqlite')
-    sscc_banco_invico.print_tidyverse()
+    # sscc_banco_invico.from_external_report(dir_path + '/' + filename)
+    # sscc_banco_invico.to_sql(dir_path + '/sscc.sqlite')
+    # sscc_banco_invico.print_tidyverse()
+    # sscc_banco_invico.from_sql(dir_path + '/sscc.sqlite')
+    # sscc_banco_invico.print_tidyverse()
 
     # sscc_banco_invico.test_sql(dir_path + '/test.sqlite')
     # print(sscc_banco_invico.df.head(10))
@@ -287,4 +287,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.sscc.banco_invico
+    # python -m invicodatpy.sscc.banco_invico -e 2022
