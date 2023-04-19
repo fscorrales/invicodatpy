@@ -274,14 +274,14 @@ def main():
     else:
         filename = args.ejercicio + ' - Bancos - Consulta General de Movimientos.csv'
 
-    # sscc_banco_invico.from_external_report(dir_path + '/' + filename)
-    # sscc_banco_invico.to_sql(dir_path + '/sscc.sqlite')
-    # sscc_banco_invico.print_tidyverse()
-    # sscc_banco_invico.from_sql(dir_path + '/sscc.sqlite')
-    # sscc_banco_invico.print_tidyverse()
+    sscc_banco_invico.from_external_report(dir_path + '/' + filename)
+    sscc_banco_invico.to_sql(dir_path + '/sscc.sqlite')
+    sscc_banco_invico.print_tidyverse()
+    sscc_banco_invico.from_sql(dir_path + '/sscc.sqlite')
+    sscc_banco_invico.print_tidyverse()
 
-    # sscc_banco_invico.test_sql(dir_path + '/test.sqlite')
-    # print(sscc_banco_invico.df.head(10))
+    sscc_banco_invico.test_sql(dir_path + '/test.sqlite')
+    print(sscc_banco_invico.df.head(10))
 
 # --------------------------------------------------
 if __name__ == '__main__':

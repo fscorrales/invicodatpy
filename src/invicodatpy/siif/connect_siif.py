@@ -85,7 +85,11 @@ class ConnectSIIF():
         while not os.path.exists(old_file_path):
             time.sleep(1)
 
+        # Si sigue sin funcionar bien, considerar la posibilidad 
+        # de agregar un wait_is_there_html_file()
+
         if os.path.isfile(old_file_path):
+            time.sleep(2)
             if os.path.isfile(new_file_path):
                 os.remove(new_file_path)
             os.rename(old_file_path, new_file_path)

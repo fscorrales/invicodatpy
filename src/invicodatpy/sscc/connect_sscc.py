@@ -34,8 +34,8 @@ class ConnectSSCC():
                 self.main.maximize()
             cmb_user = self.main.child_window(auto_id="1", control_type="ComboBox").wait('exists enabled visible ready')
             input_password = self.main.child_window(auto_id="2", control_type="Edit").wrapper_object()
-            cmb_user.type_keys('FCORRALES')
-            input_password.type_keys('FSC188')
+            cmb_user.type_keys(self.username)
+            input_password.type_keys(self.password)
             btn_accept = self.main.child_window(title="Aceptar", auto_id="4", control_type="Button").wrapper_object()
             btn_accept.click()
             window_resumen_ctas = self.main.child_window(

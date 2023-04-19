@@ -6,24 +6,160 @@ Rendiciones por Proveedores' report
 """
 
 import argparse
+import datetime as dt
 import inspect
+import json
 import os
+import time
+from dataclasses import dataclass, field
 
 import pandas as pd
 from datar import dplyr, f, base
+from pywinauto import findwindows, keyboard, mouse
 
 from ..models.sgf_model import SGFModel
 from ..utils.rpw_utils import RPWUtils
+from .connect_sgf import ConnectSGF
 
-
+@dataclass
 class ResumenRendProv(RPWUtils):
-    """Read, process and write SGF's 'Resumen de Rendiciones 
-    por Proveedores' report"""
-    _REPORT_TITLE = 'Resumen de Rendiciones (Detalle)'
-    _TABLE_NAME = 'resumen_rend_prov'
-    _INDEX_COL = 'id'
-    _FILTER_COL = ['origen', 'mes']
-    _SQL_MODEL = SGFModel
+    """
+    Read, process and write SGF's 'Resumen de Rendiciones 
+    por Proveedores' report
+    :param sgf_connection must be initialized first in order to automate SSCC
+    """
+    _REPORT_TITLE:str = field(
+        init=False, repr=False, 
+        default='Resumen de Rendiciones (Detalle)'
+    )
+    _TABLE_NAME:str = field(
+        init=False, repr=False, 
+        default='resumen_rend_prov'
+    )
+    _INDEX_COL:str = field(
+        init=False, repr=False, default='id'
+    )
+    _FILTER_COL:str = field(
+        init=False, repr=False, 
+        default_factory=lambda:['origen', 'mes']
+    )
+    _SQL_MODEL:SGFModel = field(
+        init=False, repr=False, default=SGFModel
+    )
+    sgf:ConnectSGF = field(
+        init=True, repr=False, default=None
+    )
+
+    # --------------------------------------------------
+    def download_report(
+        self, dir_path:str, 
+        ejercicios:list = str(dt.datetime.now().year),
+        origenes:list = ['EPAM', 'OBRAS', 'FUNCIONAMIENTO']
+    ):
+        try:
+            if not isinstance(origenes, list):
+                origenes = [origenes]
+            if not isinstance(ejercicios, list):
+                ejercicios = [ejercicios]
+            for origen in origenes:
+                for ejercicio in ejercicios:
+                    # Open menu Consulta General de Movimientos
+                    self.sgf.main.menu_select("Informes->Resumen de Rendiciones")
+
+                    dlg_resumen_rend = self.sgf.main.child_window(
+                        title="Informes - Resumen de Rendiciones", control_type="Window"
+                    ).wait('exists')
+
+                    int_ejercicio = int(ejercicio)
+                    if int_ejercicio > 2010 and int_ejercicio <= dt.datetime.now().year:
+                        # Origen
+                        cmb_origen = self.sgf.main.child_window(auto_id="24", control_type="ComboBox").wrapper_object()
+                        cmb_origen.type_keys("%{DOWN}")
+                        cmb_origen.type_keys(origen,  with_spaces=True) #EPAM, OBRAS, FUNCIONAMIENTO
+                        keyboard.send_keys('{ENTER}')
+                        btn_exportar = self.sgf.main.child_window(
+                            title="Exportar", auto_id="4", control_type="Button"
+                        ).wait('enabled ready active', timeout=60)
+                        
+                        # Fecha Desde
+                        ## Click on año desde
+                        time.sleep(1)
+                        mouse.click(coords=(205, 415))
+                        keyboard.send_keys(ejercicio)
+                        ## Click on mes desde
+                        time.sleep(1)
+                        mouse.click(coords=(185, 415))
+                        keyboard.send_keys('01')
+                        ## Click on día desde
+                        time.sleep(1)
+                        mouse.click(coords=(170, 415))
+                        keyboard.send_keys('01')
+
+                        # Fecha Hasta
+                        fecha_hasta = dt.datetime(year=(int_ejercicio), month=12, day=31)
+                        fecha_hasta = min(fecha_hasta, dt.datetime.now())
+                        fecha_hasta = dt.datetime.strftime(fecha_hasta, '%d/%m/%Y')
+                        ## Click on año hasta
+                        time.sleep(1)
+                        mouse.click(coords=(495, 415))
+                        keyboard.send_keys(ejercicio)
+                        ## Click on mes hasta
+                        time.sleep(1)
+                        mouse.click(coords=(470, 415))
+                        keyboard.send_keys(fecha_hasta[3:5])
+                        ## Click on día hasta
+                        time.sleep(1)
+                        mouse.click(coords=(455, 415))
+                        keyboard.send_keys(fecha_hasta[0:2])
+
+                        # Exportar
+                        btn_exportar.click()
+                        btn_accept = self.sgf.main.child_window(
+                            title="Aceptar", auto_id="9", control_type="Button"
+                        ).wait('exists enabled visible ready', timeout=360)
+                        btn_accept.click()
+                        time.sleep(5)
+                        export_dlg_handles = findwindows.find_windows(title='Exportar')
+                        if export_dlg_handles:
+                            export_dlg = self.sgf.app.window_(handle=export_dlg_handles[0])
+
+                        btn_escritorio = export_dlg.child_window(
+                            title="Escritorio", control_type="TreeItem", found_index=1
+                        ).wrapper_object()
+                        btn_escritorio.click_input()
+
+                        cmb_tipo = export_dlg.child_window(
+                            title="Tipo:", auto_id="FileTypeControlHost", control_type="ComboBox"
+                        ).wrapper_object()
+                        cmb_tipo.type_keys("%{DOWN}")
+                        cmb_tipo.select('Archivo ASCII separado por comas (*.csv)')
+
+                        cmb_nombre = export_dlg.child_window(
+                            title="Nombre:", auto_id="FileNameControlHost", control_type="ComboBox"
+                        ).wrapper_object()
+                        cmb_nombre.click_input()
+                        report_name = ejercicio + ' Resumen de Rendiciones '+ origen +'.csv'
+                        cmb_nombre.type_keys(report_name,  with_spaces=True)
+                        btn_guardar = export_dlg.child_window(
+                            title="Guardar", auto_id="1", control_type="Button"
+                        ).wrapper_object()
+                        btn_guardar.click()
+
+                        # dlg_resumen_rend = self.sgf.main.child_window(
+                        #     title="Informes - Resumen de Rendiciones", control_type="Window"
+                        # ).wait_not('visible exists', timeout=120)
+
+                        self.sgf.main.wait("active", timeout=120)
+
+                        # Move file to destination
+                        time.sleep(2)
+                        self.sgf.move_report(
+                            dir_path, report_name
+                        )
+
+        except Exception as e:
+            print(f"Ocurrió un error: {e}, {type(e)}")
+            self.sgf.quit()
 
     # --------------------------------------------------
     def from_external_report(self, csv_path:str) -> pd.DataFrame:
@@ -135,9 +271,41 @@ def get_args():
     parser.add_argument(
         '-f', '--file', 
         metavar = "csv_file",
-        default='2022 Resumen de Rendiciones EPAM.csv',
+        default='',
         type=str,
         help = "SGF' Resumen de Rendiciones.csv report. Must be in the same folder")
+
+    parser.add_argument('--download', action='store_true')
+    parser.add_argument('--no-download', dest='download', action='store_false')
+    parser.set_defaults(download=True)
+
+    parser.add_argument(
+        '-u', '--username', 
+        metavar = 'Username',
+        default = '',
+        type=str,
+        help = "Username to log in SGF")
+
+    parser.add_argument(
+        '-p', '--password', 
+        metavar = 'Password',
+        default = '',
+        type=str,
+        help = "Password to log in SGF")
+
+    parser.add_argument(
+        '-e', '--ejercicio', 
+        metavar = 'Ejercicio',
+        default = '2023',
+        type=str,
+        help = "Ejercicio to download from SGF")
+
+    parser.add_argument(
+        '-o', '--origen', 
+        metavar = 'Origen',
+        default = '',
+        type=str,
+        help = "Origen to download from SGF")
 
     return parser.parse_args()
 
@@ -149,8 +317,38 @@ def main():
         os.path.abspath(
             inspect.getfile(
                 inspect.currentframe())))
-    sgf_resumen_rend_prov = ResumenRendProv()
-    sgf_resumen_rend_prov.from_external_report(dir_path + '/' + args.file)
+
+    if args.origen == '':
+        origenes = ['EPAM', 'OBRAS', 'FUNCIONAMIENTO']
+    else:
+        origenes = [args.origen]
+
+    if args.download:
+        json_path = dir_path + '/sgf_credentials.json'
+        if args.username != '' and args.password != '':
+            sgf_connection = ConnectSGF(args.username, args.password)
+        else:
+            if os.path.isfile(json_path):
+                with open(json_path) as json_file:
+                    data_json = json.load(json_file)
+                    sgf_connection = ConnectSGF(
+                        data_json['username'], data_json['password']
+                    )
+                json_file.close()
+        sgf_resumen_rend_prov = ResumenRendProv(sgf = sgf_connection)
+        sgf_resumen_rend_prov.download_report(
+            dir_path, ejercicios=args.ejercicio, origenes=origenes
+        )
+        sgf_connection.quit()
+    else:
+        sgf_resumen_rend_prov = ResumenRendProv()
+
+    if args.file != '':
+        filename = args.file
+    else:
+        filename = args.ejercicio + ' Resumen de Rendiciones '+ origenes[0] + '.csv'
+
+    sgf_resumen_rend_prov.from_external_report(dir_path + '/' + filename)
     # sgf_resumen_rend_prov.test_sql(dir_path + '/test.sqlite')
     sgf_resumen_rend_prov.to_sql(dir_path + '/sgf.sqlite')
     sgf_resumen_rend_prov.print_tidyverse()
@@ -162,4 +360,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.sgf.resumen_rend_prov -f '2022 Resumen de Rendiciones OBRAS.csv'
+    # python -m invicodatpy.sgf.resumen_rend_prov
