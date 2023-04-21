@@ -360,4 +360,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.sgf.resumen_rend_prov
+    # python -m invicodatpy.sgf.resumen_rend_prov -o FUNCIONAMIENTO

@@ -29,6 +29,7 @@ class ConnectSGF():
         app_path = r"\\ipvfiles\SISTEMAS\Pagos\Pagos.exe"
         self.app = Application(backend='uia').start(app_path)
         try:
+            time.sleep(3)
             self.main = self.app.window(title_re=".*Sistema de Gestión Financiera.*")
             if self.main.is_maximized() == False:
                 self.main.maximize()
