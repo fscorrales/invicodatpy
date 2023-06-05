@@ -214,7 +214,7 @@ class ResumenRendProv(RPWUtils):
                     fecha = f['30'], 
                     movimiento = f['31'],
                     cta_cte = f['28'],
-                    importe_bruto = f['41'], 
+                    importe_bruto = f['32'], 
                     gcias = f['33'], 
                     sellos = f['34'],
                     iibb = f['35'], 
@@ -224,7 +224,7 @@ class ResumenRendProv(RPWUtils):
                     salud = f['39'], 
                     mutual = f['40'], 
                     otras = '0',
-                    importe_neto = f['32']
+                    importe_neto = f['41']
                 )
         
         df.loc[:,'importe_bruto':] = df.loc[:,'importe_bruto':].stack(
@@ -349,15 +349,15 @@ def main():
         filename = args.ejercicio + ' Resumen de Rendiciones '+ origenes[0] + '.csv'
 
     sgf_resumen_rend_prov.from_external_report(dir_path + '/' + filename)
-    # sgf_resumen_rend_prov.test_sql(dir_path + '/test.sqlite')
-    sgf_resumen_rend_prov.to_sql(dir_path + '/sgf.sqlite')
-    sgf_resumen_rend_prov.print_tidyverse()
-    sgf_resumen_rend_prov.from_sql(dir_path + '/sgf.sqlite')
-    sgf_resumen_rend_prov.print_tidyverse()
+    sgf_resumen_rend_prov.test_sql(dir_path + '/test.sqlite')
+    # sgf_resumen_rend_prov.to_sql(dir_path + '/sgf.sqlite')
+    # sgf_resumen_rend_prov.print_tidyverse()
+    # sgf_resumen_rend_prov.from_sql(dir_path + '/sgf.sqlite')
+    # sgf_resumen_rend_prov.print_tidyverse()
     # print(sgf_resumen_rend_prov.df.head(10))
 
 # --------------------------------------------------
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.sgf.resumen_rend_prov -o FUNCIONAMIENTO
+    # python -m invicodatpy.sgf.resumen_rend_prov -o EPAM -e 2023 --no-download
