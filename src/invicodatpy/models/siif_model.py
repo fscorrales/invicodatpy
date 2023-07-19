@@ -163,6 +163,21 @@ class SIIFModel():
             Column('clase_mod', String(3))
         )
 
+        self.ppto_rec_ri102 = Table(
+            'ppto_rec_ri102', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('cod_rec', String(5)),
+            Column('desc_rec', String(50)),
+            Column('fuente', String(2)),
+            Column('org_fin', String(3)),
+            Column('ppto_inicial', Numeric(12,2)),
+            Column('ppto_modif', Numeric(12,2)),
+            Column('ppto_vigente', Numeric(12,2)),
+            Column('ingreso', Numeric(12,2)),
+            Column('saldo', Numeric(12,2)),
+        )
+
         self.deuda_flotante_rdeu012 = Table(
             'deuda_flotante_rdeu012', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
