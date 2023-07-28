@@ -130,10 +130,12 @@ class PptoRecRi102(RPWUtils):
         """"Transform read xls file"""
         df = self.df
         df['ejercicio'] = df.iloc[5,17]
+        df['tipo'] = df['2'].str[0:2] + '000'
+        df['clase'] = df['2'].str[0:3] + '00'
         df = df.replace(to_replace='', value=None)
         df = df.loc[:,[
-            'ejercicio', '2', '4', '11', '12', '14', 
-            '15', '19', '22', '25'
+            'ejercicio', 'tipo', 'clase', '2', '4',
+            '11', '12', '14', '15', '19', '22', '25'
         ]]
         df = df.dropna(subset=['4'])
         df = df.rename(columns={

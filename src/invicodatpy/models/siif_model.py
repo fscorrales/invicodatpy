@@ -167,6 +167,8 @@ class SIIFModel():
             'ppto_rec_ri102', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
             Column('ejercicio', String(4)),
+            Column('tipo', String(5)),
+            Column('clase', String(5)),
             Column('cod_rec', String(5)),
             Column('desc_rec', String(50)),
             Column('fuente', String(2)),
