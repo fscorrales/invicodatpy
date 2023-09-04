@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Working With Files in Python
 Source: https://realpython.com/working-with-files-in-python/#:~:text=To%20get%20a%20list%20of,scandir()%20in%20Python%203.
 """

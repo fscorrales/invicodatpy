@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SGF's 'Resumen de 
 Rendiciones por Proveedores' report
 """

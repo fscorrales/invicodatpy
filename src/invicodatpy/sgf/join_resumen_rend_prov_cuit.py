@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Join Resumen Rend Prov y Listado Proveedores SGF
 """
 

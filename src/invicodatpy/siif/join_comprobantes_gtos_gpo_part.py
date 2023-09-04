@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Join gto_rpa03g (gtos_gpo_part) with rcg01_uejp (gtos)
 """
 

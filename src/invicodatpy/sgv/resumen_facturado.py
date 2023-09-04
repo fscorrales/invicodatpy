@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.comm>
 Purpose: Read, process and write Gestion Viviendas's 
         Informe Resumen Facturado report
 """

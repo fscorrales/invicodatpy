@@ -14,6 +14,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 @dataclass
 class ConnectSIIF():
@@ -29,7 +30,7 @@ class ConnectSIIF():
         options.add_argument("--window-size=1920,1080")
         if self.invisible:
             options.add_argument("--headless")
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         self.driver.maximize_window()
 
         # Setup wait for later

@@ -11,7 +11,7 @@ setup(
     provide within this package due to privacy reasons.
     """,
     author='Fernando Corrales',
-    author_email='corrales_fernando@hotmail.com',
+    author_email='fscpython@gmail.com',
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
     install_requires=[
@@ -29,6 +29,7 @@ setup(
         'sqlalchemy-access',
         'tabula-py',
         'selenium',
-        'pywinauto'
+        'pywinauto',
+        'webdriver-manager'
     ]
 )

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write Gestion Viviendas's 
         Informe Variación de Saldos Recuperos a Cobrar report
 """

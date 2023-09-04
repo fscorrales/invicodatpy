@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Join rf602 (ppto_gtos_fte) with rf610 (ppto_gtos_desc)
 """
 

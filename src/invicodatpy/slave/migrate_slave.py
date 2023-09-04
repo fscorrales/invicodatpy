@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Migrate from slave.mdb to slave.sqlite
 Linux system read mdb requirements: 
     details: csv exported from .mdb with MDBTOOLS (sudo apt install mdbtools).
