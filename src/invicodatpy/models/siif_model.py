@@ -234,6 +234,25 @@ class SIIFModel():
             Column('desc_grupo', String(50)),
         )
 
+        self.form_gto_rfp_p605b = Table(
+            'form_gto_rfp_p605b', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('estructura', String(15)),
+            Column('fuente', String(2)),
+            Column('programa', String(2)),
+            Column('desc_prog', String(50)),
+            Column('subprograma', String(2)),
+            Column('desc_subprog', String(50)),
+            Column('proyecto', String(2)),
+            Column('desc_proy', String(50)),
+            Column('actividad', String(2)),
+            Column('desc_act', String(50)),
+            Column('grupo', String(3)),
+            Column('partida', String(3)),
+            Column('formulado', Numeric(12,2)),
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
