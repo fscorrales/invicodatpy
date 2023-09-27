@@ -158,7 +158,7 @@ class FormGtoRfpP605b(RPWUtils):
                 ejercicios = [ejercicios]
             for ejercicio in ejercicios:
                 int_ejercicio = int(ejercicio)
-                if int_ejercicio > 2010 and int_ejercicio <= dt.datetime.now().year:
+                if int_ejercicio > 2010 and int_ejercicio <= (dt.datetime.now().year + 1):
                     # Ejercicio
                     input_ejercicio.clear()
                     input_ejercicio.send_keys(ejercicio)
