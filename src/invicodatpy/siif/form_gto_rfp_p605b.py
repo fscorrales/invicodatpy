@@ -291,6 +291,8 @@ class FormGtoRfpP605b(RPWUtils):
         df['act'] = df['act'].str.strip()
         df['desc_act'] = df['actividad'].str[3:]
         df['desc_act'] = df['desc_act'].str.strip()
+        df['fuente_10'] = df['fuente_10'].astype(float)
+        df['fuente_11'] = df['fuente_11'].astype(float)
         df['fuente'] = np.select(
             [
                 df['fuente_10'].astype(int) > 0,
@@ -298,7 +300,7 @@ class FormGtoRfpP605b(RPWUtils):
             ],
             ['10', '11']
         )
-        df['formulado'] = df['fuente_10'].astype(float) + df['fuente_11'].astype(float)
+        df['formulado'] = df['fuente_10'] + df['fuente_11']
         df['prog'] = df['prog'].str.zfill(2)
         df['sub'] = df['sub'].str.zfill(2)
         df['proy'] = df['proy'].str.zfill(2)
