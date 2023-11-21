@@ -199,7 +199,11 @@ class MigrateIcaro(RPWUtils):
         self.df.loc[self.df['tipo'] == 'PA6', 'id'] = self.df['nro_comprobante'] + 'F'
         self.df['ejercicio'] = self.df['fecha'].dt.year.astype(str)
         self.df['mes'] = self.df['fecha'].dt.month.astype(str).str.zfill(2) + '/' +  self.df['ejercicio']
-        self._TABLE_NAME = 'carga'
+        self._TABLE_NAME = 'carga'      
+        # # Imprimir los registros duplicados
+        # duplicates = self.df[self.df.duplicated(subset='id', keep=False)]  
+        # print("Registros duplicados en el campo 'id':")
+        # print(duplicates)
         self.to_sql(self.path_new_icaro, True)
 
     # --------------------------------------------------

@@ -232,7 +232,7 @@ def get_args():
     parser.add_argument(
         '-e', '--ejercicio', 
         metavar = 'Ejercicio',
-        default = '2022',
+        default = '2023',
         type=str,
         help = "Ejercicio to download from SIIF")
 

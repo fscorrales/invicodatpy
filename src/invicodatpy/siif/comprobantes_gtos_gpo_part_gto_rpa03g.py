@@ -213,7 +213,7 @@ def get_args():
     parser.add_argument(
         '-e', '--ejercicio', 
         metavar = 'Ejercicio',
-        default = '2022',
+        default = '2023',
         type=str,
         help = "Ejercicio to download from SIIF")
 
@@ -264,4 +264,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.comprobantes_gtos_gpo_part_gto_rpa03g -d False
+    # python -m invicodatpy.siif.comprobantes_gtos_gpo_part_gto_rpa03g
