@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Author: Fernando Corrales <fscorrales@gmail.com>
+Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Web Scrapping SIIF with selenium
 Source: 
 """
@@ -93,6 +93,7 @@ class ConnectSIIF():
             time.sleep(2)
             if os.path.isfile(new_file_path):
                 os.remove(new_file_path)
+                time.sleep(2)
             os.rename(old_file_path, new_file_path)
         else:
             raise ValueError("%s isn't a file!" % old_file_path)
