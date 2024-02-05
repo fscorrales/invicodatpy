@@ -22,7 +22,7 @@ from ..models.sgv_model import SGVModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_sgv import ConnectSGV
 
-
+@dataclass
 class ResumenFacturado(RPWUtils):
     """Read, process and write Gestion Viviendas's Informe Resumen Facturado report"""
     _REPORT_TITLE:str = field(
@@ -69,13 +69,13 @@ class ResumenFacturado(RPWUtils):
             self.sgv.driver.switch_to.window(self.sgv.driver.window_handles[1])
 
             # Navegar a una dirección web específica en la nueva pestaña
-            self.sgv.driver.get('https://gv.invico.gov.ar/App/Recupero/Informes/ResumenRecaudado.aspx')
+            self.sgv.driver.get('https://gv.invico.gov.ar/App/Recupero/Informes/ResumenFacturado.aspx')
 
             time.sleep(1)
 
             # Llenado de inputs
             xpath_input_gral = "//table[@class='tablaFiltros']//input"
-            xpath_ejercicio = "//input[@id='ctl00_ContentPlacePrincipal_ucInformeResumenRecaudado_txtAño_TextBox1']"
+            xpath_ejercicio = "//input[@id='ctl00_ContentPlacePrincipal_ucInformeResumenFacturado_txtAño_TextBox1']"
             self.sgv.wait.until(EC.presence_of_element_located(
                 (By.XPATH, xpath_ejercicio)
             ))
@@ -93,9 +93,9 @@ class ResumenFacturado(RPWUtils):
                     input_ejercicio.clear()
                     input_ejercicio.send_keys(ejercicio, Keys.ENTER)
                     self.sgv.wait.until(EC.presence_of_element_located(
-                        (By.XPATH, "/html/body/form/div[3]/table/tbody/tr/td[1]/div/table[2]/tbody/tr/td[3]/div[1]/div[2]/span/div/table/tbody/tr[4]/td[3]/div/div[1]/div/table/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr/td/table")
+                        (By.XPATH, "/html/body/form/div[3]/table/tbody/tr/td[1]/div/table[2]/tbody/tr/td[3]/div[1]/div[2]/span/div/table/tbody/tr[4]/td[3]/div/div[1]/div/table/tbody/tr/td/table/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr[4]/td[3]/table")
                     ))
-                    btn_export = self.sgv.driver.find_element(By.XPATH, "//a[@id='ctl00_ContentPlacePrincipal_ucInformeResumenRecaudado_rpInforme_ctl05_ctl04_ctl00_ButtonLink']")
+                    btn_export = self.sgv.driver.find_element(By.XPATH, "//a[@id='ctl00_ContentPlacePrincipal_ucInformeResumenFacturado_rpInforme_ctl05_ctl04_ctl00_ButtonLink']")
                     btn_export.click()
                     time.sleep(1)
                     btn_to_excel = self.sgv.driver.find_element(By.XPATH, "//a[@title='Excel']")
@@ -103,8 +103,8 @@ class ResumenFacturado(RPWUtils):
                     self.sgv.wait.until(EC.number_of_windows_to_be(2))
                     self.sgv.rename_report(
                         dir_path, 
-                        'InformeResumenRecaudado.xlsx', 
-                        ejercicio + '-InformeResumenRecaudado.xlsx'
+                        'InformeResumenFacturado.xlsx', 
+                        ejercicio + '-InformeResumenFacturado.xlsx'
                     )
                     time.sleep(1)
                     self.sgv.driver.refresh()
@@ -225,19 +225,19 @@ def main():
     else:
         sgv = ResumenFacturado()
 
-    # if not isinstance(args.ejercicio, list):
-    #     file = [args.ejercicio]
-    # else:
-    #     file = args.ejercicio
+    if not isinstance(args.ejercicio, list):
+        file = [args.ejercicio]
+    else:
+        file = args.ejercicio
 
-    # file = file[0] + '-InformeResumenRecaudado.xlsx'
+    file = file[0] + '-InformeResumenFacturado.xlsx'
 
-    # sgv.from_external_report(dir_path + '/' + args.file)
-    # # sgv.test_sql(dir_path + '/test.sqlite')
-    # sgv.to_sql(dir_path + '/sgv.sqlite')
-    # sgv.print_tidyverse()
-    # sgv.from_sql(dir_path + '/sgv.sqlite')
-    # sgv.print_tidyverse()
+    sgv.from_external_report(dir_path + '/' + file)
+    # sgv.test_sql(dir_path + '/test.sqlite')
+    sgv.to_sql(dir_path + '/sgv.sqlite')
+    sgv.print_tidyverse()
+    sgv.from_sql(dir_path + '/sgv.sqlite')
+    sgv.print_tidyverse()
 
 # --------------------------------------------------
 if __name__ == '__main__':

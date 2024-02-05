@@ -59,8 +59,8 @@ class SGVModel():
             Column('importe', Numeric(12,2)),
         )
 
-        self.saldo_motivo_individual = Table(
-            'saldo_motivo_individual', self.metadata,
+        self.saldo_motivo_por_barrio = Table(
+            'saldo_motivo_por_barrio', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),
             Column('ejercicio', String(4)),
             Column('cod_motivo', String(5)),

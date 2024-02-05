@@ -16,6 +16,7 @@ class RPWUtils(SQLUtils, HandlingFiles):
     _FILTER_COL = ''
     _SQL_MODEL = None
 
-    # --------------------------------------------------
-    def print_tidyverse(self):
-        print(PrintTidyverse(self.df))
+    def print_tidyverse(self, data = None):
+        if data is None:
+            data = self.df
+        print(PrintTidyverse(data))
