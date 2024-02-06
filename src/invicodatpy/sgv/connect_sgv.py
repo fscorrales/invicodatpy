@@ -60,30 +60,6 @@ class ConnectSGV():
             self.quit()
 
     # --------------------------------------------------
-    def go_to_reportes(self) -> None:
-        """"Go to SIIF's Reportes Module"""
-        try:
-            #Abrir pestaña reportes
-            self.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//a[@class='xyj' and text()='REPORTES']"))
-            )
-            mnu_reportes = self.driver.find_element(By.XPATH, "//a[@class='xyj' and text()='REPORTES']")
-            mnu_reportes.click()
-            time.sleep(1)
-            reportes = self.driver.find_element(By.XPATH, "//tr[@id='pt1:cmiReportes']")
-            reportes.click()
-            # Wait for the new window or tab
-            self.wait.until(EC.number_of_windows_to_be(2))
-            self.driver.switch_to.window(self.driver.window_handles[1])
-            self.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//select[@id='pt1:socModulo::content']"))
-            )
-            # time.sleep(1)
-        except Exception as e:
-            print(f"Ocurrió un error: {e}, {type(e)}")
-            self.disconnect() 
-
-    # --------------------------------------------------
     def rename_report(self, dir_path:str, old_name:str, new_name:str):
         old_file_path = os.path.join(dir_path, old_name)
         new_file_path = os.path.join(dir_path, new_name)
