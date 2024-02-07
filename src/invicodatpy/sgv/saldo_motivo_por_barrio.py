@@ -119,7 +119,7 @@ class SaldoMotivoPorBarrio(RPWUtils):
                         )
                         cod_motivo_str = cod_motivos[i].text
                         desc_motivo_str = desc_motivos[i+2].text
-                        print(f"{ejercicio} - {cod_motivo_str} - {desc_motivo_str}")
+                        # print(f"{ejercicio} - {cod_motivo_str} - {desc_motivo_str}")
                         cod_motivos[i].click()
                         time.sleep(1)
                         self.sgv.wait.until(EC.presence_of_element_located(
