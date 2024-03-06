@@ -201,8 +201,15 @@ class SaldoMotivoPorBarrio(RPWUtils):
         """"Transform read xls file"""
         df = self.df
         df['ejercicio'] = ejercicio
-        df['cod_motivo'] = cod_motivo.zfill(3)
-        df['motivo'] = motivo
+        cod_motivo = cod_motivo.zfill(3)
+        # Unificamos los códigos 000 y 100 en el 100
+        if cod_motivo == '000':
+            df['cod_motivo'] = '100'
+            df['motivo'] = 'ACTUALIZACION DE SALDOS RESOLUCION 1412/2018'
+        else:
+            df['cod_motivo'] = cod_motivo
+            df['motivo'] = motivo
+
         df = df.iloc[4:-1, [1, 2, 3, 4, 5, 6]]
         df.rename({
             '1': 'cod_barrio', 
