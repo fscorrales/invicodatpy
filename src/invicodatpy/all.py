@@ -6,6 +6,8 @@ from .models import *
 from .models.all import *
 from .sgf import *
 from .sgf.all import *
+from .sgo import *
+from .sgo.all import *
 from .sgv import *
 from .sgv.all import *
 from .siif import *
