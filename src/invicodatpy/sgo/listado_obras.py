@@ -207,6 +207,12 @@ class ListadoObras(RPWUtils):
             'fdo_reparo_acum', 'desc_fdo_reparo_acum', 'monto_redeterminado',
         ]
         df[to_numeric_cols] = df[to_numeric_cols].apply(pd.to_numeric)
+        to_numeric_cols = [
+            'avance_fis_real', 'avance_fciero_real',
+            'avance_fis_est', 'avance_fciero_est', 
+            'anticipo_acum', 'porc_anticipo',
+        ]
+        df[to_numeric_cols] = df[to_numeric_cols].apply(lambda x: x.round(4))
         
         # to_integer_cols= [
         #     'id_inspector'
