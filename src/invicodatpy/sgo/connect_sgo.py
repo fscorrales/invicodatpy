@@ -36,6 +36,13 @@ class ConnectSGO():
         options.add_argument("--window-size=1920,1080")
         if self.invisible:
             options.add_argument("--headless")
+
+        options.add_experimental_option('prefs', {
+            # "download.default_directory": "C:/Users/XXXX/Desktop", #Change default directory for downloads
+            "download.prompt_for_download": False, #To auto download the file
+            "download.directory_upgrade": True,
+            "plugins.always_open_pdf_externally": True #It will not show PDF directly in chrome
+        })
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         self.driver.maximize_window()
 
