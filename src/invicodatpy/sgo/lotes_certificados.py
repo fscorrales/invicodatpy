@@ -49,7 +49,7 @@ class LotesCertificados(RPWUtils):
 
     # --------------------------------------------------
     def download_report(
-        self, dir_path:str
+        self, dir_path:str, pages:str = 'all'
     ):
         """
         Download the 'Informe de Evolución Saldos Por Motivos' report from Sistema Recuperos.
@@ -73,10 +73,13 @@ class LotesCertificados(RPWUtils):
                 By.XPATH, "//*[@id='grillaLotesCertificados']/tbody/tr[2]"
             )))
 
-            total_pages = self.sgo.driver.find_element(
-                        By.XPATH, '//*[@id="sp_1_pagerLotesCertificados"]'
-                    )
-            total_pages = total_pages.text
+            if pages == 'all':
+                total_pages = self.sgo.driver.find_element(
+                            By.XPATH, '//*[@id="sp_1_pagerLotesCertificados"]'
+                        )
+                total_pages = total_pages.text
+            else:
+                total_pages = int(pages)
 
             nro_page = 0
             for page in range(int(total_pages)):
@@ -94,7 +97,7 @@ class LotesCertificados(RPWUtils):
                         )
 
                 #Bucle for primera por página
-                for i in range(1): #len btn_exportar_pdfs
+                for i in range(len(btn_exportar_pdfs)): #len btn_exportar_pdfs
                     btn_exportar_pdfs[i].click()
                     nro_id = nro_ids[i+1].get_attribute("title")
                     nro_lote = nro_lotes[i+1].text
@@ -114,7 +117,7 @@ class LotesCertificados(RPWUtils):
                 btn_next.click()
                 time.sleep(1)
 
-                while nro_page < page:
+                while (nro_page <= page) and (nro_page != int(total_pages)):
                     print(nro_page)
                     nro_page = self.sgo.driver.find_element(
                         By.XPATH, '//*[@id="pagerLotesCertificados_center"]/table/tbody/tr/td[4]/input'
@@ -297,6 +300,13 @@ def get_args():
         default = '',
         type=str,
         help = "Password to log in Gestión Vivienda")
+    
+    parser.add_argument(
+        '-ps', '--pages', 
+        metavar = 'Pages to download',
+        default = '2',
+        type=str,
+        help = "Pages to download")
 
     return parser.parse_args()
 
@@ -323,7 +333,7 @@ def main():
                 json_file.close()
         sgo = LotesCertificados(sgo = sgo_connection)
         sgo.download_report(
-            dir_path
+            dir_path, pages = args.pages
         )
         sgo_connection.disconnect()
         sgo_connection.remove_html_files(dir_path)
