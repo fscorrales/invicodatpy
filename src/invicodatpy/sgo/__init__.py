@@ -1,1 +1,1 @@
-__all__ = ['connect_sgo', 'listado_obras']
+__all__ = ['connect_sgo', 'listado_obras', 'lotes_certificados']
