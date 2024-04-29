@@ -122,6 +122,7 @@ class SIIFModel():
             Column('fecha_aprobado', Date()),
             Column('cta_contable', String(8)),
             Column('nro_entrada', String(6)),
+            Column('nro_original', String(6)),
             Column('auxiliar_1', String(50)),
             Column('auxiliar_2', String(50)),
             Column('tipo_comprobante', String(3)),

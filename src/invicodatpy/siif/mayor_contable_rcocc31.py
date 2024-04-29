@@ -176,44 +176,77 @@ class MayorContableRcocc31(RPWUtils):
         df['ejercicio'] = df.iloc[3,1][-4:]
         df['cta_contable'] = (df.iloc[10,6] + '-' + 
         df.iloc[10,11] + '-' + df.iloc[10,12])
-        df = df.replace(to_replace='', value=None)      
-        df = df >> \
-            base.tail(-20) >> \
-            tidyr.drop_na(f['3']) >> \
-            dplyr.transmute(
-                ejercicio = f.ejercicio,
-                cta_contable = f.cta_contable, 
-                nro_entrada = f['3'], 
-                fecha_aprobado = f['9'],
-                auxiliar_1 = f['14'],
-                auxiliar_2 = f['19'],
-                tipo_comprobante = f['21'],
-                debitos = base.as_double(f['24']), 
-                creditos = base.as_double(f['25']),
-                saldo = base.as_double(f['27'])
-            )
-
+        df = df.replace(to_replace='', value=None)
+        df = df.iloc[20:, :]
+        df = df.rename({
+            '3': 'nro_entrada', 
+            '10': 'nro_original',
+            '14': 'fecha_aprobado',
+            '19': 'auxiliar_1',
+            '22': 'auxiliar_2',
+            '25': 'tipo_comprobante',
+            '26': 'debitos',
+            '28': 'creditos',
+            '29': 'saldo',
+            }, axis='columns')
+        df = df.dropna(subset=['nro_entrada'])
         df['fecha_aprobado'] = pd.to_datetime(
             df['fecha_aprobado'], format='%Y-%m-%d'
         )
-        # df['fecha'] = df['fecha_aprobado'].dt.year.astype(str).apply(
-        #     lambda x: df['fecha_aprobado'] 
-        #     if x == df['ejercicio'] 
-        #     else pd.to_datetime(df['ejercicio'] + '-12-31', format='%Y-%m-%d')
-        #     )
-        df.loc[df['fecha_aprobado'].dt.year.astype(str) == df['ejercicio'], 'fecha'] = df['fecha_aprobado']
+        df['fecha'] = df['fecha_aprobado']
+        # df.loc[df['fecha_aprobado'].dt.year.astype(str) == df['ejercicio'], 'fecha'] = df['fecha_aprobado']
         df.loc[df['fecha_aprobado'].dt.year.astype(str) != df['ejercicio'], 'fecha'] = pd.to_datetime(
             df['ejercicio'] + '-12-31', format='%Y-%m-%d'
         )
+        df['mes'] = df['fecha'].dt.month.astype(str).str.zfill(2) + '/' + df['ejercicio']
 
-        df = df >>\
-            dplyr.mutate(
-                mes = df['fecha'].dt.month.astype(str).str.zfill(2) + '/' + df['ejercicio']
-            ) >> \
-            dplyr.select(
-                f.ejercicio, f.mes, f.fecha, f.fecha_aprobado,
-                dplyr.everything()
-            )
+        df = df.loc[
+            :, ['ejercicio', 'mes', 'fecha', 'fecha_aprobado', 
+                'cta_contable', 'nro_entrada', 'nro_original', 
+                'auxiliar_1', 'auxiliar_2',
+                'tipo_comprobante', 'debitos', 'creditos', 'saldo']
+        ]
+        to_numeric_cols = [
+            'debitos', 'creditos', 'saldo'
+        ]
+        df[to_numeric_cols] = df[to_numeric_cols].apply(pd.to_numeric)      
+        # df = df >> \
+        #     base.tail(-20) >> \
+        #     tidyr.drop_na(f['3']) >> \
+        #     dplyr.transmute(
+        #         ejercicio = f.ejercicio,
+        #         cta_contable = f.cta_contable, 
+        #         nro_entrada = f['3'], 
+        #         fecha_aprobado = f['9'],
+        #         auxiliar_1 = f['14'],
+        #         auxiliar_2 = f['19'],
+        #         tipo_comprobante = f['21'],
+        #         debitos = base.as_double(f['24']), 
+        #         creditos = base.as_double(f['25']),
+        #         saldo = base.as_double(f['27'])
+        #     )
+
+        # df['fecha_aprobado'] = pd.to_datetime(
+        #     df['fecha_aprobado'], format='%Y-%m-%d'
+        # )
+        # # df['fecha'] = df['fecha_aprobado'].dt.year.astype(str).apply(
+        # #     lambda x: df['fecha_aprobado'] 
+        # #     if x == df['ejercicio'] 
+        # #     else pd.to_datetime(df['ejercicio'] + '-12-31', format='%Y-%m-%d')
+        # #     )
+        # df.loc[df['fecha_aprobado'].dt.year.astype(str) == df['ejercicio'], 'fecha'] = df['fecha_aprobado']
+        # df.loc[df['fecha_aprobado'].dt.year.astype(str) != df['ejercicio'], 'fecha'] = pd.to_datetime(
+        #     df['ejercicio'] + '-12-31', format='%Y-%m-%d'
+        # )
+
+        # df = df >>\
+        #     dplyr.mutate(
+        #         mes = df['fecha'].dt.month.astype(str).str.zfill(2) + '/' + df['ejercicio']
+        #     ) >> \
+        #     dplyr.select(
+        #         f.ejercicio, f.mes, f.fecha, f.fecha_aprobado,
+        #         dplyr.everything()
+        #     )
 
         self.df = df
         return self.df
@@ -253,7 +286,7 @@ def get_args():
     parser.add_argument(
         '-e', '--ejercicio', 
         metavar = 'Ejercicio',
-        default = '2022',
+        default = '2024',
         type=str,
         help = "Ejercicio to download from SIIF")
 
@@ -285,6 +318,7 @@ def main():
             dir_path, ejercicios=args.ejercicio
         )
         siif_connection.disconnect()
+        siif_connection.remove_html_files(dir_path)
     else:
         siif_rcocc31 = MayorContableRcocc31()
 
@@ -304,4 +338,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.mayor_contable_rcocc31
+    # python -m invicodatpy.siif.mayor_contable_rcocc31 --no-download

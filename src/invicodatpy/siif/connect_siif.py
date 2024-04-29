@@ -99,6 +99,16 @@ class ConnectSIIF():
             raise ValueError("%s isn't a file!" % old_file_path)
 
     # --------------------------------------------------
+    def remove_html_files(self, dir_path:str):
+        time.sleep(5)
+        file_list = os.listdir(dir_path)
+        for f in file_list:
+            if '.htm' in f:
+                file_path = os.path.join(dir_path, f)
+                os.remove(file_path)
+                print(f"File: {file_path} removed")
+
+    # --------------------------------------------------
     def disconnect(self) -> None:
         self.driver.switch_to.window(self.driver.window_handles[0])
         btn_disconnect = self.driver.find_element(By.XPATH, "//a[@id='pt1:tnp1:tcni1']")
