@@ -44,11 +44,12 @@ class ConnectSIIF():
         """"Connect SIIF"""
         self.driver.get('https://siif.cgpc.gob.ar/mainSiif/faces/login.jspx')
         try:
-            self.wait.until(EC.presence_of_element_located((By.XPATH, "//div[@id='pt1:t1::oc']")))
+            self.wait.until(EC.presence_of_element_located((By.XPATH, "//button[@id='pt1:cb1']")))
             input_username, input_password = self.driver.find_elements(By.XPATH, "//input[starts-with(@id,'pt')]")
             input_username.send_keys(self.username)
             input_password.send_keys(self.password) 
-            btn_connect = self.driver.find_element(By.XPATH, "//div[@id='pt1:t1::oc']")
+            # btn_connect = self.driver.find_element(By.XPATH, "//div[@id='pt1:t1::oc']")
+            btn_connect = self.driver.find_element(By.XPATH, "//button[@id='pt1:cb1']")
             btn_connect.click()
             time.sleep(1)
         except Exception as e:
@@ -61,12 +62,12 @@ class ConnectSIIF():
         try:
             #Abrir pestaña reportes
             self.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//a[@class='xyj' and text()='REPORTES']"))
+                (By.XPATH, "//button[@id='pt1:cb12']"))
             )
-            mnu_reportes = self.driver.find_element(By.XPATH, "//a[@class='xyj' and text()='REPORTES']")
+            mnu_reportes = self.driver.find_element(By.XPATH, "//button[@id='pt1:cb12']")
             mnu_reportes.click()
             time.sleep(1)
-            reportes = self.driver.find_element(By.XPATH, "//tr[@id='pt1:cmiReportes']")
+            reportes = self.driver.find_element(By.XPATH, "//button[@id='pt1:cb14']")
             reportes.click()
             # Wait for the new window or tab
             self.wait.until(EC.number_of_windows_to_be(2))
