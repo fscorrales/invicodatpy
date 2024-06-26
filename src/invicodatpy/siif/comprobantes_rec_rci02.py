@@ -268,4 +268,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.comprobantes_rec_rci02
+    # python -m invicodatpy.siif.comprobantes_rec_rci02 -e 2024

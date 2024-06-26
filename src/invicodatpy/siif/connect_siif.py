@@ -112,7 +112,7 @@ class ConnectSIIF():
     # --------------------------------------------------
     def disconnect(self) -> None:
         self.driver.switch_to.window(self.driver.window_handles[0])
-        btn_disconnect = self.driver.find_element(By.XPATH, "//a[@id='pt1:tnp1:tcni1']")
+        btn_disconnect = self.driver.find_element(By.XPATH, "//a[@id='pt1:pt_np1:pt_cni1']")
         btn_disconnect.click()
         self.quit()
 
