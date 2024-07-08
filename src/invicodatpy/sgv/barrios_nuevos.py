@@ -143,7 +143,7 @@ class BarriosNuevos(RPWUtils):
             '9': 'importe_total',
             '13': 'importe_promedio',
             }, axis='columns', inplace=True)
-        df['barrio'] = df['barrio'].str.strip()
+        df['cod_barrio'] = df['cod_barrio'].astype(int)
         df['importe_total'] = df['importe_total'].astype(float)
         df['importe_promedio'] = df['importe_promedio'].astype(float)
         cols = df.columns.tolist()

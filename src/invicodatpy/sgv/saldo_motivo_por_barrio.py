@@ -216,6 +216,7 @@ class SaldoMotivoPorBarrio(RPWUtils):
             '2': 'barrio',
             '3': 'importe',
             }, axis='columns', inplace=True)
+        df['cod_barrio'] = df['cod_barrio'].astype(int)
         cols = ['importe']
         for col in cols:
             df[col] = df[col].astype(float)

@@ -144,6 +144,7 @@ class SaldoBarrioVariacion(RPWUtils):
             '4': 'cambios',
             '6': 'saldo_final',
             }, axis='columns', inplace=True)
+        df['cod_barrio'] = df['cod_barrio'].astype(int)
         cols = ['saldo_inicial', 'amortizacion', 'cambios', 'saldo_final']
         for col in cols:
             df[col] = df[col].astype(float)
