@@ -14,12 +14,13 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 
 @dataclass
 class ConnectSIIF():
-    username:str = None 
-    password:str = None
+    username:str =  ''
+    password:str = ''
     invisible:bool = False
     driver:webdriver = field(init=False, repr=False, default=None)
 
@@ -36,15 +37,26 @@ class ConnectSIIF():
         # Setup wait for later
         self.wait = WebDriverWait(self.driver, 10)
         
-        self.connect()
-        self.go_to_reportes()
+        "Open SIIF webpage"
+        self.driver.get('https://siif.cgpc.gob.ar/mainSiif/faces/login.jspx')
+        # self.connect()
+        # self.go_to_reportes()
 
     # --------------------------------------------------
-    def connect(self) -> None:
-        """"Connect SIIF"""
-        self.driver.get('https://siif.cgpc.gob.ar/mainSiif/faces/login.jspx')
+    def connect(self, username:str = '', password:str = '') -> None:
+        if username != '':
+            self.username = username
+        if password !='':
+            self.password = password
+        # """"Connect SIIF"""
+        # self.driver.get('https://siif.cgpc.gob.ar/mainSiif/faces/login.jspx')
         try:
             self.wait.until(EC.presence_of_element_located((By.XPATH, "//button[@id='pt1:cb1']")))
+        except TimeoutException:
+            print("No se pudo conectar con la página del SIIF. Verifique su conexión")
+            self.quit()
+
+        try:
             input_username, input_password = self.driver.find_elements(By.XPATH, "//input[starts-with(@id,'pt')]")
             input_username.send_keys(self.username)
             input_password.send_keys(self.password) 
@@ -52,8 +64,8 @@ class ConnectSIIF():
             btn_connect = self.driver.find_element(By.XPATH, "//button[@id='pt1:cb1']")
             btn_connect.click()
             time.sleep(1)
-        except Exception as e:
-            print(f"Ocurrió un error: {e}, {type(e)}")
+        except NoSuchElementException:
+            print(f"No se encontro el elemento: {NoSuchElementException}")
             self.quit()
 
     # --------------------------------------------------
@@ -114,7 +126,7 @@ class ConnectSIIF():
         self.driver.switch_to.window(self.driver.window_handles[0])
         btn_disconnect = self.driver.find_element(By.XPATH, "//a[@id='pt1:pt_np1:pt_cni1']")
         btn_disconnect.click()
-        self.quit()
+        # self.quit()
 
     # --------------------------------------------------
     def quit(self) -> None:

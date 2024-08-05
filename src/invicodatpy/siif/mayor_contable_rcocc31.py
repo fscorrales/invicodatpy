@@ -156,6 +156,7 @@ class MayorContableRcocc31(RPWUtils):
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
             self.siif.disconnect()
+            self.siif.quit()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
