@@ -14,7 +14,6 @@ from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
-from datar import base, dplyr, f, tidyr
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -126,6 +125,12 @@ class FormGtoRfpP605b(RPWUtils):
             'downloadPath': dir_path
             }
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
+
+            # Conectamos
+            self.siif.connect()
+
+            # Nos movemos a Reportes
+            self.siif.go_to_reportes() 
 
             # Seleccionar módulo Recursos
             cmb_modulos = Select(

@@ -10,12 +10,18 @@ import time
 from dataclasses import dataclass, field
 
 from selenium import webdriver
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    TimeoutException,
+    WebDriverException,
+)
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+
 
 @dataclass
 class ConnectSIIF():
@@ -31,7 +37,8 @@ class ConnectSIIF():
         options.add_argument("--window-size=1920,1080")
         if self.invisible:
             options.add_argument("--headless")
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        service = Service(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=service, options=options)
         self.driver.maximize_window()
 
         # Setup wait for later
@@ -48,8 +55,14 @@ class ConnectSIIF():
             self.username = username
         if password !='':
             self.password = password
-        # """"Connect SIIF"""
-        # self.driver.get('https://siif.cgpc.gob.ar/mainSiif/faces/login.jspx')
+
+        #Probamos si hay connección al servidor
+        server_down = self.driver.find_elements(
+            By.XPATH, "/html/body/div[3]/h3[contains(., 'SIIF no disponible!')]"
+        )
+        if len(server_down) > 0:
+            raise WebDriverException("Servidor no disponible")
+
         try:
             self.wait.until(EC.presence_of_element_located((By.XPATH, "//button[@id='pt1:cb1']")))
         except TimeoutException:
@@ -113,6 +126,7 @@ class ConnectSIIF():
 
     # --------------------------------------------------
     def remove_html_files(self, dir_path:str):
+        """Remove html files"""
         time.sleep(5)
         file_list = os.listdir(dir_path)
         for f in file_list:

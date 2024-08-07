@@ -20,17 +20,36 @@ sys.path.append(parent)
 # importing
 from tests.utils.hangling_path import HanglingPath
 from src.invicodatpy.siif.connect_siif import ConnectSIIF
+from src.invicodatpy.siif.resumen_contable_cta_rvicon03 import ResumenContableCtaRvicon03
 
-@pytest.fixture()
-def setup_and_teardown_siif(request):
-    hp = HanglingPath()
+hp = HanglingPath()
+ejercicio = '2022'
+
+def get_siif_username_and_password() -> tuple:
     json_path = os.path.join(hp.get_siif_path(), 'siif_credentials.json')
     with open(json_path) as json_file:
         data_json = json.load(json_file)
-        request.cls.username = data_json['username']
-        request.cls.password = data_json['password']
+        username = data_json['username']
+        password = data_json['password']
     json_file.close()
+    return username, password
+
+@pytest.fixture()
+def setup_and_teardown_siif(request):
+    request.cls.username, request.cls.password = get_siif_username_and_password()
     connect_siif = ConnectSIIF()
     request.cls.connect_siif = connect_siif
+    yield
+    connect_siif.quit()
+
+@pytest.fixture(scope = 'class')
+def setup_and_teardown_siif_rvicon03(request):
+    request.cls.ejercicio= ejercicio
+    test_siif_path = hp.get_test_siif_path()
+    request.cls.test_siif_path = test_siif_path
+    username, password = get_siif_username_and_password()
+    connect_siif = ConnectSIIF(username = username, password = password)
+    request.cls.connect_siif = connect_siif
+    request.cls.resumen_contable_cta_rvicon03 = ResumenContableCtaRvicon03(siif = connect_siif)
     yield
     connect_siif.quit()

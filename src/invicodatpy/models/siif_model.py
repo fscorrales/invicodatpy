@@ -131,6 +131,24 @@ class SIIFModel():
             Column('saldo', Numeric(12,2))
         )
 
+        self.resumen_contable_cta_rvicon03 = Table(
+            'resumen_contable_cta_rvicon03', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('ejercicio', String(4)),
+            Column('nivel', String(4)),
+            Column('nivel_desc', String(50)),
+            Column('cta_contable', String(8)),
+            Column('cta_contable_desc', String(50)),
+            Column('saldo_inicial', Numeric(12,2)),
+            Column('debe', Numeric(12,2)),
+            Column('haber', Numeric(12,2)),
+            Column('ajuste_debe', Numeric(12,2)),
+            Column('ajuste_haber', Numeric(12,2)),
+            Column('fondos_debe', Numeric(12,2)),
+            Column('fondos_haber', Numeric(12,2)),
+            Column('saldo_final', Numeric(12,2)),
+        )
+
         self.resumen_fdos_rfondo07tp = Table(
             'resumen_fdos_rfondo07tp', self.metadata,
             Column('id', Integer(), autoincrement=True, primary_key=True),

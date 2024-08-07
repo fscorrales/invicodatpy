@@ -15,6 +15,12 @@ class HanglingPath():
         dir_path = self.get_utils_path()
         dir_path = os.path.dirname(dir_path)
         return dir_path
+
+    # --------------------------------------------------
+    def get_test_siif_path(self):
+        dir_path = self.get_tests_path()
+        dir_path = os.path.join(dir_path, 'siif')
+        return dir_path
     
     # --------------------------------------------------
     def get_invicodatpy_path(self):

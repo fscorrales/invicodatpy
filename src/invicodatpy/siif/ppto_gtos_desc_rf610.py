@@ -49,6 +49,12 @@ class PptoGtosDescRf610(RPWUtils):
             }
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
 
+            # Conectamos
+            self.siif.connect()
+
+            # Nos movemos a Reportes
+            self.siif.go_to_reportes() 
+
             # Seleccionar módulo Gastos
             cmb_modulos = Select(
                 self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")

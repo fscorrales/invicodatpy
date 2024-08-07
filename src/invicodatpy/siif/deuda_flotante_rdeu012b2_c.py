@@ -7,10 +7,9 @@ Purpose: Read, process and write SIIF's rdeu012b2_cuit report
 import argparse
 import inspect
 import os
-import sys
 
 import pandas as pd
-from datar import base, dplyr, f, tidyr
+from datar import dplyr, f
 
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils

@@ -22,27 +22,31 @@ class TestSIIFConnection:
         wait = WebDriverWait(self.connect_siif.driver, 10)
         try:
             self.connect_siif.connect()
-            wait.until(EC.presence_of_element_located((By.XPATH, "//button[@id='pt1:cb12']")))
+            wait.until(EC.presence_of_element_located((
+                By.XPATH, "//button[@id='pt1:cb12']"
+            )))
         except TimeoutException:
             assert True
         else:
-            assert False, "No se lanzó la excepción TimeoutException"
-        # with pytest.raises(TimeoutException):
-        #     self.connect_siif.connect()
-        # try:
-        #     self.connect_siif.connect()
-        # except Exception as e:
-        #     print(f"Se lanzó la excepción: {e}")
-        #     assert isinstance(e, TimeoutException)
-        # else:
-        #     assert False, "No se lanzó la excepción TimeoutException"
+            assert False, "Acceso no autorizado sin credenciales"
 
-def wait_until_element_present(driver, locator):
-    wait = WebDriverWait(driver, 10)
-    try:
-        wait.until(EC.presence_of_element_located(locator))
-    except TimeoutException:
-        assert False
+    def test_access_to_reportes(self):
+        wait = WebDriverWait(self.connect_siif.driver, 3)
+        try:
+            self.connect_siif.connect(
+                username=self.username,
+                password=self.password
+            )
+            self.connect_siif.go_to_reportes()
+            wait.until(EC.presence_of_element_located((
+                By.XPATH, "//select[@id='pt1:socModulo::content']"
+            )))
+        except TimeoutException:
+            assert False, "No se pudo acceder a reportes"
+            self.connect_siif.disconnect()
+        else:
+            assert True
+            self.connect_siif.disconnect()
 
 # Ejecutar las pruebas
 if __name__ == "__main__":
