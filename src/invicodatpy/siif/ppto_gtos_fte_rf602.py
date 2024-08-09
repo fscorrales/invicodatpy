@@ -52,6 +52,14 @@ class PptoGtosFteRf602(RPWUtils):
     )
 
     # --------------------------------------------------
+    def connect(self):
+        self.siif.connect()
+
+    # --------------------------------------------------
+    def go_to_reports(self):
+        self.siif.go_to_reports()
+
+    # --------------------------------------------------
     def download_report(
         self, dir_path:str, ejercicios:list = str(dt.datetime.now().year)
     ):
@@ -62,12 +70,6 @@ class PptoGtosFteRf602(RPWUtils):
             'downloadPath': dir_path
             }
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
-            # Conectamos
-            self.siif.connect()
-
-            # Nos movemos a Reportes
-            self.siif.go_to_reportes() 
 
             # Seleccionar módulo Gastos
             cmb_modulos = Select(
@@ -234,6 +236,8 @@ def main():
                     )
                 json_file.close()
         siif_rf602 = PptoGtosFteRf602(siif = siif_connection)
+        siif_rf602.connect()
+        siif_rf602.go_to_reports()
         siif_rf602.download_report(
             dir_path, ejercicios=args.ejercicio
         )

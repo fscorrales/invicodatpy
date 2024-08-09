@@ -53,6 +53,14 @@ class DeudaFlotanteRdeu012(RPWUtils):
     )
 
     # --------------------------------------------------
+    def connect(self):
+        self.siif.connect()
+
+    # --------------------------------------------------
+    def go_to_reports(self):
+        self.siif.go_to_reports()
+
+    # --------------------------------------------------
     def download_report(
         self, dir_path:str, 
         meses:list = dt.datetime.strftime(dt.datetime.now(), '%Y-%m')
@@ -64,12 +72,6 @@ class DeudaFlotanteRdeu012(RPWUtils):
             'downloadPath': dir_path
             }
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
-            # Conectamos
-            self.siif.connect()
-
-            # Nos movemos a Reportes
-            self.siif.go_to_reportes() 
 
             # Seleccionar módulo Gastos
             cmb_modulos = Select(
@@ -293,6 +295,8 @@ def main():
                     )
                 json_file.close()
         siif_rdeu012 = DeudaFlotanteRdeu012(siif = siif_connection)
+        siif_rdeu012.connect()
+        siif_rdeu012.go_to_reports()
         siif_rdeu012.download_report(
             dir_path, meses=args.mes
         )

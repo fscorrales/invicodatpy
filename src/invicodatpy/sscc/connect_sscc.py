@@ -21,7 +21,7 @@ class ConnectSSCC():
     # --------------------------------------------------
     def __post_init__(self):        
         self.connect()
-        # self.go_to_reportes()
+        # self.go_to_reports()
 
     # --------------------------------------------------
     def connect(self) -> None:
@@ -48,7 +48,7 @@ class ConnectSSCC():
             self.quit()
 
     # # --------------------------------------------------
-    # def go_to_reportes(self) -> None:
+    # def go_to_reports(self) -> None:
     #     """"Go to SIIF's Reportes Module"""
     #     try:
     #         #Abrir pestaña reportes

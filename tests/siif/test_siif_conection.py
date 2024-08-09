@@ -39,7 +39,7 @@ class TestSIIFConnection:
                 username=self.username,
                 password=self.password
             )
-            self.connect_siif.go_to_reportes()
+            self.connect_siif.go_to_reports()
             wait.until(EC.presence_of_element_located((
                 By.XPATH, "//select[@id='pt1:socModulo::content']"
             )))

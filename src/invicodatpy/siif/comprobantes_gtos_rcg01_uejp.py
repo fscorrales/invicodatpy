@@ -51,6 +51,14 @@ class ComprobantesGtosRcg01Uejp(RPWUtils):
     )
 
     # --------------------------------------------------
+    def connect(self):
+        self.siif.connect()
+
+    # --------------------------------------------------
+    def go_to_reports(self):
+        self.siif.go_to_reports()
+
+    # --------------------------------------------------
     def download_report(
         self, dir_path:str, ejercicios:list = str(dt.datetime.now().year)
     ):
@@ -61,12 +69,6 @@ class ComprobantesGtosRcg01Uejp(RPWUtils):
             'downloadPath': dir_path
             }
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
-            # Conectamos
-            self.siif.connect()
-
-            # Nos movemos a Reportes
-            self.siif.go_to_reportes() 
 
             # Seleccionar módulo Gastos
             cmb_modulos = Select(
@@ -267,6 +269,8 @@ def main():
                     )
                 json_file.close()
         siif_rcg01_uejp = ComprobantesGtosRcg01Uejp(siif = siif_connection)
+        siif_rcg01_uejp.connect()
+        siif_rcg01_uejp.go_to_reports()
         siif_rcg01_uejp.download_report(
             dir_path, ejercicios=args.ejercicio
         )

@@ -21,7 +21,7 @@ class ConnectSGF():
     # --------------------------------------------------
     def __post_init__(self):        
         self.connect()
-        # self.go_to_reportes()
+        # self.go_to_reports()
 
     # --------------------------------------------------
     def connect(self) -> None:

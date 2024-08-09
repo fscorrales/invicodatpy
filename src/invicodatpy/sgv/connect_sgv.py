@@ -42,7 +42,7 @@ class ConnectSGV():
         self.wait = WebDriverWait(self.driver, 20)
         
         self.connect()
-        # self.go_to_reportes()
+        # self.go_to_reports()
 
     # --------------------------------------------------
     def connect(self) -> None:
