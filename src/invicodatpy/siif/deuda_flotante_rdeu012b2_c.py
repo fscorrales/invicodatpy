@@ -48,6 +48,7 @@ class DeudaFlotanteRdeu012b2C(RPWUtils):
         # else:
         #     # Future exception raise
         #     pass
+        return self.df
 
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:

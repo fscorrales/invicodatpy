@@ -129,6 +129,7 @@ class PptoGtosFteRf602(RPWUtils):
         else:
             # Future exception raise
             pass
+        return self.df
 
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:
@@ -255,6 +256,7 @@ def main():
     siif_rf602.print_tidyverse()
     siif_rf602.from_sql(dir_path + '/siif.sqlite')
     siif_rf602.print_tidyverse()
+    # siif_rf602.update_sql_db(dir_path + '/' + filename, dir_path + '/siif.sqlite')
 
 # --------------------------------------------------
 if __name__ == '__main__':
