@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 @pytest.mark.usefixtures("setup_and_teardown_siif")
 class TestSIIFConnection:
+    @pytest.mark.siif_login
     def test_login_with_valid_credentials(self):
         try:
             self.connect_siif.connect(
@@ -30,7 +31,8 @@ class TestSIIFConnection:
         else:
             assert False, "Acceso no autorizado sin credenciales"
 
-    def test_access_to_reportes(self):
+    @pytest.mark.siif_reports
+    def test_access_to_reports(self):
         wait = WebDriverWait(self.connect_siif.driver, 3)
         try:
             self.connect_siif.connect(
