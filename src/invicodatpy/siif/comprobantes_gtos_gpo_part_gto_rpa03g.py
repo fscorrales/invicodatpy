@@ -51,6 +51,14 @@ class ComprobantesGtosGpoPartGtoRpa03g(RPWUtils):
     )
 
     # --------------------------------------------------
+    def connect(self):
+        self.siif.connect()
+
+    # --------------------------------------------------
+    def go_to_reports(self):
+        self.siif.go_to_reports()
+
+    # --------------------------------------------------
     def download_report(
         self, dir_path:str, ejercicios:list = str(dt.datetime.now().year)
     ):
@@ -61,12 +69,6 @@ class ComprobantesGtosGpoPartGtoRpa03g(RPWUtils):
             'downloadPath': dir_path
             }
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
-            # Conectamos
-            self.siif.connect()
-
-            # Nos movemos a Reportes
-            self.siif.go_to_reportes() 
 
             # Seleccionar módulo Gastos
             cmb_modulos = Select(
@@ -248,6 +250,8 @@ def main():
                     )
                 json_file.close()
         siif_gto_rpa03g = ComprobantesGtosGpoPartGtoRpa03g(siif = siif_connection)
+        siif_gto_rpa03g.connect()
+        siif_gto_rpa03g.go_to_reports()
         siif_gto_rpa03g.download_report(
             dir_path, ejercicios=args.ejercicio
         )

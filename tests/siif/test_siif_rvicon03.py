@@ -3,7 +3,7 @@ import os
 import pytest
 import pandas as pd
 
-@pytest.mark.rvicon03
+@pytest.mark.siif_rvicon03
 @pytest.mark.usefixtures("setup_and_teardown_siif_rvicon03")
 class TestSIIFRvicon03:
     def test_download_and_transform_rvicon03(self, tmpdir):
@@ -12,6 +12,8 @@ class TestSIIFRvicon03:
             dir_path = os.path.join(dir_path, 'sub')
             print(f"El directorio temporal es: {dir_path}")
             # Llama al método download_report
+            self.connect_siif.connect()
+            self.connect_siif.go_to_reports()
             self.resumen_contable_cta_rvicon03.download_report(
                 dir_path, ejercicios=self.ejercicio
             )

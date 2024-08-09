@@ -48,7 +48,7 @@ class ConnectSIIF():
         "Open SIIF webpage"
         self.driver.get('https://siif.cgpc.gob.ar/mainSiif/faces/login.jspx')
         # self.connect()
-        # self.go_to_reportes()
+        # self.go_to_reports()
 
     # --------------------------------------------------
     def connect(self, username:str = '', password:str = '') -> None:
@@ -86,7 +86,7 @@ class ConnectSIIF():
             self.quit()
 
     # --------------------------------------------------
-    def go_to_reportes(self) -> None:
+    def go_to_reports(self) -> None:
         """"Go to SIIF's Reportes Module"""
         try:
             #Abrir pestaña reportes

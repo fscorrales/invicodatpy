@@ -51,6 +51,14 @@ class PptoRecRi102(RPWUtils):
     )
 
     # --------------------------------------------------
+    def connect(self):
+        self.siif.connect()
+
+    # --------------------------------------------------
+    def go_to_reports(self):
+        self.siif.go_to_reports()
+
+    # --------------------------------------------------
     def download_report(
         self, dir_path:str, ejercicios:list = str(dt.datetime.now().year)
     ):
@@ -216,6 +224,8 @@ def main():
                     )
                 json_file.close()
         siif_ri102 = PptoRecRi102(siif = siif_connection)
+        siif_ri102.connect()
+        siif_ri102.go_to_reports()
         siif_ri102.download_report(
             dir_path, ejercicios=args.ejercicio
         )

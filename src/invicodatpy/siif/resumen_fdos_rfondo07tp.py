@@ -51,6 +51,14 @@ class ResumenFdosRfondo07tp(RPWUtils):
     )
 
     # --------------------------------------------------
+    def connect(self):
+        self.siif.connect()
+
+    # --------------------------------------------------
+    def go_to_reports(self):
+        self.siif.go_to_reports()
+
+    # --------------------------------------------------
     def download_report(
         self, dir_path:str, ejercicios:list = str(dt.datetime.now().year), 
         tipo_comprobante:str = 'PA6'
@@ -62,12 +70,6 @@ class ResumenFdosRfondo07tp(RPWUtils):
             'downloadPath': dir_path
             }
             self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
-            # Conectamos
-            self.siif.connect()
-
-            # Nos movemos a Reportes
-            self.siif.go_to_reportes() 
 
             # Seleccionar módulo Gastos
             cmb_modulos = Select(
@@ -260,6 +262,8 @@ def main():
                     )
                 json_file.close()
         siif_rci02 = ResumenFdosRfondo07tp(siif = siif_connection)
+        siif_rci02.connect()
+        siif_rci02.go_to_reports()
         siif_rci02.download_report(
             dir_path, ejercicios=args.ejercicio
         )
