@@ -28,9 +28,8 @@ setup(
         'openpyxl',
         'oauth2client==4.1.3',
         'sqlalchemy-access==1.1.4',
-        'tabula-py',
         'selenium',
         'pywinauto',
-        'webdriver-manager'
+        'webdriver-manager==4.0.0'
     ]
 )
