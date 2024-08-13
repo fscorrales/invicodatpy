@@ -12,8 +12,8 @@ import os
 import time
 from dataclasses import dataclass, field
 
+import numpy as np
 import pandas as pd
-from datar import base, dplyr, f, tidyr
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -22,6 +22,8 @@ from selenium.webdriver.support.ui import Select
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
+
+__all__ = ['ComprobantesGtosGpoPartGtoRpa03g']
 
 @dataclass
 class ComprobantesGtosGpoPartGtoRpa03g(RPWUtils):
@@ -60,7 +62,9 @@ class ComprobantesGtosGpoPartGtoRpa03g(RPWUtils):
 
     # --------------------------------------------------
     def download_report(
-        self, dir_path:str, ejercicios:list = str(dt.datetime.now().year)
+        self, dir_path:str, 
+        ejercicios:list = str(dt.datetime.now().year),
+        group_part:list = ['1','2','3','4']
     ):
         try:
             # Path de salida
@@ -112,7 +116,7 @@ class ComprobantesGtosGpoPartGtoRpa03g(RPWUtils):
             for ejercicio in ejercicios:
                 int_ejercicio = int(ejercicio)
                 if int_ejercicio > 2010 and int_ejercicio <= dt.datetime.now().year:
-                    for grupo_partida in ['1', '2', '3', '4']:
+                    for grupo_partida in group_part:
                         # Ejercicio
                         input_ejercicio.clear()
                         input_ejercicio.send_keys(ejercicio)
@@ -149,40 +153,40 @@ class ComprobantesGtosGpoPartGtoRpa03g(RPWUtils):
         else:
             # Future exception raise
             pass
+        return self.df
 
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:
         """"Transform read xls file"""
         df = self.df
         df['ejercicio'] = df.iloc[3,18][-4:]
-        df = df.replace(to_replace='', value=None)      
-        df = df >> \
-            base.tail(-21) >> \
-            tidyr.drop_na(f['1']) >> \
-            dplyr.transmute(
-                ejercicio = f.ejercicio,
-                nro_entrada = f['1'],
-                nro_origen = f['5'],
-                importe = base.as_double(f['8']),
-                fecha = f['14'],
-                partida =  f['17'],
-                grupo = f.partida.str[0] + '00',
-                nro_expte = f['19'],
-                glosa = f['21'],
-                beneficiario = f['23'],
-                mes =  f.fecha.str[5:7] + '/' + f.ejercicio,
-                nro_comprobante = f['nro_entrada'].str.zfill(5) + '/' + f['mes'].str[-2:]
-            ) >> \
-            dplyr.select(
-                f.ejercicio, f.mes, f.fecha,
-                f.nro_comprobante, f.importe,
-                f.grupo, f.partida,
-                dplyr.everything()
-            )
+        df = df.replace(to_replace='', value=None)
+        df = df.tail(-21)
+        df = df.dropna(subset=['1'])
+        df = df.rename(columns={
+            '1': 'nro_entrada',
+            '5': 'nro_origen',
+            '8': 'importe',
+            '14': 'fecha',
+            '17': 'partida',
+            '19': 'nro_expte',
+            '21': 'glosa',
+            '23': 'beneficiario',
+        })
+        df['importe'] = pd.to_numeric(df['importe']).astype(np.float64)
+        df['grupo'] = df['partida'].str[0] + '00'
+        df['mes'] = df['fecha'].str[5:7] + '/' + df['ejercicio']
+        df['nro_comprobante'] = df['nro_entrada'].str.zfill(5) + '/' + df['mes'].str[-2:]
 
         df['fecha'] = pd.to_datetime(
             df['fecha'], format='%Y-%m-%d'
         )
+
+        df = df.loc[:,[
+            'ejercicio', 'mes', 'fecha', 'nro_comprobante', 'importe',
+            'grupo', 'partida', 'nro_entrada', 'nro_origen', 'nro_expte', 
+            'glosa', 'beneficiario', 
+        ]]
 
         self.df = df
         return self.df
@@ -276,3 +280,4 @@ if __name__ == '__main__':
     main()
     # From invicodatpy/src
     # python -m invicodatpy.siif.comprobantes_gtos_gpo_part_gto_rpa03g
+    # python -m invicodatpy.siif.comprobantes_gtos_gpo_part_gto_rpa03g --no-download

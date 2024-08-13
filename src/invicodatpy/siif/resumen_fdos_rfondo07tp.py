@@ -12,8 +12,8 @@ import os
 import time
 from dataclasses import dataclass, field
 
+import numpy as np
 import pandas as pd
-from datar import base, dplyr, f, tidyr
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -22,6 +22,8 @@ from selenium.webdriver.support.ui import Select
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
+
+__all__ = ['ResumenFdosRfondo07tp']
 
 @dataclass
 class ResumenFdosRfondo07tp(RPWUtils):
@@ -161,40 +163,59 @@ class ResumenFdosRfondo07tp(RPWUtils):
         else:
             # Future exception raise
             pass
+        return self.df
 
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:
         """"Transform read xls file"""
         df = self.df
         df['ejercicio'] = df.iloc[4,1][-4:]
-        df['tipo_comprobante'] = df.iloc[11,2].split(':')[2]
-        df = df.replace(to_replace='', value=None)      
-        df = df >> \
-            base.tail(-19) >> \
-            tidyr.drop_na(f['10']) >> \
-            dplyr.transmute(
-                ejercicio = f.ejercicio,
-                tipo_comprobante = base.trimws(f.tipo_comprobante),
-                fecha = f['10'],
-                mes =  f.fecha.str[5:7] + '/' + f.ejercicio,
-                nro_fondo = f['3'],
-                glosa = base.trimws(f['6']),
-                ingresos = base.as_double(f['12']),
-                egresos = base.as_double(f['15']),
-                saldo = base.as_double(f['18']),
-                nro_comprobante = f['nro_fondo'].str.zfill(5) + '/' + f['mes'].str[-2:]
-            )
+        df['tipo_comprobante'] = df.iloc[11,2].split(':')[2].strip()
+        # df['tipo_comprobante'] = base.trimws(
+        #     df.iloc[11,2].split(':')[2]
+        # )
+        df = df.replace(to_replace='', value=None)
+        df = df.tail(-19)
+        df = df.dropna(subset=['10'])
+        df = df.rename(columns={
+            '3': 'nro_fondo',
+            '6': 'glosa',
+            '10': 'fecha',
+            '12': 'ingresos',
+            '15': 'egresos',
+            '18': 'saldo',
+        })
+        df['mes'] = df['fecha'].str[5:7] + '/' + df['ejercicio']
+        df['nro_comprobante'] = df['nro_fondo'].str.zfill(5) + '/' + df['mes'].str[-2:]
+        # df = df >> \
+        #     base.tail(-19) >> \
+        #     tidyr.drop_na(f['10']) >> \
+        #     dplyr.transmute(
+        #         ejercicio = f.ejercicio,
+        #         tipo_comprobante = base.trimws(f.tipo_comprobante),
+        #         fecha = f['10'],
+        #         mes =  f.fecha.str[5:7] + '/' + f.ejercicio,
+        #         nro_fondo = f['3'],
+        #         glosa = base.trimws(f['6']),
+        #         ingresos = base.as_double(f['12']),
+        #         egresos = base.as_double(f['15']),
+        #         saldo = base.as_double(f['18']),
+        #         nro_comprobante = f['nro_fondo'].str.zfill(5) + '/' + f['mes'].str[-2:]
+        #     )
 
         df['fecha'] = pd.to_datetime(
             df['fecha'], format='%Y-%m-%d'
         )
 
-        df = df >>\
-            dplyr.select(
-                f.ejercicio, f.mes, f.fecha,
-                f.tipo_comprobante, f.nro_comprobante,
-                dplyr.everything()
-            )
+        df = df.loc[:, [
+            'ejercicio', 'mes', 'fecha', 'tipo_comprobante', 'nro_comprobante',
+            'nro_fondo', 'glosa', 'ingresos', 'egresos', 'saldo'
+        ]]
+
+        to_numeric_cols = [
+            'ingresos', 'egresos', 'saldo'
+        ]
+        df[to_numeric_cols] = df[to_numeric_cols].apply(pd.to_numeric).astype(np.float64) 
 
         self.df = df
         return self.df
@@ -288,3 +309,4 @@ if __name__ == '__main__':
     main()
     # From invicodatpy/src
     # python -m invicodatpy.siif.resumen_fdos_rfondo07tp
+    # python -m invicodatpy.siif.resumen_fdos_rfondo07tp --no-download

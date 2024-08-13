@@ -3,10 +3,10 @@ import os
 import pytest
 import pandas as pd
 
-@pytest.mark.siif_rvicon03
-@pytest.mark.usefixtures("setup_and_teardown_siif_rvicon03")
-class TestSIIFRvicon03:
-    def test_download_and_transform_rvicon03(self, tmpdir):
+@pytest.mark.siif_rfondo07tp
+@pytest.mark.usefixtures("setup_and_teardown_siif_rfondo07tp")
+class TestSIIFRfondo07tp:
+    def test_download_and_transform_rfondo07tp(self, tmpdir):
         try:
             dir_path = os.path.dirname(tmpdir)
             dir_path = os.path.join(dir_path, 'sub')
@@ -14,32 +14,29 @@ class TestSIIFRvicon03:
             # Llama al método download_report
             self.connect_siif.connect()
             self.connect_siif.go_to_reports()
-            self.resumen_contable_cta_rvicon03.download_report(
-                dir_path, ejercicios=self.ejercicio
+            self.rfondo07tp.download_report(
+                dir_path, ejercicios=self.ejercicio, tipo_comprobante='PA6'
             )
             self.connect_siif.disconnect()
             # Verifica que se haya descargado el archivo correctamente
-            report_path = os.path.join(dir_path, self.ejercicio + "-rvicon03.xls")
+            report_path = os.path.join(dir_path, self.ejercicio + "-rfondo07tp (PA6).xls")
             assert os.path.exists(report_path), "No se descargó el archivo"
 
             # Llamar al método transform_df y pasar el DataFrame de prueba
             print(f"El archivo temporal es: {report_path}")
-            transformed_df = self.resumen_contable_cta_rvicon03.from_external_report(report_path)
+            transformed_df = self.rfondo07tp.from_external_report(report_path)
             # Crear un DataFrame esperado con la estructura deseada
             expected_df = pd.DataFrame({
                 'ejercicio': [self.ejercicio],
-                'nivel': ['1000'],
-                'nivel_desc': ['ACTIVOS'],
-                'cta_contable': ['1112-2-6'],
-                'cta_contable_desc': ['CUENTAS PAGADORAS Y '],
-                'saldo_inicial': [100.0],
-                'debe': [200.0],
-                'haber': [300.0],
-                'ajuste_debe': [400.0],
-                'ajuste_haber': [500.0],
-                'fondos_debe': [600.0],
-                'fondos_haber': [700.0],
-                'saldo_final': [800.0]
+                'mes': ['12/2024'],
+                'fecha': [pd.to_datetime('today').normalize()],
+                'tipo_comprobante': ['PA6'],
+                'nro_comprobante': ['00001/24'],
+                'nro_fondo': ['0'],
+                'glosa': ['Un texto con mucho bla bla'],
+                'ingresos': [500.0],
+                'egresos': [500.0],
+                'saldo': [500.0],
             })
 
             # Comparar el número de columnas

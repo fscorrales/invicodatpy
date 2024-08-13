@@ -132,6 +132,7 @@ class PptoRecRi102(RPWUtils):
         else:
             # Future exception raise
             pass
+        return self.df
 
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:

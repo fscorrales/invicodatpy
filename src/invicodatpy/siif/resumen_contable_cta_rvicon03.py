@@ -23,6 +23,7 @@ from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
 
+__all__ = ['ResumenContableCtaRvicon03']
 
 @dataclass
 class ResumenContableCtaRvicon03(RPWUtils):
