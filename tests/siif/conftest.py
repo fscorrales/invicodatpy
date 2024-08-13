@@ -19,11 +19,11 @@ sys.path.append(parent)
 
 # importing
 from tests.utils.hangling_path import HanglingPath
-from src.invicodatpy.siif.connect_siif import ConnectSIIF
-from src.invicodatpy.siif.resumen_contable_cta_rvicon03 import ResumenContableCtaRvicon03
-from src.invicodatpy.siif.ppto_gtos_fte_rf602 import PptoGtosFteRf602
-from src.invicodatpy.siif.comprobantes_gtos_rcg01_uejp import ComprobantesGtosRcg01Uejp
-from src.invicodatpy.siif.comprobantes_gtos_gpo_part_gto_rpa03g import ComprobantesGtosGpoPartGtoRpa03g
+from src.invicodatpy.siif import (
+    ConnectSIIF, PptoGtosFteRf602, ComprobantesGtosRcg01Uejp, 
+    ComprobantesGtosGpoPartGtoRpa03g, ResumenContableCtaRvicon03,
+    ResumenFdosRfondo07tp
+)
 
 hp = HanglingPath()
 ejercicio = '2022'
@@ -82,13 +82,25 @@ def setup_and_teardown_siif_rcg01_uejp(request):
     connect_siif.quit()
 
 @pytest.fixture(scope = 'class')
-def setup_and_teardown_siif_rpa03g(request):
+def setup_and_teardown_siif_gto_rpa03g(request):
     request.cls.ejercicio= ejercicio
     test_siif_path = hp.get_test_siif_path()
     request.cls.test_siif_path = test_siif_path
     username, password = get_siif_username_and_password()
     connect_siif = ConnectSIIF(username = username, password = password)
     request.cls.connect_siif = connect_siif
-    request.cls.rpa03g = ComprobantesGtosGpoPartGtoRpa03g(siif = connect_siif)
+    request.cls.gto_rpa03g = ComprobantesGtosGpoPartGtoRpa03g(siif = connect_siif)
+    yield
+    connect_siif.quit()
+
+@pytest.fixture(scope = 'class')
+def setup_and_teardown_siif_rfondo07tp(request):
+    request.cls.ejercicio= ejercicio
+    test_siif_path = hp.get_test_siif_path()
+    request.cls.test_siif_path = test_siif_path
+    username, password = get_siif_username_and_password()
+    connect_siif = ConnectSIIF(username = username, password = password)
+    request.cls.connect_siif = connect_siif
+    request.cls.rfondo07tp = ResumenFdosRfondo07tp(siif = connect_siif)
     yield
     connect_siif.quit()

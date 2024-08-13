@@ -12,8 +12,8 @@ import os
 import time
 from dataclasses import dataclass, field
 
+import numpy as np
 import pandas as pd
-from datar import base, dplyr, f, tidyr
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -23,6 +23,7 @@ from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
 
+__all__ = ['PptoGtosFteRf602']
 
 @dataclass
 class PptoGtosFteRf602(RPWUtils):
@@ -134,43 +135,52 @@ class PptoGtosFteRf602(RPWUtils):
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:
         """"Transform read xls file"""
-        df = self.df >> \
-            dplyr.transmute(
-                ejercicio = f['2'].iloc[5][-4:],
-                programa = f['2'].str.zfill(2),
-                subprograma=  f['3'].str.zfill(2),
-                proyecto =  f['6'].str.zfill(2),
-                actividad =  f['7'].str.zfill(2),
-                partida = f['8'],
-                grupo = f.partida.str[0] + '00',
-                fuente = f['9'],
-                org = f['10'],
-                credito_original = f['13'],
-                credito_vigente =  f['14'],
-                comprometido = f['15'],
-                ordenado = f['16'],
-                saldo = f['18'],
-                pendiente = f['20']
-            ) >> \
-            base.tail(-16) >> \
-            dplyr.filter_(f.programa != '00') >> \
-            tidyr.unite(
-                'estructura',
-                [f.programa, f.subprograma, f.proyecto,
-                f.actividad, f.partida],
-                sep='-', remove=False
-            ) >> \
-            dplyr.select(
-                f.ejercicio, f.estructura, f.fuente,
-                f.programa, f.subprograma, f.proyecto, 
-                f.actividad, f.grupo, f.partida,
-                dplyr.everything()
-            )
+        df = self.df
+        df['ejercicio'] = df.iloc[5,2][-4:]
+        df = df.tail(-16)
+        df = df.loc[:,[
+            'ejercicio', '2', '3', '6', '7', '8', 
+            '9', '10', '13', '14', '15', '16', '18', '20'
+        ]]
+        df = df.replace(to_replace='', value=None)
+        df = df.dropna(subset=['2'])
+        df = df.rename(columns={
+            '2':'programa', 
+            '3':'subprograma', 
+            '6':'proyecto', 
+            '7':'actividad', 
+            '8':'partida', 
+            '9':'fuente', 
+            '10':'org', 
+            '13':'credito_original', 
+            '14':'credito_vigente', 
+            '15':'comprometido', 
+            '16':'ordenado', 
+            '18':'saldo', 
+            '20':'pendiente'
+        })
+        df['programa'] = df['programa'].str.zfill(2)
+        df['subprograma'] = df['subprograma'].str.zfill(2)
+        df['proyecto'] = df['proyecto'].str.zfill(2)
+        df['actividad'] = df['actividad'].str.zfill(2)
+        df['grupo'] = df['partida'].str[0] + '00'
+        df['estructura'] = (
+            df['programa'] + '-' + df['subprograma'] + '-' + df['proyecto'] + '-' + 
+            df['actividad'] + '-' + df['partida']
+        )
+        df = df.loc[:,[
+            'ejercicio', 'estructura', 'fuente', 
+            'programa', 'subprograma', 'proyecto', 
+            'actividad', 'grupo', 'partida',
+            'org', 'credito_original', 'credito_vigente',
+            'comprometido', 'ordenado', 'saldo', 'pendiente'
+        ]]
+        to_numeric_cols = [
+            'credito_original', 'credito_vigente', 
+            'comprometido', 'ordenado', 'saldo', 'pendiente'
+        ]
+        df[to_numeric_cols] = df[to_numeric_cols].apply(pd.to_numeric).astype(np.float64) 
 
-        campos_modificar = ['credito_original', 'credito_vigente', 
-        'comprometido', 'ordenado', 'saldo', 'pendiente']
-        df[campos_modificar] = df[campos_modificar].astype(float)
-        df.reset_index(inplace=True, drop=True)
         self.df = df
         return self.df
 
@@ -252,6 +262,7 @@ def main():
         filename = args.ejercicio + '-rf602.xls'
 
     siif_rf602.from_external_report(dir_path + '/' + filename)
+    # siif_rf602.test_sql(dir_path + '/test.sqlite')
     siif_rf602.to_sql(dir_path + '/siif.sqlite')
     siif_rf602.print_tidyverse()
     siif_rf602.from_sql(dir_path + '/siif.sqlite')
@@ -263,3 +274,4 @@ if __name__ == '__main__':
     main()
     # From invicodatpy/src
     # python -m invicodatpy.siif.ppto_gtos_fte_rf602
+    # python -m invicodatpy.siif.ppto_gtos_fte_rf602 --no-download

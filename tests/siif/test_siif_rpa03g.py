@@ -3,10 +3,10 @@ import os
 import pytest
 import pandas as pd
 
-@pytest.mark.siif_rpa03g
-@pytest.mark.usefixtures("setup_and_teardown_siif_rpa03g")
-class TestSIIFRpa03g:
-    def test_download_and_transform_rpa03g(self, tmpdir):
+@pytest.mark.siif_gto_rpa03g
+@pytest.mark.usefixtures("setup_and_teardown_siif_gto_rpa03g")
+class TestSIIFGtoRpa03g:
+    def test_download_and_transform_gto_rpa03g(self, tmpdir):
         try:
             dir_path = os.path.dirname(tmpdir)
             dir_path = os.path.join(dir_path, 'sub')
@@ -14,17 +14,17 @@ class TestSIIFRpa03g:
             # Llama al método download_report
             self.connect_siif.connect()
             self.connect_siif.go_to_reports()
-            self.rpa03g.download_report(
-                dir_path, ejercicios=self.ejercicio
+            self.gto_rpa03g.download_report(
+                dir_path, ejercicios=self.ejercicio, group_part=['4']
             )
             self.connect_siif.disconnect()
             # Verifica que se haya descargado el archivo correctamente
-            report_path = os.path.join(dir_path, self.ejercicio + "-rpa03g.xls")
+            report_path = os.path.join(dir_path, self.ejercicio + "-gto_rpa03g (Gpo 400).xls")
             assert os.path.exists(report_path), "No se descargó el archivo"
 
             # Llamar al método transform_df y pasar el DataFrame de prueba
             print(f"El archivo temporal es: {report_path}")
-            transformed_df = self.rpa03g.from_external_report(report_path)
+            transformed_df = self.gto_rpa03g.from_external_report(report_path)
             # Crear un DataFrame esperado con la estructura deseada
             expected_df = pd.DataFrame({
                 'ejercicio': [self.ejercicio],
@@ -34,7 +34,6 @@ class TestSIIFRpa03g:
                 'importe': [500.0],
                 'grupo': ['300'],
                 'partida': ['399'],
-                'cuit': ['30632351514'],
                 'nro_entrada': ['00001'],
                 'nro_origen': ['00001'],
                 'nro_expte': ['900025052024'],

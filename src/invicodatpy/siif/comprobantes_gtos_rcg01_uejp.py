@@ -12,8 +12,8 @@ import os
 import time
 from dataclasses import dataclass, field
 
+import numpy as np
 import pandas as pd
-from datar import base, dplyr, f, tidyr
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -22,6 +22,8 @@ from selenium.webdriver.support.ui import Select
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
+
+__all__ = ['ComprobantesGtosRcg01Uejp']
 
 @dataclass
 class ComprobantesGtosRcg01Uejp(RPWUtils):
@@ -161,48 +163,51 @@ class ComprobantesGtosRcg01Uejp(RPWUtils):
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:
         """"Transform read xls file"""
-        self.df = self.df.replace(to_replace='', value=None)      
-        df = self.df >> \
-            dplyr.mutate(
-                ejercicio = f['1'].iloc[2][-4:]
-            ) >> \
-            dplyr.select(~f['0'], ~f['17'], ~f['18']) >> \
-            base.tail(-16)
-
-        df.columns = [
-            "nro_entrada", "nro_origen", "fuente", "clase_reg",
-            "clase_mod", "clase_gto", "fecha", "importe",
-            "cuit", "beneficiario", "nro_expte","cta_cte",
-            "es_comprometido", "es_verificado", "es_aprobado", "es_pagado",
-            "nro_fondo", "ejercicio"
-        ]
-
-        df = df >> \
-            tidyr.drop_na(f.cuit) >> \
-            tidyr.drop_na(f.nro_entrada) >> \
-            dplyr.mutate(
-                importe = base.as_double(f.importe),
-                beneficiario = f.beneficiario.str.replace("\t", ""),
-                es_comprometido = dplyr.if_else(f.es_comprometido == "S", True, False),
-                es_verificado = dplyr.if_else(f.es_verificado == "S", True, False),
-                es_aprobado = dplyr.if_else(f.es_aprobado == "S", True, False),
-                es_pagado = dplyr.if_else(f.es_pagado == "S", True, False)
-            )
-
+        df = self.df
+        df = df.replace(to_replace='', value=None)   
+        df['ejercicio'] = df.iloc[2,1][-4:]
+        df = df.tail(-16)
+        df = df.drop(columns=['0', '17', '18'])
+        df = df.rename(columns={
+            '1': 'nro_entrada',
+            '2': 'nro_origen',
+            '3': 'fuente',
+            '4': 'clase_reg',
+            '5': 'clase_mod',
+            '6': 'clase_gto',
+            '7': 'fecha',
+            '8': 'importe',
+            '9': 'cuit',
+            '10': 'beneficiario',
+            '11': 'nro_expte',
+            '12': 'cta_cte',
+            '13': 'es_comprometido',
+            '14': 'es_verificado',
+            '15': 'es_aprobado',
+            '16': 'es_pagado',
+            '19': 'nro_fondo'
+        })
+        df = df.dropna(subset=['cuit'])
+        df = df.dropna(subset=['nro_entrada'])   
+        df['beneficiario'] = df['beneficiario'].str.replace("\t", "")
+        df['importe'] = pd.to_numeric(df['importe']).astype(np.float64)
+        df['es_comprometido'] = df['es_comprometido'] == 'S'
+        df['es_verificado'] = df['es_verificado'] == 'S'
+        df['es_aprobado'] = df['es_aprobado'] == 'S'
+        df['es_pagado'] = df['es_pagado'] == 'S'
         df['fecha'] = pd.to_datetime(
             df['fecha'], format='%Y-%m-%d'
         )
         df['mes'] = df['fecha'].dt.strftime('%m/%Y')
         df['nro_comprobante'] = df['nro_entrada'].str.zfill(5) + '/' + df['mes'].str[-2:]
 
-        df = df >> \
-            dplyr.select(
-                f.ejercicio, f.mes, f.fecha,
-                f.nro_comprobante, f.importe,
-                f.fuente, f.cta_cte, f.cuit,
-                f.nro_expte, f.nro_fondo,
-                dplyr.everything()
-            )
+        df = df.loc[:, [
+            'ejercicio', 'mes', 'fecha', 'nro_comprobante', 'importe', 
+            'fuente', 'cta_cte', 'cuit', 'nro_expte', 'nro_fondo',
+            'nro_entrada', 'nro_origen', 'clase_reg','clase_mod',
+            'clase_gto', 'beneficiario', 'es_comprometido',
+            'es_verificado', 'es_aprobado', 'es_pagado',
+        ]]
 
         self.df = df
         return self.df
@@ -296,3 +301,4 @@ if __name__ == '__main__':
     main()
     # From invicodatpy/src
     # python -m invicodatpy.siif.comprobantes_gtos_rcg01_uejp
+    # python -m invicodatpy.siif.comprobantes_gtos_rcg01_uejp --no-download
