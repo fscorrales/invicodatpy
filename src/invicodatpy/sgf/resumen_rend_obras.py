@@ -10,7 +10,7 @@ import inspect
 import os
 
 import pandas as pd
-from datar import base, dplyr, f, tidyr
+# from datar import base, dplyr, f, tidyr
 
 from ..models.sgf_model import SGFModel
 from ..utils.rpw_utils import RPWUtils

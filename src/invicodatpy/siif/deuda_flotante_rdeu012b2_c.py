@@ -9,7 +9,7 @@ import inspect
 import os
 
 import pandas as pd
-from datar import dplyr, f
+# from datar import dplyr, f
 
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
@@ -28,9 +28,10 @@ class DeudaFlotanteRdeu012b2C(RPWUtils):
         """"Read from pdf or csv SIIF's report"""
         ext = os.path.splitext(path)[1]
         if ext == '.pdf':
-            df = self.read_pdf(path)
-            df = df.iloc[2:]
-            self.df = df
+            pass
+            # df = self.read_pdf(path)
+            # df = df.iloc[2:]
+            # self.df = df
             # self.transform_df()
         elif ext == '.csv':
             df = self.read_csv(path)    

@@ -14,7 +14,7 @@ import time
 from dataclasses import dataclass, field
 
 import pandas as pd
-from datar import dplyr, f, base
+# from datar import dplyr, f, base
 from pywinauto import findwindows, keyboard, mouse
 
 from ..models.sgf_model import SGFModel

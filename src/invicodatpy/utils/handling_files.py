@@ -7,7 +7,7 @@ Source: https://realpython.com/working-with-files-in-python/#:~:text=To%20get%20
 
 import os
 import pandas as pd
-import tabula
+# import tabula
 
 class HandlingFiles():
 
@@ -32,25 +32,25 @@ class HandlingFiles():
         return df
 
     # --------------------------------------------------
-    def read_pdf(self, PATH:str, names=None, header=None) -> pd.DataFrame:
-        """"Read from pdf report"""
-        tables = tabula.read_pdf(
-            PATH, pages='all', multiple_tables=False,
-            pandas_options={
-                'index_col':None, 'header':header,'na_filter':False, 
-                'dtype':str, 'on_bad_lines':'warn', 'names':names
-            }
-        )
-        df = pd.DataFrame()
-        # n_col = df.shape[1]
-        # df.columns = [str(x) for x in range(n_col)]
-        # return df
-        for i in range(len(tables)):
-            table = tables[i]
-            n_col = table.shape[1]
-            table.columns = [str(x) for x in range(n_col)]
-            df=pd.concat([df, table],)
-        return df
+    # def read_pdf(self, PATH:str, names=None, header=None) -> pd.DataFrame:
+    #     """"Read from pdf report"""
+    #     tables = tabula.read_pdf(
+    #         PATH, pages='all', multiple_tables=False,
+    #         pandas_options={
+    #             'index_col':None, 'header':header,'na_filter':False, 
+    #             'dtype':str, 'on_bad_lines':'warn', 'names':names
+    #         }
+    #     )
+    #     df = pd.DataFrame()
+    #     # n_col = df.shape[1]
+    #     # df.columns = [str(x) for x in range(n_col)]
+    #     # return df
+    #     for i in range(len(tables)):
+    #         table = tables[i]
+    #         n_col = table.shape[1]
+    #         table.columns = [str(x) for x in range(n_col)]
+    #         df=pd.concat([df, table],)
+    #     return df
     
     # --------------------------------------------------
     def get_list_of_files(self, path:str) -> list:

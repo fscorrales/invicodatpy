@@ -13,7 +13,7 @@ import time
 from dataclasses import dataclass, field
 
 import pandas as pd
-from datar import base, dplyr, f, tidyr
+# from datar import base, dplyr, f, tidyr
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC

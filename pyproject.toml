@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "invicodatpy"
+version = "0.1.0"
+description = "Set of functions to read (input), modify (process) and write (output) different types of INVICO's (Instituto de Vivienda de Corrientes) files (xls, csv, sqlite). It's the first step of a posterior PyQt ecosystem. The database it's not provide within this package due to privacy reasons."
+authors = ["Fernando Corrales <fscpython@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+selenium = "^4.23.1"
+pytest = "^8.3.2"
+pandas = "^2.2.2"
+sqlalchemy = "^1.4"
+pywinauto = "^0.6.8"
+webdriver-manager = "^4.0"
+gspread = "^6.1.2"
+oauth2client = "^4.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
