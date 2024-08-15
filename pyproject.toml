@@ -16,6 +16,8 @@ webdriver-manager = "^4.0"
 gspread = "^6.1.2"
 oauth2client = "^4.1"
 pandas = "^1.5"
+numpy = "1.26.4"
+xlrd = "^2.0.1"
 
 
 [build-system]
