@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Join gto_rpa03g (gtos_gpo_part) with rcg01_uejp (gtos)
 """
 
+__all__ = ['JoinComprobantesGtosGpoPart']
+
 import argparse
 import inspect
 import os

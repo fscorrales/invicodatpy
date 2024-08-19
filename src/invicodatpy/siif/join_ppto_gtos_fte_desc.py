@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Join rf602 (ppto_gtos_fte) with rf610 (ppto_gtos_desc)
 """
 
+__all__ = ['JoinPptoGtosFteDesc']
+
 import argparse
 import inspect
 import os

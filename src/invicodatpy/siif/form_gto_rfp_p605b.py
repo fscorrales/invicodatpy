@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SIIF's rfp_p605b report
 """
 
+__all__ = ['FormGtoRfpP605b']
+
 import argparse
 import datetime as dt
 import inspect

@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SIIF's gto_rpa03g report
 """
 
+__all__ = ['ComprobantesGtosGpoPartGtoRpa03g']
+
 import argparse
 import datetime as dt
 import inspect
@@ -22,8 +24,6 @@ from selenium.webdriver.support.ui import Select
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
-
-__all__ = ['ComprobantesGtosGpoPartGtoRpa03g']
 
 @dataclass
 class ComprobantesGtosGpoPartGtoRpa03g(RPWUtils):

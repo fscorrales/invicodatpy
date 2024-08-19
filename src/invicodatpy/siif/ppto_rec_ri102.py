@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SIIF's rci02 report
 """
 
+__all__ = ['PptoRecRi102']
+
 import argparse
 import datetime as dt
 import inspect

@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SIIF's rog01 report
 """
 
+__all__ = ['DetallePartidasRog01']
+
 import argparse
 import inspect
 import os

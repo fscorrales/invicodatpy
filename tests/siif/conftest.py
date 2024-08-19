@@ -22,11 +22,12 @@ from tests.utils.hangling_path import HanglingPath
 from src.invicodatpy.siif import (
     ConnectSIIF, PptoGtosFteRf602, ComprobantesGtosRcg01Uejp, 
     ComprobantesGtosGpoPartGtoRpa03g, ResumenContableCtaRvicon03,
-    ResumenFdosRfondo07tp
+    ResumenFdosRfondo07tp, PptoGtosDescRf610, ComprobantesRecRci02,
+    DeudaFlotanteRdeu012
 )
 
 hp = HanglingPath()
-ejercicio = '2022'
+ejercicio = '2024'
 
 def get_siif_username_and_password() -> tuple:
     json_path = os.path.join(hp.get_siif_path(), 'siif_credentials.json')
@@ -102,5 +103,41 @@ def setup_and_teardown_siif_rfondo07tp(request):
     connect_siif = ConnectSIIF(username = username, password = password)
     request.cls.connect_siif = connect_siif
     request.cls.rfondo07tp = ResumenFdosRfondo07tp(siif = connect_siif)
+    yield
+    connect_siif.quit()
+
+@pytest.fixture(scope = 'class')
+def setup_and_teardown_siif_rf610(request):
+    request.cls.ejercicio= ejercicio
+    test_siif_path = hp.get_test_siif_path()
+    request.cls.test_siif_path = test_siif_path
+    username, password = get_siif_username_and_password()
+    connect_siif = ConnectSIIF(username = username, password = password)
+    request.cls.connect_siif = connect_siif
+    request.cls.rf610 = PptoGtosDescRf610(siif = connect_siif)
+    yield
+    connect_siif.quit()
+
+@pytest.fixture(scope = 'class')
+def setup_and_teardown_siif_rci02(request):
+    request.cls.ejercicio= ejercicio
+    test_siif_path = hp.get_test_siif_path()
+    request.cls.test_siif_path = test_siif_path
+    username, password = get_siif_username_and_password()
+    connect_siif = ConnectSIIF(username = username, password = password)
+    request.cls.connect_siif = connect_siif
+    request.cls.rci02 = ComprobantesRecRci02(siif = connect_siif)
+    yield
+    connect_siif.quit()
+
+@pytest.fixture(scope = 'class')
+def setup_and_teardown_siif_rdeu012(request):
+    request.cls.ejercicio_mes = ejercicio + '01'
+    test_siif_path = hp.get_test_siif_path()
+    request.cls.test_siif_path = test_siif_path
+    username, password = get_siif_username_and_password()
+    connect_siif = ConnectSIIF(username = username, password = password)
+    request.cls.connect_siif = connect_siif
+    request.cls.rdeu012 = DeudaFlotanteRdeu012(siif = connect_siif)
     yield
     connect_siif.quit()

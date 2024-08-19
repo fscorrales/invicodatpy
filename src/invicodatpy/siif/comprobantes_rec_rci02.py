@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SIIF's rci02 report
 """
 
+__all__ = ['ComprobantesRecRci02']
+
 import argparse
 import datetime as dt
 import inspect
@@ -13,7 +15,7 @@ import time
 from dataclasses import dataclass, field
 
 import pandas as pd
-# from datar import base, dplyr, f, tidyr
+import numpy as np
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -159,35 +161,55 @@ class ComprobantesRecRci02(RPWUtils):
         """"Transform read xls file"""
         df = self.df
         df['ejercicio'] = df.iloc[3,34]
-        df = df.replace(to_replace='', value=None)      
-        df = df >> \
-            base.tail(-22) >> \
-            tidyr.drop_na(f['2']) >> \
-            dplyr.transmute(
-                ejercicio = f.ejercicio,
-                fecha = f['17'],
-                mes = f.fecha.str[5:7] + '/' + f.ejercicio,
-                fuente = f['6'],
-                cta_cte = f['28'], 
-                nro_entrada = f['2'],
-                importe = base.as_double(f['23']),  
-                glosa = f['32'], 
-                es_remanente = base.grepl("REMANENTE", f.glosa),
-                es_invico = base.grepl("%", f.glosa),
-                es_verificado = dplyr.if_else(f['42'] == 'S', True, False),
-                clase_reg = f['10'],
-                clase_mod = f['13']
-            )
+        df = df.replace(to_replace='', value=None)
+        df = df.tail(-22)
+        df = df.dropna(subset=['2'])
+        df = df.rename(columns={
+            '17': 'fecha',
+            '6': 'fuente',
+            '28': 'cta_cte',
+            '2': 'nro_entrada',
+            '23': 'importe',
+            '32': 'glosa',
+            '42': 'es_verificado',
+            '10': 'clase_reg',
+            '13': 'clase_mod'
+        })
+        df['mes'] = df['fecha'].str[5:7] + '/' + df['ejercicio']
+        df['es_remanente'] = df['glosa'].str.contains("REMANENTE")
+        df['es_invico'] = df['glosa'].str.contains("%")
+        df['es_verificado'] = df['es_verificado'].astype(bool)
+        df['importe'] = df['importe'].apply(pd.to_numeric).astype(np.float64) 
+
+        # df = df >> \
+        #     base.tail(-22) >> \
+        #     tidyr.drop_na(f['2']) >> \
+        #     dplyr.transmute(
+        #         ejercicio = f.ejercicio,
+        #         fecha = f['17'],
+        #         mes = f.fecha.str[5:7] + '/' + f.ejercicio,
+        #         fuente = f['6'],
+        #         cta_cte = f['28'], 
+        #         nro_entrada = f['2'],
+        #         importe = base.as_double(f['23']),  
+        #         glosa = f['32'], 
+        #         es_remanente = base.grepl("REMANENTE", f.glosa),
+        #         es_invico = base.grepl("%", f.glosa),
+        #         es_verificado = dplyr.if_else(f['42'] == 'S', True, False),
+        #         clase_reg = f['10'],
+        #         clase_mod = f['13']
+        #     )
 
         df['fecha'] = pd.to_datetime(
             df['fecha'], format='%Y-%m-%d'
         )
-
-        df = df >>\
-            dplyr.select(
-                f.ejercicio, f.mes, f.fecha,
-                dplyr.everything()
-            )
+        df = df.loc[:,[
+            'ejercicio', 'mes', 'fecha',
+            'fuente', 'cta_cte', 'nro_entrada',
+            'importe', 'glosa', 'es_remanente',
+            'es_invico', 'es_verificado',
+            'clase_reg', 'clase_mod'
+        ]]
 
         self.df = df
         return self.df
@@ -280,4 +302,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.comprobantes_rec_rci02 -e 2024
+    # python -m invicodatpy.siif.comprobantes_rec_rci02 -e 2024 --no-download

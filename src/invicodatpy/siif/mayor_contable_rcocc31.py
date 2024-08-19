@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SIIF's rcocc31 report
 """
 
+__all__ = ['MayorContableRcocc31']
+
 import argparse
 import datetime as dt
 import inspect

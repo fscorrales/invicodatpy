@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SIIF's rdeu012 report
 """
 
+__all__ = ['DeudaFlotanteRdeu012']
+
 import argparse
 import datetime as dt
 from datetime import timedelta
@@ -14,7 +16,7 @@ import time
 from dataclasses import dataclass, field
 
 import pandas as pd
-# from datar import base, dplyr, f, tidyr
+import numpy as np
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -165,39 +167,64 @@ class DeudaFlotanteRdeu012(RPWUtils):
         )
         df['mes_hasta'] = (df['fecha_hasta'].dt.month.astype(str).str.zfill(2) +
                             '/'+ df['fecha_hasta'].dt.year.astype(str))
-        df = df.replace(to_replace='', value=None)      
-        df = df >> \
-            base.tail(-13) >> \
-            tidyr.fill(f.fuente) >> \
-            tidyr.drop_na(f['2']) >> \
-            tidyr.drop_na(f['18']) >> \
-            dplyr.transmute(
-                fuente = f.fuente,
-                fecha_desde = f.fecha_desde,
-                fecha_hasta = f.fecha_hasta,
-                mes_hasta = f.mes_hasta,
-                nro_entrada = f['2'],
-                nro_origen = f['4'],
-                fecha_aprobado = f['7'],
-                org_fin = f['9'],
-                importe = base.as_double(f['10']),
-                saldo = base.as_double(f['13']),
-                nro_expte = f['14'],
-                cta_cte = f['15'],
-                glosa = f['17'],
-                cuit = f['18'],
-                beneficiario = f['19']
-            )
+        df = df.replace(to_replace='', value=None)
+        df = df.tail(-13)
+        df['fuente'] = df['fuente'].fillna(method='ffill')
+        df = df.dropna(subset=['2'])
+        df = df.dropna(subset=['18'])  
+        df = df.rename(columns={
+            '2':'nro_entrada',
+            '4':'nro_origen',
+            '7':'fecha_aprobado',
+            '9':'org_fin',
+            '10':'importe',
+            '13':'saldo',
+            '14':'nro_expte',
+            '15':'cta_cte',
+            '17':'glosa',
+            '18':'cuit',
+            '19':'beneficiario'
+        })
+        # df = df >> \
+        #     base.tail(-13) >> \
+        #     tidyr.fill(f.fuente) >> \
+        #     tidyr.drop_na(f['2']) >> \
+        #     tidyr.drop_na(f['18']) >> \
+        #     dplyr.transmute(
+        #         fuente = f.fuente,
+        #         fecha_desde = f.fecha_desde,
+        #         fecha_hasta = f.fecha_hasta,
+        #         mes_hasta = f.mes_hasta,
+        #         nro_entrada = f['2'],
+        #         nro_origen = f['4'],
+        #         fecha_aprobado = f['7'],
+        #         org_fin = f['9'],
+        #         importe = base.as_double(f['10']),
+        #         saldo = base.as_double(f['13']),
+        #         nro_expte = f['14'],
+        #         cta_cte = f['15'],
+        #         glosa = f['17'],
+        #         cuit = f['18'],
+        #         beneficiario = f['19']
+        #     )
+
+        to_numeric = ['importe', 'saldo']
+        df[to_numeric] = df[to_numeric].apply(pd.to_numeric).astype(np.float64)
 
         df['fecha_aprobado'] = pd.to_datetime(
             df['fecha_aprobado'], format='%Y-%m-%d'
         ) 
 
-        df = df >> \
-            dplyr.mutate(
-                fecha = dplyr.if_else(f.fecha_aprobado > f.fecha_hasta,
-                                        f.fecha_hasta, f.fecha_aprobado)
-            )
+        df['fecha'] = np.where(
+            df['fecha_aprobado'] > df['fecha_hasta'],
+            df['fecha_hasta'], 
+            df['fecha_aprobado']
+        )
+        # df = df >> \
+        #     dplyr.mutate(
+        #         fecha = dplyr.if_else(f.fecha_aprobado > f.fecha_hasta,
+        #                                 f.fecha_hasta, f.fecha_aprobado)
+        #     )
 
         # CYO aprobados en enero correspodientes al ejercicio anterior
         df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce') 
@@ -214,21 +241,31 @@ class DeudaFlotanteRdeu012(RPWUtils):
         df['ejercicio'] = df['fecha'].dt.year.astype(str)
         df['mes'] = df['fecha'].dt.strftime('%m/%Y')
 
-        df = df >>\
-            dplyr.mutate(
-                nro_comprobante = (f['nro_entrada'].str.zfill(5) + 
-                                '/' + f['mes'].str[-2:]),
-            ) >> \
-            dplyr.select(
-                f.ejercicio, f.mes, f.fecha, 
-                f.mes_hasta, f.fuente,
-                f.cta_cte, f.nro_comprobante,
-                f.importe, f.saldo,
-                f.cuit, f.beneficiario,
-                f.glosa, f.nro_expte,
-                f.nro_entrada, f.nro_origen,
-                dplyr.everything()
-            )
+        df['nro_comprobante'] = (
+            df['nro_entrada'].str.zfill(5) +  df['mes'].str[-2:]
+        )
+        df = df.loc[:, [
+            'ejercicio', 'mes', 'fecha', 'mes_hasta', 'fuente',
+            'cta_cte', 'nro_comprobante', 'importe', 'saldo',
+            'cuit', 'beneficiario', 'glosa', 'nro_expte',
+            'nro_entrada', 'nro_origen', 'fecha_aprobado', 
+            'fecha_desde', 'fecha_hasta', 'org_fin'
+        ]]
+        # df = df >>\
+        #     dplyr.mutate(
+        #         nro_comprobante = (f['nro_entrada'].str.zfill(5) + 
+        #                         '/' + f['mes'].str[-2:]),
+        #     ) >> \
+        #     dplyr.select(
+        #         f.ejercicio, f.mes, f.fecha, 
+        #         f.mes_hasta, f.fuente,
+        #         f.cta_cte, f.nro_comprobante,
+        #         f.importe, f.saldo,
+        #         f.cuit, f.beneficiario,
+        #         f.glosa, f.nro_expte,
+        #         f.nro_entrada, f.nro_origen,
+        #         dplyr.everything()
+        #     )
 
         self.df = df
         return self.df
@@ -321,4 +358,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.deuda_flotante_rdeu012
+    # python -m invicodatpy.siif.deuda_flotante_rdeu012 --no-download

@@ -5,6 +5,8 @@ Purpose: Web Scrapping SIIF with selenium
 Source: 
 """
 
+__all__ = ['ConnectSIIF']
+
 import os
 import time
 from dataclasses import dataclass, field
@@ -22,8 +24,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
-
-__all__ = ['ConnectSIIF']
 
 @dataclass
 class ConnectSIIF():

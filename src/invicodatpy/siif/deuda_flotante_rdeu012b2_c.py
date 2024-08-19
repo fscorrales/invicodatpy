@@ -4,12 +4,13 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SIIF's rdeu012b2_cuit report
 """
 
+__all__ = ['DeudaFlotanteRdeu012b2C']
+
 import argparse
 import inspect
 import os
 
 import pandas as pd
-# from datar import dplyr, f
 
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
@@ -90,12 +91,17 @@ class DeudaFlotanteRdeu012b2C(RPWUtils):
         df['saldo'] = df['saldo'].str.replace('.', '', regex=False)
         df['saldo'] = df['saldo'].str.replace(',', '.', regex=False)
         df['saldo'] = df['saldo'].astype(float)
-        df = df >>\
-            dplyr.select(
-                f.ejercicio, f.mes_hasta, f.entidad, f.ejercicio_deuda,
-                f.fuente, f.nro_entrada, f.nro_origen, f.importe, f.saldo,
-                dplyr.everything()
-            )
+        first_cols = [
+            'ejercicio', 'mes_hasta', 'entidad', 'ejercicio_deuda',
+            'fuente', 'nro_entrada', 'nro_origen', 'importe', 'saldo'            
+        ]
+        df = df.loc[:,first_cols].join(df.drop(columns=first_cols, axis=1))
+        # df = df >>\
+        #     dplyr.select(
+        #         f.ejercicio, f.mes_hasta, f.entidad, f.ejercicio_deuda,
+        #         f.fuente, f.nro_entrada, f.nro_origen, f.importe, f.saldo,
+        #         dplyr.everything()
+        #     )
 
         self.df = pd.DataFrame(df)
         return self.df
