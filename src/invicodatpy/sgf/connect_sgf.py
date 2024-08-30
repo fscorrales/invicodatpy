@@ -5,33 +5,41 @@ Purpose: Automate SGF with pywinauto
 Source: 
 """
 
+__all__ = ['ConnectSGF']
+
 import os
 import time
 from dataclasses import dataclass
 
 from pywinauto import keyboard
 from pywinauto.application import Application
+from pywinauto.timings import TimeoutError
 
 
 @dataclass
 class ConnectSGF():
-    username:str = None 
-    password:str = None
+    username:str = '' 
+    password:str = ''
 
     # --------------------------------------------------
-    def __post_init__(self):        
-        self.connect()
+    # def __post_init__(self):        
+    #     self.connect()
         # self.go_to_reports()
 
     # --------------------------------------------------
-    def connect(self) -> None:
-        """"Connect SIIF"""
+    def connect(self, username:str = '', password:str = '') -> None:
+        if username != '':
+            self.username = username
+        if password !='':
+            self.password = password
+
+        """"Connect SGF"""
         app_path = r"\\ipvfiles\SISTEMAS\Pagos\Pagos.exe"
         self.app = Application(backend='uia').start(app_path)
         try:
             time.sleep(3)
             self.main = self.app.window(title_re=".*Sistema de Gestión Financiera.*")
-            if self.main.is_maximized() == False:
+            if not self.main.is_maximized():
                 self.main.maximize()
             cmb_user = self.main.child_window(
                 auto_id="1", control_type="ComboBox", found_index = 0
@@ -45,6 +53,17 @@ class ConnectSGF():
                 title="Aceptar", auto_id="4", control_type="Button"
             ).wrapper_object()
             btn_accept.click()
+            self.main.child_window(
+            title="La contraseña no es válida. Vuelva a intentarlo", 
+            auto_id="65535", control_type="Text").wait_not('exists visible enabled', timeout=1)
+        except TimeoutError:
+            print("No se pudo conectar al SGF. Verifique sus credenciales")
+            close_button = self.main.child_window(title="Cerrar", control_type="Button", found_index=0)
+            close_button.click()
+            btn_cancel = self.main.child_window(
+                title="Cancelar", auto_id="3", control_type="Button"
+            ).wrapper_object()
+            btn_cancel.click()
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
             self.quit()
@@ -88,6 +107,17 @@ class ConnectSGF():
         else:
             print("%s not found." % filepath)
         return locked
+
+    # --------------------------------------------------
+    @classmethod
+    def is_alive(self):
+        # Check if the app is alive
+        try:
+            self.app.process
+        except Exception:
+            raise RuntimeError("The app is not alive")
+            return False
+        return True
 
     # --------------------------------------------------
     def quit(self) -> None:

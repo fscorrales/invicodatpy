@@ -5,6 +5,8 @@ Purpose: Read, process and write SSCC's 'Consulta
 General de Movimientos' report
 """
 
+__all__ = ['BancoINVICO']
+
 import argparse
 import datetime as dt
 import inspect
@@ -14,6 +16,7 @@ import time
 from dataclasses import dataclass, field
 
 import pandas as pd
+import numpy as np
 # from datar import base, dplyr, f, tidyr
 from pywinauto import findwindows, keyboard, mouse
 
@@ -160,36 +163,32 @@ class BancoINVICO(RPWUtils):
         """"Transform read csv file"""
         df = self.df
         df = df.replace(to_replace='[\r\n]', value='')
-        df = df >> \
-            dplyr.transmute(
-                fecha = f['20'],
-                ejercicio = f.fecha.str[-4:],
-                mes = f.fecha.str[3:5] + '/' + f.ejercicio,
-                cta_cte = f['22'],
-                movimiento = base.trimws(f['21']),
-                es_cheque = dplyr.case_when(
-                    (f.movimiento == "DEBITO") | (f.movimiento == "DEPOSITO"), False,
-                    True, True
-                ),
-                concepto = f['23'],
-                beneficiario = f['24'],
-                moneda = f['25'],
-                libramiento = f['26'],
-                imputacion = f['27'],
-                importe = base.as_double(
-                    base.gsub(',', '', f['28']))
-            ) >> \
-            tidyr.separate(
-                f.imputacion, 
-                into = ['cod_imputacion', 'imputacion'], 
-                sep= '-' ,remove=True, extra='merge'
-            ) >> \
-            dplyr.select(
-                f.ejercicio, f.mes, f.fecha,
-                f.cta_cte, f.movimiento, f.es_cheque,
-                f.beneficiario, f.importe,
-                dplyr.everything()
-            )
+        df = df.assign(
+            fecha = df['20'],
+            ejercicio = df['20'].str[-4:],
+            mes = df['20'].str[3:5] + '/' + df['20'].str[-4:],
+            cta_cte = df['22'],
+            movimiento = df['21'],
+            es_cheque = np.where(
+                (df['21'] == "DEBITO") | (df['21'] == "DEPOSITO"), 
+                False,
+                True
+            ),
+            concepto = df['23'],
+            beneficiario = df['24'],
+            moneda = df['25'],
+            libramiento = df['26'],
+            imputacion = df['27'],
+            importe = df['28'].str.replace(',', '').astype(float)
+        )
+        df[['cod_imputacion', 'imputacion']] = df['imputacion'].str.split(
+            pat='-', n=1, expand=True
+        )
+        df = df.loc[:, [
+            'ejercicio', 'mes', 'fecha', 'cta_cte', 'movimiento',
+            'es_cheque', 'beneficiario', 'importe', 'concepto', 
+            'moneda', 'libramiento', 'cod_imputacion', 'imputacion', 
+        ]]
 
         df['fecha'] = pd.to_datetime(
             df['fecha'], format='%d/%m/%Y'
@@ -275,6 +274,7 @@ def main():
         filename = args.ejercicio + ' - Bancos - Consulta General de Movimientos.csv'
 
     sscc_banco_invico.from_external_report(dir_path + '/' + filename)
+    # sscc_banco_invico.test_sql(dir_path + '/test.sqlite')
     sscc_banco_invico.to_sql(dir_path + '/sscc.sqlite')
     sscc_banco_invico.print_tidyverse()
     sscc_banco_invico.from_sql(dir_path + '/sscc.sqlite')
@@ -287,4 +287,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.sscc.banco_invico -e 2022
+    # python -m invicodatpy.sscc.banco_invico -e 2022 --no-download

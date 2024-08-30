@@ -5,12 +5,13 @@ Purpose: Read, process and write SGF's 'Resumen de
 Rendiciones por Obra' report
 """
 
+__all__ = ['ResumenRendObras']
+
 import argparse
 import inspect
 import os
 
 import pandas as pd
-# from datar import base, dplyr, f, tidyr
 
 from ..models.sgf_model import SGFModel
 from ..utils.rpw_utils import RPWUtils
@@ -43,110 +44,50 @@ class ResumenRendObras(RPWUtils):
         df.loc[df['55'] != '', 'obra'] = df['25']
         df.loc[df['obra'] == '', 'obra'] = df['38']
         df['obra'].fillna(method='ffill', inplace=True)
-        df = df >> \
-            dplyr.transmute(
-                obra = f.obra,
-                beneficiario = dplyr.case_when(
-                    (f['55'] == ''), f['25'],
-                    True, f['36']
-                ),
-                libramiento_sgf = dplyr.case_when(
-                    (f['55'] == ''), f['26'],
-                    True, f['37']
-                ),
-                destino = dplyr.case_when(
-                    (f['55'] == ''), f['27'],
-                    True, f['38']
-                ),
-                fecha = dplyr.case_when(
-                    (f['55'] == ''), f['28'],
-                    True, f['39']
-                ),
-                movimiento = dplyr.case_when(
-                    (f['55'] == ''), f['29'],
-                    True, f['40']
-                ),
-                importe_bruto = dplyr.case_when(
-                    (f['55'] == ''), f['39'],
-                    True, f['50']
-                ),
-                gcias = dplyr.case_when(
-                    (f['55'] == ''), f['31'],
-                    True, f['42']
-                ),
-                sellos = dplyr.case_when(
-                    (f['55'] == ''), f['32'],
-                    True, f['43']
-                ),
-                lp = dplyr.case_when(
-                    (f['55'] == ''), f['33'],
-                    True, f['44']
-                ),
-                iibb = dplyr.case_when(
-                    (f['55'] == ''), f['34'],
-                    True, f['45']
-                ),
-                suss = dplyr.case_when(
-                    (f['55'] == ''), f['35'],
-                    True, f['46']
-                ),
-                seguro = dplyr.case_when(
-                    (f['55'] == ''), f['36'],
-                    True, f['47']
-                ),
-                salud = dplyr.case_when(
-                    (f['55'] == ''), f['37'],
-                    True, f['48']
-                ),
-                mutual = dplyr.case_when(
-                    (f['55'] == ''), f['38'],
-                    True, f['49']
-                ),
-                retenciones = '0',
-                importe_neto = dplyr.case_when(
-                    (f['55'] == ''), f['30'],
-                    True, f['41']
-                ), 
-                ejercicio = f.fecha.str[-4:],
-                mes = f.fecha.str[3:5] + '/' + f.ejercicio
-            ) >> \
-            tidyr.separate(
-                f.obra, 
-                into = ['cod_obra', None], 
-                sep= '-' ,remove=False, extra='merge'
-            ) >> \
-            dplyr.select(
-                f.ejercicio, f.mes, f.fecha,
-                f.beneficiario, f.cod_obra, f.obra, f.destino,
-                dplyr.everything()
-            )
-
-        df = df.replace(to_replace='', value='0')
-
-        df = df >> \
-            dplyr.mutate(
-                cod_obra = base.trimws(f.cod_obra),
-                importe_bruto = base.gsub(',', '', f.importe_bruto),
-                gcias = base.gsub(',', '', f.gcias),
-                sellos = base.gsub(',', '', f.sellos),
-                lp = base.gsub(',', '', f.lp),
-                iibb = base.gsub(',', '', f.iibb),
-                suss = base.gsub(',', '', f.suss),
-                seguro = base.gsub(',', '', f.seguro),
-                salud = base.gsub(',', '', f.salud),
-                mutual = base.gsub(',', '', f.mutual),
-                importe_neto = base.gsub(',', '', f.importe_neto)
-            ) >> \
-            dplyr.mutate(
-                dplyr.across(base.c[f.importe_bruto:], base.as_double),
-                retenciones = f.gcias + f.sellos + f.lp + 
-                f.iibb + f.suss + f.seguro + f.salud + f.mutual
-            ) >> \
-            dplyr.relocate(f.retenciones, _before = f.importe_neto)
-
+        df = df.assign(
+            obra = df['obra'],
+            beneficiario = df['25'].where(df['55'] == '', df['36']),
+            libramiento_sgf = df['26'].where(df['55'] == '', df['37']),
+            destino = df['27'].where(df['55'] == '', df['38']),
+            fecha = df['28'].where(df['55'] == '', df['39']),
+            movimiento = df['29'].where(df['55'] == '', df['40']),
+            importe_bruto = df['39'].where(df['55'] == '', df['50']),
+            gcias = df['31'].where(df['55'] == '', df['42']),
+            sellos = df['32'].where(df['55'] == '', df['43']),
+            lp = df['33'].where(df['55'] == '', df['44']),
+            iibb = df['34'].where(df['55'] == '', df['45']),
+            suss = df['35'].where(df['55'] == '', df['46']),
+            seguro = df['36'].where(df['55'] == '', df['47']),
+            salud = df['37'].where(df['55'] == '', df['48']),
+            mutual = df['38'].where(df['55'] == '', df['49']),
+            retenciones = '0',
+            importe_neto = df['30'].where(df['55'] == '', df['41']),
+        )
+        df['ejercicio'] = df['fecha'].str[-4:]
+        df['mes'] = df['fecha'].str[3:5] + '/' + df['ejercicio']
+        df[['cod_obra', '_']] = df['obra'].str.split(pat = '-', n=1, expand=True)
         df['fecha'] = pd.to_datetime(
             df['fecha'], format='%d/%m/%Y'
         )
+        df = df.replace(to_replace='', value='0')
+        df['cod_obra'] = df['cod_obra'].str.strip()
+        to_numeric_cols = [
+            'importe_bruto', 'gcias', 'sellos', 'lp', 'iibb', 'suss',
+            'seguro', 'salud', 'mutual', 'importe_neto'
+        ]
+        df[to_numeric_cols] = df[to_numeric_cols].apply(
+            lambda x: x.str.replace(',', '').astype(float))
+        cols_to_sum = [col for col in to_numeric_cols if col not in [
+            'importe_neto', 'importe_bruto'
+        ]]
+        df['retenciones'] = df[cols_to_sum].sum(axis=1)
+        df = df.loc[:, [
+            'ejercicio', 'mes', 'fecha', 'beneficiario', 
+            'cod_obra', 'obra', 'destino', 'libramiento_sgf',
+            'libramiento_sgf', 'movimiento', 'importe_bruto', 'gcias',
+            'sellos', 'lp', 'iibb', 'suss', 'seguro', 'salud', 'mutual',
+            'retenciones', 'importe_neto'
+        ]]
 
         self.df = df
         return self.df
@@ -178,11 +119,11 @@ def main():
                 inspect.currentframe())))
     sgf_resumen_rend_obras = ResumenRendObras()
     sgf_resumen_rend_obras.from_external_report(dir_path + '/' + args.file)
-    # sgf_resumen_rend_obras.test_sql(dir_path + '/test.sqlite')
-    sgf_resumen_rend_obras.to_sql(dir_path + '/sgf.sqlite')
-    sgf_resumen_rend_obras.print_tidyverse()
-    sgf_resumen_rend_obras.from_sql(dir_path + '/sgf.sqlite')
-    sgf_resumen_rend_obras.print_tidyverse()
+    sgf_resumen_rend_obras.test_sql(dir_path + '/test.sqlite')
+    # sgf_resumen_rend_obras.to_sql(dir_path + '/sgf.sqlite')
+    # sgf_resumen_rend_obras.print_tidyverse()
+    # sgf_resumen_rend_obras.from_sql(dir_path + '/sgf.sqlite')
+    # sgf_resumen_rend_obras.print_tidyverse()
     # print(sgf_resumen_rend_obras.df.head(10))
 
 # --------------------------------------------------

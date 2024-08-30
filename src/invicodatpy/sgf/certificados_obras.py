@@ -4,12 +4,13 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SGF's 'Informe para Contable' report
 """
 
+__all__ = ['CertificadosObras']
+
 import argparse
 import inspect
 import os
 
 import pandas as pd
-# from datar import base, dplyr, f, tidyr
 
 from ..models.sgf_model import SGFModel
 from ..utils.rpw_utils import RPWUtils
@@ -38,93 +39,45 @@ class CertificadosObras(RPWUtils):
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:
         """"Transform read csv file"""
-        self.df = self.df >> \
-            dplyr.transmute(
-                ejercicio = f['2'].iloc[0][-4:],
-                beneficiario = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['21']
-                ),
-                obra = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['22'],
-                    True, f['21']
-                ),
-                nro_certificado = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['23'],
-                    True, f['22']
-                ),
-                monto_certificado = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['26'],
-                    True, f['25']
-                ),
-                fondo_reparo = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['27'],
-                    True, f['26']
-                ),
-                otros = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['28'],
-                    True, f['27']
-                ),
-                importe_bruto = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['29'],
-                    True, f['28']
-                ),
-                iibb = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['30'],
-                    True, f['29']
-                ),
-                lp = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['31'],
-                    True, f['30']
-                ),
-                suss = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['32'],
-                    True, f['31']
-                ),
-                gcias = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['33'],
-                    True, f['32']
-                ),
-                invico = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['34'],
-                    True, f['33']
-                ),
-                retenciones = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['35'],
-                    True, f['34']
-                ),
-                importe_neto = dplyr.case_when(
-                    (f['37'] == "TOTALES") | (f['48'] == "TOTALES"), f['36'],
-                    True, f['35']
-                ) 
-            ) >> \
-            dplyr.mutate(
-                monto_certificado = base.gsub(',', '', f.monto_certificado),
-                fondo_reparo = base.gsub(',', '', f.fondo_reparo),
-                otros = base.gsub(',', '', f.otros),
-                importe_bruto = base.gsub(',', '', f.importe_bruto),
-                iibb = base.gsub(',', '', f.iibb),
-                lp = base.gsub(',', '', f.lp),
-                suss = base.gsub(',', '', f.suss),
-                gcias = base.gsub(',', '', f.gcias),
-                invico = base.gsub(',', '', f.invico),
-                retenciones = base.gsub(',', '', f.retenciones),
-                importe_neto = base.gsub(',', '', f.importe_neto)
-            ) >> \
-            dplyr.mutate(
-                dplyr.across(base.c[f.monto_certificado:], base.as_double)
-            ) >> \
-            tidyr.separate(
-                f.obra, 
-                into = ['cod_obra', None], 
-                sep= ' ' ,remove=False, extra='merge'
-            ) >> \
-            tidyr.fill(f.beneficiario) >> \
-            dplyr.select(
-                f.ejercicio, f.beneficiario,
-                f.cod_obra, f.obra,
-                dplyr.everything()
-            )
+        df = self.df
+        condition = (df['37'] == "TOTALES") | (df['48'] == "TOTALES")
+        df = df.assign(
+            ejercicio = df['2'].iloc[0][-4:],
+            beneficiario = df['21'].where(condition, None),
+            obra = df['22'].where(condition, df['21']),
+            nro_certificado = df['23'].where(condition, df['22']),
+            monto_certificado = df['26'].where(condition, df['25']),
+            fondo_reparo = df['27'].where(condition, df['26']),
+            otros = df['28'].where(condition, df['27']),
+            importe_bruto = df['29'].where(condition, df['28']),
+            iibb = df['30'].where(condition, df['29']),
+            lp = df['31'].where(condition, df['30']),
+            suss = df['32'].where(condition, df['31']),
+            gcias = df['33'].where(condition, df['32']),
+            invico = df['34'].where(condition, df['33']),
+            retenciones = df['35'].where(condition, df['34']),
+            importe_neto = df['36'].where(condition, df['35']),
+        )
+        df['beneficiario'] = df['beneficiario'].fillna(method='ffill')
+        to_numeric_cols = [
+            'monto_certificado', 'fondo_reparo', 'otros',
+            'importe_bruto', 'iibb', 'lp',
+            'suss', 'gcias', 'invico',
+            'retenciones', 'importe_neto',
+        ]
+        df[to_numeric_cols] = df[to_numeric_cols].apply(
+            lambda x: x.str.replace(',', '').astype(float))
+        df[['cod_obra', '_']] = df['obra'].str.split(
+            pat = '-', n=1, expand=True
+        )
+        df = df.loc[:, [
+            'ejercicio', 'beneficiario', 'cod_obra', 'obra',
+            'nro_certificado', 'monto_certificado', 'fondo_reparo',
+            'otros', 'importe_bruto', 'iibb', 'lp', 'suss', 'gcias',
+            'invico', 'retenciones', 'importe_neto'
+        ]]
 
+        self.df = df
         return self.df
 
 # --------------------------------------------------

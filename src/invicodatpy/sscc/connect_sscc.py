@@ -5,6 +5,8 @@ Purpose: Automate SSCC with pywinauto
 Source: 
 """
 
+__all__ = ['ConnectSSCC']
+
 import os
 import time
 from dataclasses import dataclass, field

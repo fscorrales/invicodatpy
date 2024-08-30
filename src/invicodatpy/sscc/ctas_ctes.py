@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write Cuentas Corrientes Mapper
 """
 
+__all__ = ['CtasCtes']
+
 import argparse
 import inspect
 import os

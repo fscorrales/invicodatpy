@@ -5,6 +5,8 @@ Purpose: Read, process and write SGF's 'Resumen de
 Rendiciones por Proveedores' report
 """
 
+__all__ = ['ResumenRendProv']
+
 import argparse
 import datetime as dt
 import inspect
@@ -13,13 +15,14 @@ import os
 import time
 from dataclasses import dataclass, field
 
+import numpy as np
 import pandas as pd
-# from datar import dplyr, f, base
 from pywinauto import findwindows, keyboard, mouse
 
 from ..models.sgf_model import SGFModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_sgf import ConnectSGF
+
 
 @dataclass
 class ResumenRendProv(RPWUtils):
@@ -49,6 +52,10 @@ class ResumenRendProv(RPWUtils):
     sgf:ConnectSGF = field(
         init=True, repr=False, default=None
     )
+
+    # --------------------------------------------------
+    def connect(self):
+        self.sgf.connect()
 
     # --------------------------------------------------
     def download_report(
@@ -172,6 +179,7 @@ class ResumenRendProv(RPWUtils):
         else:
             # Future exception raise
             pass
+        return self.df
 
     # --------------------------------------------------
     def transform_df(self) -> pd.DataFrame:
@@ -183,75 +191,92 @@ class ResumenRendProv(RPWUtils):
         df['origen'] = df['origen'].str.strip()
         
         if df.loc[0, 'origen'] == 'OBRAS':
-            df = df >> \
-                dplyr.transmute(
-                    origen = f.origen,
-                    beneficiario = f['23'], 
-                    destino = '', 
-                    libramiento_sgf = f['25'], 
-                    fecha = f['26'], 
-                    movimiento = f['27'],
-                    cta_cte = f['24'],
-                    importe_bruto = f['28'],
-                    gcias = f['29'], 
-                    sellos = f['30'],
-                    iibb = f['31'], 
-                    suss = f['32'], 
-                    invico = f['33'], 
-                    seguro = '0',
-                    salud = '0', 
-                    mutual = '0', 
-                    otras = f['34'],
-                    importe_neto = f['35'], 
-                )
+            df = df.rename(columns = {
+                '23':'beneficiario',
+                '25':'libramiento_sgf',
+                '26':'fecha',
+                '27':'movimiento',
+                '24':'cta_cte',
+                '28':'importe_bruto',
+                '29':'gcias',
+                '30':'sellos',
+                '31':'iibb',
+                '32':'suss',
+                '33':'invico',
+                '34':'otras',
+                '35':'importe_neto',
+            })
+            df['destino'] = ''
+            df['seguro'] = '0'
+            df['salud'] = '0'
+            df['mutual'] = '0'
         else:
-            df = df >> \
-                dplyr.transmute(
-                    origen = f.origen,
-                    beneficiario = f['26'], 
-                    destino = f['27'], 
-                    libramiento_sgf = f['29'], 
-                    fecha = f['30'], 
-                    movimiento = f['31'],
-                    cta_cte = f['28'],
-                    importe_bruto = f['32'], 
-                    gcias = f['33'], 
-                    sellos = f['34'],
-                    iibb = f['35'], 
-                    suss = f['36'], 
-                    invico = f['37'], 
-                    seguro = f['38'],
-                    salud = f['39'], 
-                    mutual = f['40'], 
-                    otras = '0',
-                    importe_neto = f['41']
-                )
+            df = df.rename(columns = {
+                '26':'beneficiario',
+                '27':'destino',
+                '29':'libramiento_sgf',
+                '30':'fecha',
+                '31':'movimiento',
+                '28':'cta_cte',
+                '32':'importe_bruto',
+                '33':'gcias',
+                '34':'sellos',
+                '35':'iibb',
+                '36':'suss',
+                '37':'invico',
+                '38':'seguro',
+                '39':'salud',
+                '40':'mutual',
+                '41':'importe_neto',
+            })
+            df['otras'] = '0'
+
+        df['ejercicio'] = df['fecha'].str[-4:]
+        df['mes'] = df['fecha'].str[3:5] + '/' + df['ejercicio']
+        df['cta_cte'] = np.where(
+            df['beneficiario'] == 'CREDITO ESPECIAL',
+            '130832-07', 
+            df['cta_cte']
+        )
+
+        df = df.loc[:, [
+            'origen', 'ejercicio', 'mes', 'fecha', 
+            'beneficiario', 'destino', 'libramiento_sgf',
+            'movimiento', 'cta_cte', 'importe_bruto', 'gcias', 'sellos',
+            'iibb', 'suss', 'invico', 'seguro', 'salud', 'mutual', 'otras',
+            'importe_neto'
+        ]]
         
-        df.loc[:,'importe_bruto':] = df.loc[:,'importe_bruto':].stack(
-        ).str.replace(',','').unstack()
-        df.loc[:,'importe_bruto':] = df.loc[:,'importe_bruto':].stack(
-        ).astype(float).unstack()
+        df.loc[:, 'importe_bruto':] = df.loc[:, 'importe_bruto':].apply(
+            lambda x: x.str.replace(',', '').astype(float)
+        )
+        # df.loc[:,'importe_bruto':] = df.loc[:,'importe_bruto':].stack(
+        # ).str.replace(',','').unstack()
+        # df.loc[:,'importe_bruto':] = df.loc[:,'importe_bruto':].stack(
+        # ).astype(float).unstack()
         df['retenciones'] = df.loc[:,'gcias':'otras'].sum(axis=1)
 
-        df = df >> \
-            dplyr.mutate(
-                importe_bruto = dplyr.if_else( #SGF no suma 3% en bruto
-                    f.origen == 'EPAM', 
-                    f.importe_bruto + f.invico,
-                    f.importe_bruto
-                )
-            ) >> \
-            dplyr.relocate(f.retenciones, _before = f.importe_neto) >> \
-            dplyr.mutate(
-                ejercicio = f.fecha.str[-4:],
-                mes = f.fecha.str[3:5] + '/' + f.ejercicio,
-                cta_cte = dplyr.if_else(f.beneficiario == 'CREDITO ESPECIAL',
-                                        "130832-07", f.cta_cte),
-            )  >> \
-            dplyr.select(
-                f.origen, f.ejercicio, f.mes, f.fecha,
-                dplyr.everything()
-            )
+        df['importe_bruto'] = np.where(
+            df['origen'] == 'EPAM', 
+            df['importe_bruto'] + df['invico'],
+            df['importe_bruto']
+        )
+        # Reubica la columna 'retenciones' antes de la columna 'importe_neto'
+        columns = df.columns.tolist()
+
+        # Reordena las columnas para que 'retenciones' esté antes de 'importe_neto'
+        new_columns = [column for column in columns if column != 'retenciones'] + ['retenciones'] + [column for column in columns if column == 'importe_neto']
+
+        # Reindexa el DataFrame con las nuevas columnas
+        df = df.reindex(columns=new_columns, copy=False)
+        
+        df['ejercicio'] = df['fecha'].str[-4:]
+        df['mes'] = df['fecha'].str[3:5] + '/' + df['ejercicio']
+        df['cta_cte'] = np.where(
+            df['beneficiario'] == 'CREDITO ESPECIAL',
+            '130832-07', 
+            df['cta_cte']
+        )
 
         df['fecha'] = pd.to_datetime(
             df['fecha'], format='%d/%m/%Y'
@@ -336,6 +361,7 @@ def main():
                     )
                 json_file.close()
         sgf_resumen_rend_prov = ResumenRendProv(sgf = sgf_connection)
+        sgf_resumen_rend_prov.connect()
         sgf_resumen_rend_prov.download_report(
             dir_path, ejercicios=args.ejercicio, origenes=origenes
         )
@@ -349,11 +375,13 @@ def main():
         filename = args.ejercicio + ' Resumen de Rendiciones '+ origenes[0] + '.csv'
 
     sgf_resumen_rend_prov.from_external_report(dir_path + '/' + filename)
-    sgf_resumen_rend_prov.test_sql(dir_path + '/test.sqlite')
-    # sgf_resumen_rend_prov.to_sql(dir_path + '/sgf.sqlite')
+    # sgf_resumen_rend_prov.test_sql(dir_path + '/test.sqlite')
+    sgf_resumen_rend_prov.to_sql(dir_path + '/sgf.sqlite')
+    print(sgf_resumen_rend_prov.df)
     # sgf_resumen_rend_prov.print_tidyverse()
-    # sgf_resumen_rend_prov.from_sql(dir_path + '/sgf.sqlite')
+    sgf_resumen_rend_prov.from_sql(dir_path + '/sgf.sqlite')
     # sgf_resumen_rend_prov.print_tidyverse()
+    print(sgf_resumen_rend_prov.df)
     # print(sgf_resumen_rend_prov.df.head(10))
 
 # --------------------------------------------------

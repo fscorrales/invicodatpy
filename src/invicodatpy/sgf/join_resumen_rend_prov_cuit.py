@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Join Resumen Rend Prov y Listado Proveedores SGF
 """
 
+__all__ = ['JoinResumenRendProvCuit']
+
 import argparse
 import inspect
 import os

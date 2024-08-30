@@ -4,12 +4,13 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SGF's 'Listado de Proveedores' report
 """
 
+__all__ = ['ListadoProv']
+
 import argparse
 import inspect
 import os
 
 import pandas as pd
-# from datar import base, dplyr, f, tidyr
 
 from ..models.sgf_model import SGFModel
 from ..utils.rpw_utils import RPWUtils
@@ -45,15 +46,10 @@ class ListadoProv(RPWUtils):
         ]
         df['cuit']= df['cuit'].replace(to_replace='', value=None)
 
-        df = df >> \
-            tidyr.drop_na(f.cuit) >> \
-            dplyr.mutate(
-                cuit = base.gsub('-', '', f.cuit)
-            ) >> \
-            dplyr.select(
-                f.codigo, f.cuit,
-                dplyr.everything()
-            )
+        df = df.dropna(subset=['cuit'])
+        df['cuit'] = df['cuit'].str.replace('-', '')
+
+        df = df[['codigo', 'cuit'] + [col for col in df.columns if col not in ['codigo', 'cuit']]]
 
         self.df = df
         return self.df
@@ -84,11 +80,11 @@ def main():
                 inspect.currentframe())))
     sgf_listado_prov = ListadoProv()
     sgf_listado_prov.from_external_report(dir_path + '/' + args.file)
-    # sgf_listado_prov.test_sql(dir_path + '/test.sqlite')
-    sgf_listado_prov.to_sql(dir_path + '/sgf.sqlite', True)
-    sgf_listado_prov.print_tidyverse()
-    sgf_listado_prov.from_sql(dir_path + '/sgf.sqlite')
-    sgf_listado_prov.print_tidyverse()
+    sgf_listado_prov.test_sql(dir_path + '/test.sqlite')
+    # sgf_listado_prov.to_sql(dir_path + '/sgf.sqlite', True)
+    # sgf_listado_prov.print_tidyverse()
+    # sgf_listado_prov.from_sql(dir_path + '/sgf.sqlite')
+    # sgf_listado_prov.print_tidyverse()
     # print(sgf_listado_prov.df.head(10))
     # dir = '/home/kanou/IT/R Apps/R Gestion INVICO/invicoDB/Base de Datos/Sistema Gestion Financiera/Otros Reportes/Listado de Proveedores.csv'
     # sgf_listado_prov.update_sql_db(dir, dir_path + '/sgf.sqlite', True)

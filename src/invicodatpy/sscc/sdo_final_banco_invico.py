@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write SSCC's 'Informe de Saldos de Cuentas' report
 """
 
+__all__ = ['SdoFinalBancoINVICO']
+
 import argparse
 import inspect
 import os
