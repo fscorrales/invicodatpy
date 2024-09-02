@@ -25,6 +25,7 @@ from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
 
+
 @dataclass
 class PptoGtosFteRf602(RPWUtils):
     """

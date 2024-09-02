@@ -10,8 +10,8 @@ import argparse
 import inspect
 import os
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from ..models.siif_model import SIIFModel
 from ..utils.rpw_utils import RPWUtils

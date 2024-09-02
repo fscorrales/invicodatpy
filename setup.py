@@ -15,9 +15,9 @@ setup(
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
     install_requires=[
-        'datar',
-        'datar-numpy',
-        'datar-pandas',
+        # 'datar',
+        # 'datar-numpy',
+        # 'datar-pandas',
         'google-api-python-client',
         'google-auth',
         'google-auth-oauthlib',

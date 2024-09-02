@@ -8,15 +8,15 @@ __all__ = ['DeudaFlotanteRdeu012']
 
 import argparse
 import datetime as dt
-from datetime import timedelta
 import inspect
 import json
 import os
 import time
 from dataclasses import dataclass, field
+from datetime import timedelta
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC

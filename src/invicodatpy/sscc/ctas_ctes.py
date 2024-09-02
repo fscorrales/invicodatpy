@@ -11,8 +11,10 @@ import inspect
 import os
 
 import pandas as pd
+
 from ..models.sscc_model import SSCCModel
 from ..utils.rpw_utils import RPWUtils
+
 
 class CtasCtes(RPWUtils):
     """Read, process and write Cuentas Corrientes Mapper"""

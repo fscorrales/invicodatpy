@@ -92,7 +92,6 @@ class PrintTidyverse():
     # def __init__(self, data=None, *args, meta=None, **kwargs):
     #     """Construct a tibble"""
     #     super().__init__(data, *args, **kwargs)
-    #     self._datar = meta or {}
 
     def __repr__(self) -> str:
         """

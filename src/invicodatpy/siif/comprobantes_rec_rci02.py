@@ -14,8 +14,8 @@ import os
 import time
 from dataclasses import dataclass, field
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC

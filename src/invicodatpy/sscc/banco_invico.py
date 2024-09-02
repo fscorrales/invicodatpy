@@ -15,9 +15,8 @@ import os
 import time
 from dataclasses import dataclass, field
 
-import pandas as pd
 import numpy as np
-# from datar import base, dplyr, f, tidyr
+import pandas as pd
 from pywinauto import findwindows, keyboard, mouse
 
 from ..models.sscc_model import SSCCModel
