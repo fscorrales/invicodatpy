@@ -3,6 +3,11 @@
 Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: SQL methods
 """
+
+
+__all__ = ['SQLUtils']
+
+
 import pandas as pd
 from sqlalchemy import MetaData, Table, and_, create_engine, delete, engine
 

@@ -4,6 +4,10 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Read, process and write combined utils
 """
 
+
+__all__ = ['RPWUtils']
+
+
 from .handling_files import HandlingFiles
 from .print_tidyverse import PrintTidyverse
 from .sql_utils import SQLUtils

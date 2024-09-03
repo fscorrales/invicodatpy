@@ -6,6 +6,11 @@ from pandas._config import get_option
 from pandas.io.formats import format as fmt
 from pandas.io.formats.format import DataFrameFormatter, format_array
 
+
+
+__all__ = ["PrintTidyverse"]
+
+
 class TidyDataFrameFormatter(DataFrameFormatter):
     def _truncate_horizontally(self) -> None:
         """Remove columns, which are not to be displayed and adjust formatters.

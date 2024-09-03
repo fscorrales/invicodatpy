@@ -7,6 +7,11 @@ Source:
     - https://medium.com/@jb.ranchana/write-and-append-dataframes-to-google-sheets-in-python-f62479460cf0
     - https://medium.com/@vince.shields913/reading-google-sheets-into-a-pandas-dataframe-with-gspread-and-oauth2-375b932be7bf
 """
+
+
+__all__ = ["GoogleSheets"]
+
+
 import argparse
 from dataclasses import dataclass, field
 
