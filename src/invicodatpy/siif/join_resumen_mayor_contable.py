@@ -41,16 +41,21 @@ class JoinResumenMayorContable():
             ejercicios:list = str(dt.datetime.now().year)
         ):
 
-        ResumenContableCtaRvicon03.download_report(
-            dir_path, ejercicios=ejercicios
-        )
+        rvicon03 = ResumenContableCtaRvicon03(siif=siif)
+        rcocc31 = MayorContableRcocc31(siif=siif)
 
+        rvicon03.download_report(
+            dir_path=dir_path, ejercicios=ejercicios
+        )
+        
+        if not isinstance(ejercicios, list):
+            ejercicios = [ejercicios]
         for ejercicio in ejercicios:
             filename = ejercicio + '-rvicon03.xls'
-            df = ResumenContableCtaRvicon03.from_external_report(
+            df = rvicon03.from_external_report(
                 os.path.join(dir_path, filename)
             )
-            MayorContableRcocc31.download_report(
+            rcocc31.download_report(
                 dir_path, ejercicios=ejercicio, 
                 ctas_contables=df['cta_contable'].values.tolist()
             )
@@ -166,11 +171,13 @@ def main():
             dir_path=dir_path,
             ejercicios=args.ejercicio
         )
+        siif_connection.disconnect()
     else:
+        print(dir_path)
         siif = JoinResumenMayorContable()
 
 # --------------------------------------------------
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.join_resumen_mayor_contable -e 2024
+    # python -m invicodatpy.siif.join_resumen_mayor_contable -e 2024 --no-download
