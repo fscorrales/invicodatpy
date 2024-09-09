@@ -24,7 +24,7 @@ from dataclasses import dataclass, field
 class JoinResumenMayorContable():
     """Join rvicon03 (resumen_contable) with rcocc31 (mayor_contable)"""
     siif:ConnectSIIF = field(init=True, repr=False, default=None)
-    df:pd.DataFrame = None
+    df:pd.DataFrame = field(init=False, repr=False, default=None)
     
     # --------------------------------------------------
     def connect(self):
@@ -36,13 +36,13 @@ class JoinResumenMayorContable():
 
     # --------------------------------------------------
     def download_and_unite_reports(
-            self, siif:ConnectSIIF,
+            self,
             dir_path:str,
             ejercicios:list = str(dt.datetime.now().year)
         ):
 
-        rvicon03 = ResumenContableCtaRvicon03(siif=siif)
-        rcocc31 = MayorContableRcocc31(siif=siif)
+        rvicon03 = ResumenContableCtaRvicon03(siif=self.siif)
+        rcocc31 = MayorContableRcocc31(siif=self.siif)
 
         rvicon03.download_report(
             dir_path=dir_path, ejercicios=ejercicios
@@ -55,6 +55,7 @@ class JoinResumenMayorContable():
             df = rvicon03.from_external_report(
                 os.path.join(dir_path, filename)
             )
+            print(df['cta_contable'].values.tolist())
             rcocc31.download_report(
                 dir_path, ejercicios=ejercicio, 
                 ctas_contables=df['cta_contable'].values.tolist()
@@ -167,7 +168,6 @@ def main():
         siif.connect()
         siif.go_to_reports()
         siif.download_and_unite_reports(
-            siif = siif_connection,
             dir_path=dir_path,
             ejercicios=args.ejercicio
         )

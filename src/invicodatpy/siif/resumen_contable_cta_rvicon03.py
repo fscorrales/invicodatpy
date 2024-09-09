@@ -155,8 +155,10 @@ class ResumenContableCtaRvicon03(RPWUtils):
         )
         df['nivel_desc'] = df['nivel_desc'].ffill()
         df = df.dropna(subset=['saldo_inicial'])
-        df[['cta_contable', 'cta_contable_desc']] = df['nivel_descripcion'].str.rsplit(
-            pat = '-', n=1, expand=True
+
+        df['cta_contable'] = df['nivel_descripcion'].str.split('-', expand=True).iloc[:,:3].agg('-'.join, axis=1)
+        df['cta_contable_desc'] = df['nivel_descripcion'].apply(
+            lambda x: '-'.join(filter(None, x.split('-')[3:])) if x is not None else None
         )
         df = df.loc[:,[
             'ejercicio', 'nivel', 'nivel_desc', 'cta_contable', 'cta_contable_desc',
@@ -167,7 +169,8 @@ class ResumenContableCtaRvicon03(RPWUtils):
             'saldo_inicial', 'debe', 'haber', 'ajuste_debe', 'ajuste_haber', 
             'fondos_debe', 'fondos_haber', 'saldo_final'
         ]
-        df[to_numeric_cols] = df[to_numeric_cols].apply(pd.to_numeric)   
+        df[to_numeric_cols] = df[to_numeric_cols].apply(pd.to_numeric)
+        df = df[~df[to_numeric_cols].apply(lambda x: (x == 0).all(), axis=1)]
 
         self.df = df
         return self.df

@@ -23,6 +23,10 @@ xlrd = "^2.0.1"
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"
 
+
+[tool.poetry.group.test.dependencies]
+ptpython = "^3.0.29"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

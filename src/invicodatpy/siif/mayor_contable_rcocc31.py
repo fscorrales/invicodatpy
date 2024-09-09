@@ -123,18 +123,19 @@ class MayorContableRcocc31(RPWUtils):
                 int_ejercicio = int(ejercicio)
                 if int_ejercicio > 2010 and int_ejercicio <= dt.datetime.now().year:
                     for cta_contable in ctas_contables:
+                        nivel, mayor, subcuenta = cta_contable.split('-')
                         # Ejercicio
                         input_ejercicio.clear()
                         input_ejercicio.send_keys(ejercicio)
                         # Nivel
                         input_nivel.clear()
-                        input_nivel.send_keys(cta_contable[0:4])
+                        input_nivel.send_keys(nivel)
                         # Nivel
                         input_mayor.clear()
-                        input_mayor.send_keys(cta_contable[5])
+                        input_mayor.send_keys(mayor)
                         # Nivel
                         input_subcuenta.clear()
-                        input_subcuenta.send_keys(cta_contable[7])
+                        input_subcuenta.send_keys(subcuenta)
                         # Fecha Desde
                         input_fecha_desde.clear()
                         fecha_desde = dt.datetime.strftime(
@@ -302,6 +303,22 @@ def get_args():
         type=str,
         help = "Ejercicio to download from SIIF")
 
+    # parser.add_argument(
+    #     '-c', '--cuenta', 
+    #     metavar = 'Cuentas Contables',
+    #     default = ['1112-2-6'],
+    #     type = lambda s: [i.strip() for i in s.split(',')],
+    #     help = "Cuentas Contables to download from SIIF. "
+    #            "Use comas to separate multiple accounts")
+
+    parser.add_argument(
+        '-c', '--cuenta', 
+        metavar = 'Cuentas Contables',
+        default = ['1112-2-6'],
+        nargs='*', 
+        type=str,
+        help = "Cuentas Contables to download from SIIF")
+
     return parser.parse_args()
 
 # --------------------------------------------------
@@ -328,8 +345,10 @@ def main():
         siif_rcocc31 = MayorContableRcocc31(siif = siif_connection)
         siif_rcocc31.connect()
         siif_rcocc31.go_to_reports()
+        print(args.cuenta)
         siif_rcocc31.download_report(
-            dir_path, ejercicios=args.ejercicio
+            dir_path, ejercicios=args.ejercicio, 
+            ctas_contables=args.cuenta
         )
         siif_connection.disconnect()
         siif_connection.remove_html_files(dir_path)
@@ -339,14 +358,18 @@ def main():
     if args.file != '':
         filename = args.file
     else:
-        filename = args.ejercicio + '-rcocc31 (1112-2-6).xls'
+        filename = []
+        for cta_contable in args.cuenta:
+            filename.append(args.ejercicio + '-rcocc31 (' + cta_contable + ').xls')
+            # filename = args.ejercicio + '-rcocc31 (1112-2-6).xls'
 
-    siif_rcocc31.from_external_report(dir_path + '/' + filename)
-    # siif_rcocc31.test_sql(dir_path + '/test.sqlite')
-    siif_rcocc31.to_sql(dir_path + '/siif.sqlite')
-    siif_rcocc31.print_tidyverse()
-    siif_rcocc31.from_sql(dir_path + '/siif.sqlite')
-    siif_rcocc31.print_tidyverse()
+    for f in filename:
+        siif_rcocc31.from_external_report(dir_path + '/' + f)
+        # siif_rcocc31.test_sql(dir_path + '/test.sqlite')
+        siif_rcocc31.to_sql(dir_path + '/siif.sqlite')
+        siif_rcocc31.print_tidyverse()
+        siif_rcocc31.from_sql(dir_path + '/siif.sqlite')
+        siif_rcocc31.print_tidyverse()
 
 # --------------------------------------------------
 if __name__ == '__main__':
