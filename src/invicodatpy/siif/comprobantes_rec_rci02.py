@@ -178,7 +178,9 @@ class ComprobantesRecRci02(RPWUtils):
         df['mes'] = df['fecha'].str[5:7] + '/' + df['ejercicio']
         df['es_remanente'] = df['glosa'].str.contains("REMANENTE")
         df['es_invico'] = df['glosa'].str.contains("%")
-        df['es_verificado'] = df['es_verificado'].astype(bool)
+        df['es_verificado'] = np.where(
+            df['es_verificado'] == 'S', True, False
+        )
         df['importe'] = df['importe'].apply(pd.to_numeric).astype(np.float64) 
 
         # df = df >> \
