@@ -162,6 +162,7 @@ class BancoINVICO(RPWUtils):
         """"Transform read csv file"""
         df = self.df
         df = df.replace(to_replace='[\r\n]', value='')
+        df['21'] = df['21'].str.strip()
         df = df.assign(
             fecha = df['20'],
             ejercicio = df['20'].str[-4:],
