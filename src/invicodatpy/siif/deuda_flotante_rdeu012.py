@@ -242,7 +242,7 @@ class DeudaFlotanteRdeu012(RPWUtils):
         df['mes'] = df['fecha'].dt.strftime('%m/%Y')
 
         df['nro_comprobante'] = (
-            df['nro_entrada'].str.zfill(5) +  df['mes'].str[-2:]
+            df['nro_entrada'].str.zfill(5) + '/' +  df['mes'].str[-2:]
         )
         df = df.loc[:, [
             'ejercicio', 'mes', 'fecha', 'mes_hasta', 'fuente',
