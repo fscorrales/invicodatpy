@@ -233,7 +233,7 @@ class DeudaFlotanteRdeu012(RPWUtils):
         condition = ((df['mes_aprobado'].str[0:2] == '01') & 
                     (df['nro_entrada'].astype(int) > 1500))
         df.loc[condition, 'fecha'] = (
-            (pd.to_numeric(df['mes_hasta'].loc[condition].str[-4:]) - 1).astype(str) + "-12-31")
+            (pd.to_numeric(df['mes_hasta'].loc[condition].str[-4:])).astype(str) + "-12-31")
 
         df['fecha'] = pd.to_datetime(
             df['fecha'],  format='%Y-%m-%d', errors='coerce'
