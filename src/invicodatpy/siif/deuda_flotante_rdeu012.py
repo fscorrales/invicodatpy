@@ -213,7 +213,8 @@ class DeudaFlotanteRdeu012(RPWUtils):
 
         df['fecha_aprobado'] = pd.to_datetime(
             df['fecha_aprobado'], format='%Y-%m-%d'
-        ) 
+        )
+        df['mes_aprobado'] = df['fecha_aprobado'].dt.strftime('%m/%Y')
 
         df['fecha'] = np.where(
             df['fecha_aprobado'] > df['fecha_hasta'],
@@ -229,7 +230,7 @@ class DeudaFlotanteRdeu012(RPWUtils):
         # CYO aprobados en enero correspodientes al ejercicio anterior
         df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce') 
         df['fecha'] = df['fecha'].dt.strftime('%Y-%m-%d')
-        condition = ((df['mes_hasta'].str[0:2] == '01') & 
+        condition = ((df['mes_aprobado'].str[0:2] == '01') & 
                     (df['nro_entrada'].astype(int) > 1500))
         df.loc[condition, 'fecha'] = (
             (pd.to_numeric(df['mes_hasta'].loc[condition].str[-4:]) - 1).astype(str) + "-12-31")
