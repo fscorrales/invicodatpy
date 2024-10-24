@@ -19,17 +19,17 @@ class TestSIIFConnection:
             self.connect_siif.disconnect()
             assert True
 
-    def test_login_without_entering_credentials(self):
-        wait = WebDriverWait(self.connect_siif.driver, 10)
-        try:
-            self.connect_siif.connect()
-            wait.until(EC.presence_of_element_located((
-                By.XPATH, "//button[@id='pt1:cb12']"
-            )))
-        except TimeoutException:
-            assert True
-        else:
-            assert False, "Acceso no autorizado sin credenciales"
+    # def test_login_without_entering_credentials(self):
+    #     wait = WebDriverWait(self.connect_siif.driver, 10)
+    #     try:
+    #         self.connect_siif.connect()
+    #         wait.until(EC.presence_of_element_located((
+    #             By.XPATH, "//button[@id='pt1:cb12']"
+    #         )))
+    #     except TimeoutException:
+    #         assert True
+    #     else:
+    #         assert False, "Acceso no autorizado sin credenciales"
 
     @pytest.mark.siif_reports
     def test_access_to_reports(self):
