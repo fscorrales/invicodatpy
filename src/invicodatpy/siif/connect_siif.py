@@ -76,12 +76,12 @@ class ConnectSIIF():
             input_username, input_password = self.driver.find_elements(By.XPATH, "//input[starts-with(@id,'pt')]")
             input_username.send_keys(self.username)
             input_password.send_keys(self.password) 
-            input_password.send_keys(Keys.ENTER)  # Presionar la tecla Enter
-            # btn_connect = self.driver.find_element(By.XPATH, "//div[@id='pt1:t1::oc']")
-            # btn_connect = self.driver.find_element(By.XPATH, "//button[@id='pt1:cb1']")
-            # btn_connect.click()
-            time.sleep(1)
-            input_password.send_keys(Keys.ENTER)  # Presionar la tecla Enter
+            # input_password.send_keys(Keys.ENTER)  # Presionar la tecla Enter
+            # time.sleep(1)
+            # input_password.send_keys(Keys.ENTER)  # Presionar la tecla Enter
+            btn_connect = self.driver.find_element(By.XPATH, "//button[@id='pt1:cb1']")
+            btn_connect.click()
+
             time.sleep(1)
         except NoSuchElementException:
             print(f"No se encontro el elemento: {NoSuchElementException}")
