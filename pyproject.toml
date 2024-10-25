@@ -18,10 +18,12 @@ oauth2client = "^4.1"
 pandas = "^1.5"
 numpy = "1.26.4"
 xlrd = "^2.0.1"
+playwright = "^1.48.0"
 
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"
+ptpython = "^3.0.29"
 
 
 [tool.poetry.group.test.dependencies]
