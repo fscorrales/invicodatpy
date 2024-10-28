@@ -72,21 +72,22 @@ class ConnectSIIF():
     async def go_to_reports(self) -> None:
         """"Go to SIIF's Reportes Module"""
         try:
+            pass
             #Abrir pestaña reportes
-            self.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//button[@id='pt1:cb12']"))
-            )
-            mnu_reportes = await self.page.locator('id=pt1:cb12')
-            mnu_reportes.click()
-            reportes = await self.page.locator('id=pt1:cb14')
-            reportes.click()
-            # Wait for the new window or tab
-            # self.wait.until(EC.number_of_windows_to_be(2))
-            # self.driver.switch_to.window(self.driver.window_handles[1])
             # self.wait.until(EC.presence_of_element_located(
-            #     (By.XPATH, "//select[@id='pt1:socModulo::content']"))
+            #     (By.XPATH, "//button[@id='pt1:cb12']"))
             # )
-            # time.sleep(1)
+            # mnu_reportes = await self.page.locator('id=pt1:cb12')
+            # mnu_reportes.click()
+            # reportes = await self.page.locator('id=pt1:cb14')
+            # reportes.click()
+                    # Wait for the new window or tab
+                    # self.wait.until(EC.number_of_windows_to_be(2))
+                    # self.driver.switch_to.window(self.driver.window_handles[1])
+                    # self.wait.until(EC.presence_of_element_located(
+                    #     (By.XPATH, "//select[@id='pt1:socModulo::content']"))
+                    # )
+                    # time.sleep(1)
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
             self.disconnect() 
@@ -123,10 +124,11 @@ class ConnectSIIF():
 
     # --------------------------------------------------
     def disconnect(self) -> None:
-        self.driver.switch_to.window(self.driver.window_handles[0])
-        btn_disconnect = self.driver.find_element(By.XPATH, "//a[@id='pt1:pt_np1:pt_cni1']")
-        btn_disconnect.click()
-        # self.quit()
+        pass
+        # self.driver.switch_to.window(self.driver.window_handles[0])
+        # btn_disconnect = self.driver.find_element(By.XPATH, "//a[@id='pt1:pt_np1:pt_cni1']")
+        # btn_disconnect.click()
+            # self.quit()
 
     # --------------------------------------------------
     def quit(self) -> None:
