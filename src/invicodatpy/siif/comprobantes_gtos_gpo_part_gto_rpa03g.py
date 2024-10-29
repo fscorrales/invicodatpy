@@ -16,10 +16,6 @@ from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 
 from ..models.siif_model import SIIFModel
 from .connect_siif import ConnectSIIF
