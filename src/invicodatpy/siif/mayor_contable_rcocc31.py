@@ -15,8 +15,6 @@ import time
 from dataclasses import dataclass, field
 
 import pandas as pd
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 
 from ..models.siif_model import SIIFModel
 from .connect_siif import ConnectSIIF
@@ -57,31 +55,37 @@ class MayorContableRcocc31(ConnectSIIF):
             self.select_report_module('SUB - SISTEMA DE CONTABILIDAD PATRIMONIAL')
             self.select_specific_report_by_id('387')
 
-            # Llenado de inputs
-            self.siif.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']")
-            ))
-            input_ejercicio = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']"
-                )
-            input_nivel = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:txtNivel::content']"
-                )
-            input_mayor = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:txtMayor::content']"
-                )
-            input_subcuenta = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:txtSubCuenta::content']"
-                )
-            input_fecha_desde = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:idFechaDesde::content']"
-                )
-            input_fecha_hasta = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:idFechaHasta::content']"
-                )
-            btn_get_reporte = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnEjecutarReporte']")
-            btn_xls = self.siif.driver.find_element(By.XPATH, "//input[@id='pt1:rbtnXLS::content']")
+            # Getting DOM elements
+            input_ejercicio = self.get_dom_element(
+                "//input[@id='pt1:txtAnioEjercicio::content']", wait=True
+            )
+            input_nivel = self.get_dom_element(
+                "//input[@id='pt1:txtNivel::content']"
+            )
+            input_mayor = self.get_dom_element(
+                "//input[@id='pt1:txtMayor::content']"
+            )
+            input_subcuenta = self.get_dom_element(
+                "//input[@id='pt1:txtSubCuenta::content']"
+            )
+            input_fecha_desde = self.get_dom_element(
+                "//input[@id='pt1:idFechaDesde::content']"
+            )
+            input_fecha_hasta = self.get_dom_element(
+                "//input[@id='pt1:idFechaHasta::content']"
+            )
+            btn_get_reporte = self.get_dom_element(
+                "//div[@id='pt1:btnEjecutarReporte']"
+            )
+            btn_xls = self.get_dom_element(
+                "//input[@id='pt1:rbtnXLS::content']"
+            )
             btn_xls.click()
+            btn_volver = self.get_dom_element(
+                "//div[@id='pt1:btnVolver']"
+            )
+
+            # Form submit
             if not isinstance(ctas_contables, list):
                 ctas_contables = [ctas_contables]
             if not isinstance(ejercicios, list):
@@ -118,23 +122,22 @@ class MayorContableRcocc31(ConnectSIIF):
                         )
                         input_fecha_hasta.send_keys(fecha_hasta)
                         btn_get_reporte.click()
-                        self.siif.rename_report(
+
+                        # Download and rename xls
+                        self.rename_report(
                             dir_path, 'rcocc31.xls', 
                             ejercicio + '-rcocc31 ('+ cta_contable +').xls'
                         )
-                        self.siif.wait.until(EC.number_of_windows_to_be(3))
-                        self.siif.driver.switch_to.window(self.siif.driver.window_handles[2])
-                        self.siif.driver.close()
-                        self.siif.driver.switch_to.window(self.siif.driver.window_handles[1])
+                        self.download_file_procedure()
             time.sleep(1)
-            btn_volver = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
+
+            # Going back to reports list
             btn_volver.click()
             time.sleep(1)
 
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
-            self.siif.disconnect()
-            self.siif.quit()
+            self.disconnect()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
@@ -190,43 +193,6 @@ class MayorContableRcocc31(ConnectSIIF):
             'debitos', 'creditos', 'saldo'
         ]
         df[to_numeric_cols] = df[to_numeric_cols].apply(pd.to_numeric)      
-        # df = df >> \
-        #     base.tail(-20) >> \
-        #     tidyr.drop_na(f['3']) >> \
-        #     dplyr.transmute(
-        #         ejercicio = f.ejercicio,
-        #         cta_contable = f.cta_contable, 
-        #         nro_entrada = f['3'], 
-        #         fecha_aprobado = f['9'],
-        #         auxiliar_1 = f['14'],
-        #         auxiliar_2 = f['19'],
-        #         tipo_comprobante = f['21'],
-        #         debitos = base.as_double(f['24']), 
-        #         creditos = base.as_double(f['25']),
-        #         saldo = base.as_double(f['27'])
-        #     )
-
-        # df['fecha_aprobado'] = pd.to_datetime(
-        #     df['fecha_aprobado'], format='%Y-%m-%d'
-        # )
-        # # df['fecha'] = df['fecha_aprobado'].dt.year.astype(str).apply(
-        # #     lambda x: df['fecha_aprobado'] 
-        # #     if x == df['ejercicio'] 
-        # #     else pd.to_datetime(df['ejercicio'] + '-12-31', format='%Y-%m-%d')
-        # #     )
-        # df.loc[df['fecha_aprobado'].dt.year.astype(str) == df['ejercicio'], 'fecha'] = df['fecha_aprobado']
-        # df.loc[df['fecha_aprobado'].dt.year.astype(str) != df['ejercicio'], 'fecha'] = pd.to_datetime(
-        #     df['ejercicio'] + '-12-31', format='%Y-%m-%d'
-        # )
-
-        # df = df >>\
-        #     dplyr.mutate(
-        #         mes = df['fecha'].dt.month.astype(str).str.zfill(2) + '/' + df['ejercicio']
-        #     ) >> \
-        #     dplyr.select(
-        #         f.ejercicio, f.mes, f.fecha, f.fecha_aprobado,
-        #         dplyr.everything()
-        #     )
 
         self.df = df
         return self.df
@@ -300,27 +266,24 @@ def main():
     if args.download:
         json_path = dir_path + '/siif_credentials.json'
         if args.username != '' and args.password != '':
-            siif_connection = ConnectSIIF(args.username, args.password)
+            ConnectSIIF(args.username, args.password)
         else:
             if os.path.isfile(json_path):
                 with open(json_path) as json_file:
                     data_json = json.load(json_file)
-                    siif_connection = ConnectSIIF(
+                    ConnectSIIF(
                         data_json['username'], data_json['password']
                     )
                 json_file.close()
-        siif_rcocc31 = MayorContableRcocc31(siif = siif_connection)
-        siif_rcocc31.connect()
-        siif_rcocc31.go_to_reports()
-        print(args.cuenta)
-        siif_rcocc31.download_report(
+        siif = MayorContableRcocc31()
+        siif.go_to_reports()
+        siif.download_report(
             dir_path, ejercicios=args.ejercicio, 
             ctas_contables=args.cuenta
         )
-        siif_connection.disconnect()
-        siif_connection.remove_html_files(dir_path)
+        siif.disconnect()
     else:
-        siif_rcocc31 = MayorContableRcocc31()
+        siif = MayorContableRcocc31()
 
     if args.file != '':
         filename = args.file
@@ -331,12 +294,12 @@ def main():
             # filename = args.ejercicio + '-rcocc31 (1112-2-6).xls'
 
     for f in filename:
-        siif_rcocc31.from_external_report(dir_path + '/' + f)
+        siif.from_external_report(dir_path + '/' + f)
         # siif_rcocc31.test_sql(dir_path + '/test.sqlite')
-        siif_rcocc31.to_sql(dir_path + '/siif.sqlite')
-        siif_rcocc31.print_tidyverse()
-        siif_rcocc31.from_sql(dir_path + '/siif.sqlite')
-        siif_rcocc31.print_tidyverse()
+        siif.to_sql(dir_path + '/siif.sqlite')
+        siif.print_tidyverse()
+        siif.from_sql(dir_path + '/siif.sqlite')
+        siif.print_tidyverse()
 
 # --------------------------------------------------
 if __name__ == '__main__':
