@@ -47,6 +47,17 @@ def setup_and_teardown_siif(request):
     connect_siif.quit()
 
 @pytest.fixture(scope = 'class')
+def setup_and_teardown_siif_rf610(request):
+    request.cls.ejercicio = ejercicio
+    test_siif_path = hp.get_test_siif_path()
+    request.cls.test_siif_path = test_siif_path
+    username, password = get_siif_username_and_password()
+    ConnectSIIF.connect(username = username, password = password)
+    request.cls.rf610 = PptoGtosDescRf610()
+    yield
+    request.cls.rf610.quit()
+
+@pytest.fixture(scope = 'class')
 def setup_and_teardown_siif_rvicon03(request):
     request.cls.ejercicio= ejercicio
     test_siif_path = hp.get_test_siif_path()
@@ -106,17 +117,6 @@ def setup_and_teardown_siif_rfondo07tp(request):
     yield
     connect_siif.quit()
 
-@pytest.fixture(scope = 'class')
-def setup_and_teardown_siif_rf610(request):
-    request.cls.ejercicio= ejercicio
-    test_siif_path = hp.get_test_siif_path()
-    request.cls.test_siif_path = test_siif_path
-    username, password = get_siif_username_and_password()
-    connect_siif = ConnectSIIF(username = username, password = password)
-    request.cls.connect_siif = connect_siif
-    request.cls.rf610 = PptoGtosDescRf610(siif = connect_siif)
-    yield
-    connect_siif.quit()
 
 @pytest.fixture(scope = 'class')
 def setup_and_teardown_siif_rci02(request):

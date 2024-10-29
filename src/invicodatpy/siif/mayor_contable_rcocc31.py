@@ -16,17 +16,14 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 
 from ..models.siif_model import SIIFModel
-from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
 
 
 @dataclass
-class MayorContableRcocc31(RPWUtils):
+class MayorContableRcocc31(ConnectSIIF):
     """
     Read, process and write SIIF's rcocc31 report
     :param siif_connection must be initialized first in order to download from SIIF
@@ -48,17 +45,6 @@ class MayorContableRcocc31(RPWUtils):
     _SQL_MODEL:SIIFModel = field(
         init=False, repr=False, default=SIIFModel
     )
-    siif:ConnectSIIF = field(
-        init=True, repr=False, default=None
-    )
-
-    # --------------------------------------------------
-    def connect(self):
-        self.siif.connect()
-
-    # --------------------------------------------------
-    def go_to_reports(self):
-        self.siif.go_to_reports()
 
     # --------------------------------------------------
     def download_report(
@@ -67,28 +53,9 @@ class MayorContableRcocc31(RPWUtils):
         ctas_contables:list = '1112-2-6'
     ):
         try:
-            # Path de salida
-            params = {
-            'behavior': 'allow',
-            'downloadPath': dir_path
-            }
-            self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
-            # Seleccionar módulo Gastos
-            cmb_modulos = Select(
-                self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
-            )
-            cmb_modulos.select_by_visible_text('SUB - SISTEMA DE CONTABILIDAD PATRIMONIAL')
-            time.sleep(1)
-
-            # Select rcocc31 report
-            input_filter = self.siif.driver.find_element(
-                By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c1::content']"
-            )
-            input_filter.clear()
-            input_filter.send_keys('387', Keys.ENTER)
-            btn_siguiente = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:pc1:btnSiguiente']")
-            btn_siguiente.click()
+            self.set_download_path(dir_path)
+            self.select_report_module('SUB - SISTEMA DE CONTABILIDAD PATRIMONIAL')
+            self.select_specific_report_by_id('387')
 
             # Llenado de inputs
             self.siif.wait.until(EC.presence_of_element_located(

@@ -12,12 +12,11 @@ class TestSIIFRf610:
             dir_path = os.path.join(dir_path, 'sub')
             print(f"El directorio temporal es: {dir_path}")
             # Llama al método download_report
-            self.connect_siif.connect()
-            self.connect_siif.go_to_reports()
+            self.rf610.go_to_reports()
             self.rf610.download_report(
                 dir_path, ejercicios=self.ejercicio
             )
-            self.connect_siif.disconnect()
+            self.rf610.disconnect()
             # Verifica que se haya descargado el archivo correctamente
             report_path = os.path.join(dir_path, self.ejercicio + "-rf610.xls")
             assert os.path.exists(report_path), "No se descargó el archivo"
@@ -77,7 +76,7 @@ class TestSIIFRf610:
 
         except Exception as e:
             assert False, f"Se lanzó una excepción: {e}"
-            self.connect_siif.disconnect()
+            self.rf610.disconnect()
         else:
             assert True
 

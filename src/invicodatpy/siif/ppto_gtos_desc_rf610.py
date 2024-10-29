@@ -16,9 +16,6 @@ from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
 
 from ..models.siif_model import SIIFModel
 from .connect_siif import ConnectSIIF
@@ -35,15 +32,6 @@ class PptoGtosDescRf610(ConnectSIIF):
     _INDEX_COL:str = field(init=False, repr=False, default='id')
     _FILTER_COL:str = field(init=False, repr=False, default='ejercicio')
     _SQL_MODEL:SIIFModel = field(init=False, repr=False, default=SIIFModel)
-        
-
-    # # --------------------------------------------------
-    # def connect(self):
-    #     self.siif.connect()
-
-    # # --------------------------------------------------
-    # def go_to_reports(self):
-    #     self.siif.go_to_reports()
 
     # --------------------------------------------------
     def download_report(
@@ -53,30 +41,28 @@ class PptoGtosDescRf610(ConnectSIIF):
             self.set_download_path(dir_path)
             self.select_report_module('SUB - SISTEMA DE CONTROL DE GASTOS')
             self.select_specific_report_by_id('7')
-
-            # Llenado de inputs
-            self.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']")
-            ))
-            input_ejercicio = self.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']"
-                )
-            btn_get_reporte = self.driver.find_element(By.XPATH, "//div[@id='pt1:btnVerReporte']")
-            btn_xls = self.driver.find_element(By.XPATH, "//input[@id='pt1:rbtnXLS::content']")
+            
+            # Getting DOM elements
+            input_ejercicio = self.get_dom_element("//input[@id='pt1:txtAnioEjercicio::content']", wait=True)
+            btn_get_reporte = self.get_dom_element("//div[@id='pt1:btnVerReporte']")
+            btn_xls = self.get_dom_element("//input[@id='pt1:rbtnXLS::content']")
+            btn_volver = self.get_dom_element("//div[@id='pt1:btnVolver']")
             btn_xls.click()
+
+            # Form submit
             if not isinstance(ejercicios, list):
                 ejercicios = [ejercicios]
             for ejercicio in ejercicios:
                 input_ejercicio.clear()
                 input_ejercicio.send_keys(ejercicio)
                 btn_get_reporte.click()
+
+                # Download and rename xls
                 self.rename_report(dir_path, 'rf610.xls', ejercicio + '-rf610.xls')
-                self.wait.until(EC.number_of_windows_to_be(3))
-                self.driver.switch_to.window(self.driver.window_handles[2])
-                self.driver.close()
-                self.driver.switch_to.window(self.driver.window_handles[1])
+                self.download_file_procedure()
             time.sleep(1)
-            btn_volver = self.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
+            
+            # Going back to reports list
             btn_volver.click()
             time.sleep(1)
 
@@ -163,38 +149,6 @@ class PptoGtosDescRf610(ConnectSIIF):
             'partida', 'desc_part'
         ]
         df = df.loc[:, first_cols].join(df.drop(first_cols, axis=1))
-
-        #     dplyr.mutate(
-        #         programa = f.programa.str.zfill(2),
-        #         subprograma = f.subprograma.str.zfill(2),
-        #         proyecto = f.proyecto.str.zfill(2),
-        #         actividad = f.actividad.str.zfill(2),
-        #         desc_prog = base.trimws(f.desc_prog),
-        #         desc_subprog = base.trimws(f.desc_subprog),
-        #         desc_proy = base.trimws(f.desc_proy),
-        #         desc_act = base.trimws(f.desc_act),
-        #         desc_gpo = base.trimws(f.desc_gpo),
-        #         credito_original = base.as_double(f.credito_original),
-        #         credito_vigente = base.as_double(f.credito_vigente),
-        #         comprometido = base.as_double(f.comprometido),
-        #         ordenado = base.as_double(f.ordenado),
-        #         saldo = base.as_double(f.saldo)
-        #     ) >> \
-        #     tidyr.unite(
-        #         'estructura',
-        #         [f.programa, f.subprograma, f.proyecto,
-        #         f.actividad, f.partida],
-        #         sep='-', remove=False
-        #     ) >> \
-        #     dplyr.select(
-        #         f.ejercicio, f.estructura,
-        #         f.programa, f.desc_prog, 
-        #         f.subprograma, f.desc_subprog, 
-        #         f.proyecto, f.desc_proy, 
-        #         f.actividad, f.desc_act,
-        #         f.grupo, f.desc_gpo,
-        #         dplyr.everything()
-        #     )
 
         self.df = df
         return self.df
