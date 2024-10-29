@@ -42,11 +42,19 @@ class PptoGtosDescRf610(ConnectSIIF):
             self.select_specific_report_by_id('7')
             
             # Getting DOM elements
-            input_ejercicio = self.get_dom_element("//input[@id='pt1:txtAnioEjercicio::content']", wait=True)
-            btn_get_reporte = self.get_dom_element("//div[@id='pt1:btnVerReporte']")
-            btn_xls = self.get_dom_element("//input[@id='pt1:rbtnXLS::content']")
-            btn_volver = self.get_dom_element("//div[@id='pt1:btnVolver']")
+            input_ejercicio = self.get_dom_element(
+                "//input[@id='pt1:txtAnioEjercicio::content']", wait=True
+            )
+            btn_get_reporte = self.get_dom_element(
+                "//div[@id='pt1:btnVerReporte']"
+            )
+            btn_xls = self.get_dom_element(
+                "//input[@id='pt1:rbtnXLS::content']"
+            )
             btn_xls.click()
+            btn_volver = self.get_dom_element(
+                "//div[@id='pt1:btnVolver']"
+            )
 
             # Form submit
             if not isinstance(ejercicios, list):
