@@ -19,15 +19,13 @@ import pandas as pd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 
 from ..models.siif_model import SIIFModel
-from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
 
 
 @dataclass
-class PptoGtosDescRf610(RPWUtils):
+class PptoGtosDescRf610(ConnectSIIF):
     """
     Read, process and write SIIF's rf610 report
     :param siif_connection must be initialized first in order to download from SIIF
@@ -37,53 +35,34 @@ class PptoGtosDescRf610(RPWUtils):
     _INDEX_COL:str = field(init=False, repr=False, default='id')
     _FILTER_COL:str = field(init=False, repr=False, default='ejercicio')
     _SQL_MODEL:SIIFModel = field(init=False, repr=False, default=SIIFModel)
-    siif:ConnectSIIF = field(init=True, repr=False, default=None)
+        
 
-    # --------------------------------------------------
-    def connect(self):
-        self.siif.connect()
+    # # --------------------------------------------------
+    # def connect(self):
+    #     self.siif.connect()
 
-    # --------------------------------------------------
-    def go_to_reports(self):
-        self.siif.go_to_reports()
+    # # --------------------------------------------------
+    # def go_to_reports(self):
+    #     self.siif.go_to_reports()
 
     # --------------------------------------------------
     def download_report(
         self, dir_path:str, ejercicios:list = str(dt.datetime.now().year)
     ):
         try:
-            # Path de salida
-            params = {
-            'behavior': 'allow',
-            'downloadPath': dir_path
-            }
-            self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
-            # Seleccionar módulo Gastos
-            cmb_modulos = Select(
-                self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
-            )
-            cmb_modulos.select_by_visible_text('SUB - SISTEMA DE CONTROL DE GASTOS')
-            time.sleep(1)
-
-            # Select rf610 report
-            input_filter = self.siif.driver.find_element(
-                By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c1::content']"
-            )
-            input_filter.clear()
-            input_filter.send_keys('7', Keys.ENTER)
-            btn_siguiente = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:pc1:btnSiguiente']")
-            btn_siguiente.click()
+            self.set_download_path(dir_path)
+            self.select_report_module('SUB - SISTEMA DE CONTROL DE GASTOS')
+            self.select_specific_report_by_id('7')
 
             # Llenado de inputs
-            self.siif.wait.until(EC.presence_of_element_located(
+            self.wait.until(EC.presence_of_element_located(
                 (By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']")
             ))
-            input_ejercicio = self.siif.driver.find_element(
+            input_ejercicio = self.driver.find_element(
                     By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']"
                 )
-            btn_get_reporte = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVerReporte']")
-            btn_xls = self.siif.driver.find_element(By.XPATH, "//input[@id='pt1:rbtnXLS::content']")
+            btn_get_reporte = self.driver.find_element(By.XPATH, "//div[@id='pt1:btnVerReporte']")
+            btn_xls = self.driver.find_element(By.XPATH, "//input[@id='pt1:rbtnXLS::content']")
             btn_xls.click()
             if not isinstance(ejercicios, list):
                 ejercicios = [ejercicios]
@@ -91,20 +70,20 @@ class PptoGtosDescRf610(RPWUtils):
                 input_ejercicio.clear()
                 input_ejercicio.send_keys(ejercicio)
                 btn_get_reporte.click()
-                self.siif.rename_report(dir_path, 'rf610.xls', ejercicio + '-rf610.xls')
-                self.siif.wait.until(EC.number_of_windows_to_be(3))
-                self.siif.driver.switch_to.window(self.siif.driver.window_handles[2])
-                self.siif.driver.close()
-                self.siif.driver.switch_to.window(self.siif.driver.window_handles[1])
+                self.rename_report(dir_path, 'rf610.xls', ejercicio + '-rf610.xls')
+                self.wait.until(EC.number_of_windows_to_be(3))
+                self.driver.switch_to.window(self.driver.window_handles[2])
+                self.driver.close()
+                self.driver.switch_to.window(self.driver.window_handles[1])
             time.sleep(1)
-            btn_volver = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
+            btn_volver = self.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
             btn_volver.click()
             time.sleep(1)
 
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
-            self.siif.disconnect()
-            self.siif.quit()
+            self.disconnect()
+            self.quit()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
@@ -270,41 +249,50 @@ def main():
             inspect.getfile(
                 inspect.currentframe())))
 
-    if args.download:
-        json_path = dir_path + '/siif_credentials.json'
-        if args.username != '' and args.password != '':
-            siif_connection = ConnectSIIF(args.username, args.password)
+    try:
+        if args.download:
+            json_path = dir_path + '/siif_credentials.json'
+            if args.username != '' and args.password != '':
+                ConnectSIIF.connect(args.username, args.password)
+            else:
+                if os.path.isfile(json_path):
+                    with open(json_path) as json_file:
+                        data_json = json.load(json_file)
+                        ConnectSIIF.connect(
+                            data_json['username'], data_json['password']
+                        )
+                    json_file.close()
+            siif = PptoGtosDescRf610()
+            siif.go_to_reports()
+            siif.download_report(
+                dir_path, ejercicios=args.ejercicio
+            )
+            siif.disconnect()
+            siif.quit()
         else:
-            if os.path.isfile(json_path):
-                with open(json_path) as json_file:
-                    data_json = json.load(json_file)
-                    siif_connection = ConnectSIIF(
-                        data_json['username'], data_json['password']
-                    )
-                json_file.close()
-        siif = PptoGtosDescRf610(siif = siif_connection)
-        siif.connect()
-        siif.go_to_reports()
-        siif.download_report(
-            dir_path, ejercicios=args.ejercicio
-        )
-        siif_connection.disconnect()
-    else:
-        siif = PptoGtosDescRf610()
+            siif = PptoGtosDescRf610()
 
-    if args.file != '':
-        filename = args.file
-    else:
-        filename = args.ejercicio + '-rf610.xls'
+        if args.file != '':
+            filename = args.file
+        else:
+            filename = args.ejercicio + '-rf610.xls'
 
-    siif.from_external_report(dir_path + '/' + filename)
-    # siif.test_sql(dir_path + '/test.sqlite')
-    siif.to_sql(dir_path + '/siif.sqlite')
-    siif.print_tidyverse()
-    siif.from_sql(dir_path + '/siif.sqlite')
-    siif.print_tidyverse()
-    # dir = '/home/kanou/IT/R Apps/R Gestion INVICO/invicoDB/Base de Datos/Reportes SIIF/Ejecucion Presupuestaria con Descripcion (rf610)'
-    # siif.update_sql_db(dir, dir_path + '/siif.sqlite', True)
+        siif.from_external_report(dir_path + '/' + filename)
+        # siif.test_sql(dir_path + '/test.sqlite')
+        siif.to_sql(dir_path + '/siif.sqlite')
+        siif.print_tidyverse()
+        siif.from_sql(dir_path + '/siif.sqlite')
+        siif.print_tidyverse()
+        # dir = '/home/kanou/IT/R Apps/R Gestion INVICO/invicoDB/Base de Datos/Reportes SIIF/Ejecucion Presupuestaria con Descripcion (rf610)'
+        # siif.update_sql_db(dir, dir_path + '/siif.sqlite', True)
+    except Exception as e:
+        print(f"Ocurrio un error: {e}, {type(e)}")
+        try:
+            siif.disconnect()
+            siif.quit()
+        except Exception as e:
+            print(f"Ocurrio un error: {e}, {type(e)}")
+
 
 # --------------------------------------------------
 if __name__ == '__main__':

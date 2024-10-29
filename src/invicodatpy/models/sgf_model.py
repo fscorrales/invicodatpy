@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: SGF database model
 """
 
+__all__ = ['SGFModel']
+
 import os
 from dataclasses import dataclass
 

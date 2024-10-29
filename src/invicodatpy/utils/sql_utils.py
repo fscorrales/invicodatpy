@@ -7,11 +7,13 @@ Purpose: SQL methods
 
 __all__ = ['SQLUtils']
 
+from dataclasses import dataclass
 
 import pandas as pd
 from sqlalchemy import MetaData, Table, and_, create_engine, delete, engine
 
 
+@dataclass
 class SQLUtils():
     "Some generals methods"
     df = None

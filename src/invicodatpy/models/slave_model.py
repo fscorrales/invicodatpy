@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Slave database model
 """
 
+__all__ = ['SlaveModel']
+
 import os
 from dataclasses import dataclass
 

@@ -9,8 +9,8 @@ __all__ = ['ConnectSIIF']
 
 import os
 import time
-from dataclasses import dataclass, field
 
+import pandas as pd
 from selenium import webdriver
 from selenium.common.exceptions import (
     NoSuchElementException,
@@ -22,70 +22,76 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select, WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
+from ..utils import PrintTidyverse, SQLUtils, read_xls
 
-@dataclass
-class ConnectSIIF():
+
+class ConnectSIIF(SQLUtils):
     username:str =  ''
     password:str = ''
     invisible:bool = False
-    driver:webdriver = field(init=False, repr=False, default=None)
+    driver:webdriver = None
+    wait:WebDriverWait
 
     # --------------------------------------------------
-    def __post_init__(self):
+    @classmethod
+    def init_driver(cls):
         # Innitial driver options
         options = Options()
         options.add_argument("--window-size=1920,1080")
-        if self.invisible:
+        if cls.invisible:
             options.add_argument("--headless")
         service = Service(ChromeDriverManager().install())
-        self.driver = webdriver.Chrome(service=service, options=options)
-        self.driver.maximize_window()
+        cls.driver = webdriver.Chrome(service=service, options=options)
+        cls.driver.maximize_window()
 
         # Setup wait for later
-        self.wait = WebDriverWait(self.driver, 10)
+        cls.wait = WebDriverWait(cls.driver, 10)
         
         "Open SIIF webpage"
-        self.driver.get('https://siif.cgpc.gob.ar/mainSiif/faces/login.jspx')
+        cls.driver.get('https://siif.cgpc.gob.ar/mainSiif/faces/login.jspx')
         # self.connect()
         # self.go_to_reports()
 
     # --------------------------------------------------
-    def connect(self, username:str = '', password:str = '') -> None:
+    @classmethod
+    def connect(cls, username:str = '', password:str = '', invisible:bool = False) -> None:
         if username != '':
-            self.username = username
+            cls.username = username
         if password !='':
-            self.password = password
+            cls.password = password
+        cls.invisible = invisible
+        cls.init_driver()
 
         #Probamos si hay connección al servidor
-        server_down = self.driver.find_elements(
+        server_down = cls.driver.find_elements(
             By.XPATH, "/html/body/div[3]/h3[contains(., 'SIIF no disponible!')]"
         )
         if len(server_down) > 0:
             raise WebDriverException("Servidor no disponible")
 
         try:
-            self.wait.until(EC.presence_of_element_located((By.XPATH, "//button[@id='pt1:cb1']")))
+            cls.wait.until(EC.presence_of_element_located((By.XPATH, "//button[@id='pt1:cb1']")))
         except TimeoutException:
             print("No se pudo conectar con la página del SIIF. Verifique su conexión")
-            self.quit()
+            cls.quit()
 
         try:
-            input_username, input_password = self.driver.find_elements(By.XPATH, "//input[starts-with(@id,'pt')]")
-            input_username.send_keys(self.username)
-            input_password.send_keys(self.password) 
+            input_username, input_password = cls.driver.find_elements(By.XPATH, "//input[starts-with(@id,'pt')]")
+            input_username.send_keys(cls.username)
+            input_password.send_keys(cls.password) 
             # input_password.send_keys(Keys.ENTER)  # Presionar la tecla Enter
             # time.sleep(1)
             # input_password.send_keys(Keys.ENTER)  # Presionar la tecla Enter
-            btn_connect = self.driver.find_element(By.XPATH, "//button[@id='pt1:cb1']")
+            btn_connect = cls.driver.find_element(By.XPATH, "//button[@id='pt1:cb1']")
             btn_connect.click()
 
             time.sleep(1)
         except NoSuchElementException:
             print(f"No se encontro el elemento: {NoSuchElementException}")
-            self.quit()
+            cls.quit()
 
     # --------------------------------------------------
     def go_to_reports(self) -> None:
@@ -110,6 +116,25 @@ class ConnectSIIF():
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
             self.disconnect() 
+
+    def select_report_module(self, module:str) -> None:
+        self.wait.until(EC.presence_of_element_located(
+            (By.XPATH, "//select[@id='pt1:socModulo::content']"))
+        )
+        cmb_modulos = Select(
+            self.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
+        )
+        cmb_modulos.select_by_visible_text(module)
+        time.sleep(1)
+
+    def select_specific_report_by_id(self, report_id:str) -> None:
+        input_filter = self.driver.find_element(
+            By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c1::content']"
+        )
+        input_filter.clear()
+        input_filter.send_keys(report_id, Keys.ENTER)
+        btn_siguiente = self.driver.find_element(By.XPATH, "//div[@id='pt1:pc1:btnSiguiente']")
+        btn_siguiente.click()
 
     # --------------------------------------------------
     def rename_report(self, dir_path:str, old_name:str, new_name:str):
@@ -140,6 +165,24 @@ class ConnectSIIF():
                 file_path = os.path.join(dir_path, f)
                 os.remove(file_path)
                 print(f"File: {file_path} removed")
+
+    def set_download_path(self, dir_path:str):
+        # Path de salida
+        params = {
+        'behavior': 'allow',
+        'downloadPath': dir_path
+        }
+        self.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
+
+    # --------------------------------------------------
+    def read_xls(self, PATH:str, header:int = None) -> pd.DataFrame:
+        return read_xls(PATH=PATH, header=header)
+
+    # --------------------------------------------------
+    def print_tidyverse(self, data = None):
+        if data is None:
+            data = self.df
+        print(PrintTidyverse(data))
 
     # --------------------------------------------------
     def disconnect(self) -> None:

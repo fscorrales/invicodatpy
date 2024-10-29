@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: SIIF database model
 """
 
+__all__ = ['SGVModel']
+
 import os
 from dataclasses import dataclass
 

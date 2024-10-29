@@ -4,6 +4,8 @@ Author: Fernando Corrales <fscpython@gmail.com>
 Purpose: Icaro database model
 """
 
+__all__ = ['IcaroModel']
+
 import os
 from dataclasses import dataclass
 

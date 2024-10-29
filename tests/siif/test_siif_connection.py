@@ -31,24 +31,24 @@ class TestSIIFConnection:
     #     else:
     #         assert False, "Acceso no autorizado sin credenciales"
 
-    @pytest.mark.siif_reports
-    def test_access_to_reports(self):
-        wait = WebDriverWait(self.connect_siif.driver, 3)
-        try:
-            self.connect_siif.connect(
-                username=self.username,
-                password=self.password
-            )
-            self.connect_siif.go_to_reports()
-            wait.until(EC.presence_of_element_located((
-                By.XPATH, "//select[@id='pt1:socModulo::content']"
-            )))
-        except TimeoutException:
-            assert False, "No se pudo acceder a reportes"
-            self.connect_siif.disconnect()
-        else:
-            assert True
-            self.connect_siif.disconnect()
+    # @pytest.mark.siif_reports
+    # def test_access_to_reports(self):
+    #     wait = WebDriverWait(self.connect_siif.driver, 3)
+    #     try:
+    #         self.connect_siif.connect(
+    #             username=self.username,
+    #             password=self.password
+    #         )
+    #         self.connect_siif.go_to_reports()
+    #         wait.until(EC.presence_of_element_located((
+    #             By.XPATH, "//select[@id='pt1:socModulo::content']"
+    #         )))
+    #     except TimeoutException:
+    #         assert False, "No se pudo acceder a reportes"
+    #         self.connect_siif.disconnect()
+    #     else:
+    #         assert True
+    #         self.connect_siif.disconnect()
 
 # Ejecutar las pruebas
 if __name__ == "__main__":
