@@ -17,18 +17,13 @@ from datetime import timedelta
 
 import numpy as np
 import pandas as pd
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 
 from ..models.siif_model import SIIFModel
-from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
 
 
 @dataclass
-class DeudaFlotanteRdeu012(RPWUtils):
+class DeudaFlotanteRdeu012(ConnectSIIF):
     """
     Read, process and write SIIF's rdeu012 report
     :param siif_connection must be initialized first in order to download from SIIF
@@ -50,17 +45,6 @@ class DeudaFlotanteRdeu012(RPWUtils):
     _SQL_MODEL:SIIFModel = field(
         init=False, repr=False, default=SIIFModel
     )
-    siif:ConnectSIIF = field(
-        init=True, repr=False, default=None
-    )
-
-    # --------------------------------------------------
-    def connect(self):
-        self.siif.connect()
-
-    # --------------------------------------------------
-    def go_to_reports(self):
-        self.siif.go_to_reports()
 
     # --------------------------------------------------
     def download_report(
@@ -68,47 +52,34 @@ class DeudaFlotanteRdeu012(RPWUtils):
         meses:list = dt.datetime.strftime(dt.datetime.now(), '%Y-%m')
     ):
         try:
-            # Path de salida
-            params = {
-            'behavior': 'allow',
-            'downloadPath': dir_path
-            }
-            self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
-
-            # Seleccionar módulo Gastos
-            cmb_modulos = Select(
-                self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
-            )
-            cmb_modulos.select_by_visible_text('SUB - SISTEMA DE CONTROL DE GASTOS')
-            time.sleep(1)
-
-            # Select rdeu012 report
-            input_filter = self.siif.driver.find_element(
-                By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c1::content']"
-            )
-            input_filter.clear()
-            input_filter.send_keys('267', Keys.ENTER)
-            btn_siguiente = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:pc1:btnSiguiente']")
-            btn_siguiente.click()
-
-            # Llenado de inputs
-            self.siif.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//input[@id='pt1:inputText3::content']")
-            ))
-            input_cod_fuente = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:inputText3::content']"
+            self.set_download_path(dir_path)
+            self.select_report_module('SUB - SISTEMA DE CONTROL DE GASTOS')
+            self.select_specific_report_by_id('267')
+            
+            # Getting DOM elements
+            input_cod_fuente = self.get_dom_element(
+                    "//input[@id='pt1:inputText3::content']", wait=True
                 )
-            input_fecha_desde = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:idFechaDesde::content']"
+            input_fecha_desde = self.get_dom_element(
+                    "//input[@id='pt1:idFechaDesde::content']"
                 )
-            input_fecha_hasta = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:idFechaHasta::content']"
+            input_fecha_hasta = self.get_dom_element(
+                    "//input[@id='pt1:idFechaHasta::content']"
                 )
             input_cod_fuente.send_keys('0')
             input_fecha_desde.send_keys('01/01/2010')
-            btn_get_reporte = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVerReporte']")
-            btn_xls = self.siif.driver.find_element(By.XPATH, "//input[@id='pt1:rbtnXLS::content']")
+            btn_get_reporte = self.get_dom_element(
+                    "//div[@id='pt1:btnVerReporte']"
+                )
+            btn_xls = self.get_dom_element(
+                    "//input[@id='pt1:rbtnXLS::content']"
+                )
             btn_xls.click()
+            btn_volver = self.get_dom_element(
+                "//div[@id='pt1:btnVolver']"
+            )
+
+            # Form submit
             if not isinstance(meses, list):
                 meses = [meses]
             for mes in meses:
@@ -123,20 +94,17 @@ class DeudaFlotanteRdeu012(RPWUtils):
                     fecha_hasta = dt.datetime.strftime(fecha_hasta, '%d/%m/%Y')
                     input_fecha_hasta.send_keys(fecha_hasta)
                     btn_get_reporte.click()
-                    self.siif.rename_report(dir_path, 'rdeu012.xls', mes[0:4] + mes[-2:] + '-rdeu012.xls')
-                    self.siif.wait.until(EC.number_of_windows_to_be(3))
-                    self.siif.driver.switch_to.window(self.siif.driver.window_handles[2])
-                    self.siif.driver.close()
-                    self.siif.driver.switch_to.window(self.siif.driver.window_handles[1])
+                    self.rename_report(dir_path, 'rdeu012.xls', mes[0:4] + mes[-2:] + '-rdeu012.xls')
+                    self.download_file_procedure()
             time.sleep(1)
-            btn_volver = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
+
+            # Going back to reports list
             btn_volver.click()
             time.sleep(1)
 
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
-            self.siif.disconnect()
-            self.siif.quit()
+            self.disconnect()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
@@ -185,28 +153,6 @@ class DeudaFlotanteRdeu012(RPWUtils):
             '18':'cuit',
             '19':'beneficiario'
         })
-        # df = df >> \
-        #     base.tail(-13) >> \
-        #     tidyr.fill(f.fuente) >> \
-        #     tidyr.drop_na(f['2']) >> \
-        #     tidyr.drop_na(f['18']) >> \
-        #     dplyr.transmute(
-        #         fuente = f.fuente,
-        #         fecha_desde = f.fecha_desde,
-        #         fecha_hasta = f.fecha_hasta,
-        #         mes_hasta = f.mes_hasta,
-        #         nro_entrada = f['2'],
-        #         nro_origen = f['4'],
-        #         fecha_aprobado = f['7'],
-        #         org_fin = f['9'],
-        #         importe = base.as_double(f['10']),
-        #         saldo = base.as_double(f['13']),
-        #         nro_expte = f['14'],
-        #         cta_cte = f['15'],
-        #         glosa = f['17'],
-        #         cuit = f['18'],
-        #         beneficiario = f['19']
-        #     )
 
         to_numeric = ['importe', 'saldo']
         df[to_numeric] = df[to_numeric].apply(pd.to_numeric).astype(np.float64)
@@ -252,21 +198,6 @@ class DeudaFlotanteRdeu012(RPWUtils):
             'nro_entrada', 'nro_origen', 'fecha_aprobado', 
             'fecha_desde', 'fecha_hasta', 'org_fin'
         ]]
-        # df = df >>\
-        #     dplyr.mutate(
-        #         nro_comprobante = (f['nro_entrada'].str.zfill(5) + 
-        #                         '/' + f['mes'].str[-2:]),
-        #     ) >> \
-        #     dplyr.select(
-        #         f.ejercicio, f.mes, f.fecha, 
-        #         f.mes_hasta, f.fuente,
-        #         f.cta_cte, f.nro_comprobante,
-        #         f.importe, f.saldo,
-        #         f.cuit, f.beneficiario,
-        #         f.glosa, f.nro_expte,
-        #         f.nro_entrada, f.nro_origen,
-        #         dplyr.everything()
-        #     )
 
         self.df = df
         return self.df
@@ -324,36 +255,35 @@ def main():
     if args.download:
         json_path = dir_path + '/siif_credentials.json'
         if args.username != '' and args.password != '':
-            siif_connection = ConnectSIIF(args.username, args.password)
+            ConnectSIIF(args.username, args.password)
         else:
             if os.path.isfile(json_path):
                 with open(json_path) as json_file:
                     data_json = json.load(json_file)
-                    siif_connection = ConnectSIIF(
+                    ConnectSIIF(
                         data_json['username'], data_json['password']
                     )
                 json_file.close()
-        siif_rdeu012 = DeudaFlotanteRdeu012(siif = siif_connection)
-        siif_rdeu012.connect()
-        siif_rdeu012.go_to_reports()
-        siif_rdeu012.download_report(
+        siif = DeudaFlotanteRdeu012()
+        siif.go_to_reports()
+        siif.download_report(
             dir_path, meses=args.mes
         )
-        siif_connection.disconnect()
+        siif.disconnect()
     else:
-        siif_rdeu012 = DeudaFlotanteRdeu012()
+        siif = DeudaFlotanteRdeu012()
 
     if args.file != '':
         filename = args.file
     else:
         filename = args.mes[0:4] + args.mes[-2:] + '-rdeu012.xls'
 
-    siif_rdeu012.from_external_report(dir_path + '/' + filename)
-    # siif_rdeu012.test_sql(dir_path + '/test.sqlite')
-    siif_rdeu012.to_sql(dir_path + '/siif.sqlite')
-    siif_rdeu012.print_tidyverse()
-    siif_rdeu012.from_sql(dir_path + '/siif.sqlite')
-    siif_rdeu012.print_tidyverse()
+    siif.from_external_report(dir_path + '/' + filename)
+    # siif.test_sql(dir_path + '/test.sqlite')
+    siif.to_sql(dir_path + '/siif.sqlite')
+    siif.print_tidyverse()
+    siif.from_sql(dir_path + '/siif.sqlite')
+    siif.print_tidyverse()
 
 # --------------------------------------------------
 if __name__ == '__main__':

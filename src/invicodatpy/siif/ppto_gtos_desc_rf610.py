@@ -231,7 +231,6 @@ def main():
                 dir_path, ejercicios=args.ejercicio
             )
             siif.disconnect()
-            siif.remove_html_files(dir_path=dir_path)
         else:
             siif = PptoGtosDescRf610()
 
