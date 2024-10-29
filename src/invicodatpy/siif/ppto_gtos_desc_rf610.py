@@ -20,7 +20,6 @@ import pandas as pd
 from ..models.siif_model import SIIFModel
 from .connect_siif import ConnectSIIF
 
-
 @dataclass
 class PptoGtosDescRf610(ConnectSIIF):
     """
@@ -205,10 +204,10 @@ def main():
 
     try:
         if args.download:
-            json_path = dir_path + '/siif_credentials.json'
             if args.username != '' and args.password != '':
                 ConnectSIIF.connect(args.username, args.password)
             else:
+                json_path = dir_path + '/siif_credentials.json'
                 if os.path.isfile(json_path):
                     with open(json_path) as json_file:
                         data_json = json.load(json_file)
@@ -216,6 +215,9 @@ def main():
                             data_json['username'], data_json['password']
                         )
                     json_file.close()
+                # ConnectSIIF.connect(
+                #     username = SIIF_USERNAME, password = SIIF_PASSWORD
+                # )
             siif = PptoGtosDescRf610()
             siif.go_to_reports()
             siif.download_report(
