@@ -37,6 +37,11 @@ class ConnectSIIF(SQLUtils):
     wait:WebDriverWait
 
     # --------------------------------------------------
+    def __init__(self, username:str = '', password:str = '', invisible:bool = False) -> None:
+        if username != '' and password != '':
+            self.connect(username, password, invisible)
+
+    # --------------------------------------------------
     @classmethod
     def init_driver(cls):
         # Innitial driver options

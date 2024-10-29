@@ -112,7 +112,6 @@ class ComprobantesGtosGpoPartGtoRpa03g(ConnectSIIF):
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
             self.disconnect()
-            self.quit()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
@@ -231,7 +230,6 @@ def main():
             dir_path, ejercicios=args.ejercicio
         )
         siif.disconnect()
-        siif.quit()
     else:
         siif = ComprobantesGtosGpoPartGtoRpa03g()
 

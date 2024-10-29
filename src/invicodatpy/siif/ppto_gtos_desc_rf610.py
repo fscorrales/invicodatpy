@@ -76,7 +76,6 @@ class PptoGtosDescRf610(ConnectSIIF):
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
             self.disconnect()
-            self.quit()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
@@ -232,7 +231,6 @@ def main():
                 dir_path, ejercicios=args.ejercicio
             )
             siif.disconnect()
-            siif.quit()
         else:
             siif = PptoGtosDescRf610()
 
@@ -253,7 +251,6 @@ def main():
         print(f"Ocurrio un error: {e}, {type(e)}")
         try:
             siif.disconnect()
-            siif.quit()
         except Exception as e:
             print(f"Ocurrio un error: {e}, {type(e)}")
 
