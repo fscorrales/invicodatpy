@@ -22,26 +22,17 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class JoinResumenMayorContable:
+class JoinResumenMayorContable(ConnectSIIF):
     """Join rvicon03 (resumen_contable) with rcocc31 (mayor_contable)"""
 
-    siif: ConnectSIIF = field(init=True, repr=False, default=None)
     df: pd.DataFrame = field(init=False, repr=False, default=None)
-
-    # --------------------------------------------------
-    def connect(self):
-        self.siif.connect()
-
-    # --------------------------------------------------
-    def go_to_reports(self):
-        self.siif.go_to_reports()
 
     # --------------------------------------------------
     def download_and_unite_reports(
         self, dir_path: str, ejercicios: list = str(dt.datetime.now().year)
     ):
-        rvicon03 = ResumenContableCtaRvicon03(siif=self.siif)
-        rcocc31 = MayorContableRcocc31(siif=self.siif)
+        rvicon03 = ResumenContableCtaRvicon03()
+        rcocc31 = MayorContableRcocc31()
 
         rvicon03.download_report(dir_path=dir_path, ejercicios=ejercicios)
 
@@ -156,20 +147,19 @@ def main():
     if args.download:
         json_path = dir_path + "/siif_credentials.json"
         if args.username != "" and args.password != "":
-            siif_connection = ConnectSIIF(args.username, args.password)
+            ConnectSIIF(args.username, args.password)
         else:
             if os.path.isfile(json_path):
                 with open(json_path) as json_file:
                     data_json = json.load(json_file)
-                    siif_connection = ConnectSIIF(
+                    ConnectSIIF(
                         data_json["username"], data_json["password"]
                     )
                 json_file.close()
-        siif = JoinResumenMayorContable(siif=siif_connection)
-        siif.connect()
+        siif = JoinResumenMayorContable()
         siif.go_to_reports()
         siif.download_and_unite_reports(dir_path=dir_path, ejercicios=args.ejercicio)
-        siif_connection.disconnect()
+        siif.disconnect()
     else:
         print(dir_path)
         siif = JoinResumenMayorContable()
