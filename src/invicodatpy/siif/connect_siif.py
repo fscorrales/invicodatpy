@@ -5,10 +5,11 @@ Purpose: Web Scrapping SIIF with selenium
 Source: 
 """
 
-__all__ = ['ConnectSIIF']
+__all__ = ['ConnectSIIF', 'ReportCategory']
 
 import os
 import time
+from enum import Enum
 from typing import Literal
 
 import pandas as pd
@@ -28,6 +29,14 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 from ..utils import PrintTidyverse, SQLUtils, read_xls
+
+
+class ReportCategory(Enum):
+    Gastos = "SUB - SISTEMA DE CONTROL DE GASTOS"
+    Recursos = "SUB - SISTEMA DE CONTROL de RECURSOS"
+    Contabilidad = "SUB - SISTEMA DE CONTABILIDAD PATRIMONIAL"
+    Formulacion = "SUB - SISTEMA DE FORMULACION PRESUPUESTARIA"
+    Clasificadores = "SUB - SISTEMA DE CLASIFICADORES"
 
 
 class ConnectSIIF(SQLUtils):
@@ -122,28 +131,12 @@ class ConnectSIIF(SQLUtils):
             self.disconnect() 
 
     # --------------------------------------------------
-    def select_report_module(
-        self, 
-        module:Literal["Gastos", "Recursos", "Contabilidad", "Formulacion", "Clasificadores"]
-    ) -> None:
-        
-        op_map = {
-            "Gastos": "SUB - SISTEMA DE CONTROL DE GASTOS",
-            "Recursos": "SUB - SISTEMA DE CONTROL de RECURSOS",
-            "Contabilidad": "SUB - SISTEMA DE CONTABILIDAD PATRIMONIAL",
-            "Formulacion": "SUB - SISTEMA DE FORMULACION PRESUPUESTARIA",
-            "Clasificadores":"SUB - SISTEMA DE CLASIFICADORES",
-        }
+    def select_report_module(self, module:ReportCategory) -> None:
 
-        try:
-            module = op_map[module]
-        except KeyError:
-            raise ValueError(f"Unknown module: {module}")
-        
         cmb_modulos = Select(
             self.get_dom_element("//select[@id='pt1:socModulo::content']", wait=True)
         )
-        cmb_modulos.select_by_visible_text(module)
+        cmb_modulos.select_by_visible_text(module.value)
         time.sleep(1)
 
     # --------------------------------------------------
@@ -157,12 +150,23 @@ class ConnectSIIF(SQLUtils):
         btn_siguiente.click()
 
     # --------------------------------------------------
-    def get_dom_element(self, xpath:str, wait:bool = False) -> WebElement:
+    def get_dom_element(self, value:str, by:Literal['id', 'xpath'] = 'xpath', wait:bool = False) -> WebElement:
+
+        op_map = {
+            "xpath": By.XPATH,
+            "id": By.ID,
+        }
+
+        try:
+            by_method = op_map[by]
+        except KeyError:
+            raise ValueError(f"Unknown module: {by}")
+
         if wait:
             self.wait.until(EC.presence_of_element_located(
-                (By.XPATH, xpath)
+                (by_method, value)
             ))
-        return self.driver.find_element(By.XPATH, xpath)
+        return self.driver.find_element(by_method, value)
 
     # --------------------------------------------------
     def set_download_path(self, dir_path:str):
