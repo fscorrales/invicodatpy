@@ -52,9 +52,6 @@ class PptoGtosDescRf610(ConnectSIIF):
                 "//input[@id='pt1:rbtnXLS::content']"
             )
             btn_xls.click()
-            btn_volver = self.get_dom_element(
-                "//div[@id='pt1:btnVolver']"
-            )
 
             # Form submit
             if not isinstance(ejercicios, list):
@@ -70,8 +67,7 @@ class PptoGtosDescRf610(ConnectSIIF):
             time.sleep(1)
             
             # Going back to reports list
-            btn_volver.click()
-            time.sleep(1)
+            self.go_back_to_reports_list()
 
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")

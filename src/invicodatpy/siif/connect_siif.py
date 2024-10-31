@@ -185,6 +185,12 @@ class ConnectSIIF(SQLUtils):
         self.driver.switch_to.window(self.driver.window_handles[1])
 
     # --------------------------------------------------
+    def go_back_to_reports_list(self) -> None:
+        btn_volver = self.get_dom_element("//div[@id='pt1:btnVolver']")
+        btn_volver.click()
+        time.sleep(1)
+
+    # --------------------------------------------------
     def rename_report(self, dir_path:str, old_name:str, new_name:str):
         old_file_path = os.path.join(dir_path, old_name)
         new_file_path = os.path.join(dir_path, new_name)
