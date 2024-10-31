@@ -38,7 +38,7 @@ class PptoGtosDescRf610(ConnectSIIF):
     ):
         try:
             self.set_download_path(dir_path)
-            self.select_report_module('SUB - SISTEMA DE CONTROL DE GASTOS')
+            self.select_report_module("Gastos")
             self.select_specific_report_by_id('7')
             
             # Getting DOM elements

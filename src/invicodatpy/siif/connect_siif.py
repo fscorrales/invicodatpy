@@ -9,6 +9,7 @@ __all__ = ['ConnectSIIF']
 
 import os
 import time
+from typing import Literal
 
 import pandas as pd
 from selenium import webdriver
@@ -121,7 +122,24 @@ class ConnectSIIF(SQLUtils):
             self.disconnect() 
 
     # --------------------------------------------------
-    def select_report_module(self, module:str) -> None:
+    def select_report_module(
+        self, 
+        module:Literal["Gastos", "Recursos", "Contabilidad", "Formulacion", "Clasificadores"]
+    ) -> None:
+        
+        op_map = {
+            "Gastos": "SUB - SISTEMA DE CONTROL DE GASTOS",
+            "Recursos": "SUB - SISTEMA DE CONTROL de RECURSOS",
+            "Contabilidad": "SUB - SISTEMA DE CONTABILIDAD PATRIMONIAL",
+            "Formulacion": "SUB - SISTEMA DE FORMULACION PRESUPUESTARIA",
+            "Clasificadores":"SUB - SISTEMA DE CLASIFICADORES",
+        }
+
+        try:
+            module = op_map[module]
+        except KeyError:
+            raise ValueError(f"Unknown module: {module}")
+        
         cmb_modulos = Select(
             self.get_dom_element("//select[@id='pt1:socModulo::content']", wait=True)
         )
