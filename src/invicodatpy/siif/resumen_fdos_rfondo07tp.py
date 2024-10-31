@@ -22,12 +22,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
 from ..models.siif_model import SIIFModel
-from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
 
 
 @dataclass
-class ResumenFdosRfondo07tp(RPWUtils):
+class ResumenFdosRfondo07tp(ConnectSIIF):
     """
     Read, process and write SIIF's rfondo07tp report
     :param siif_connection must be initialized first in order to download from SIIF
@@ -49,17 +48,7 @@ class ResumenFdosRfondo07tp(RPWUtils):
     _SQL_MODEL:SIIFModel = field(
         init=False, repr=False, default=SIIFModel
     )
-    siif:ConnectSIIF = field(
-        init=True, repr=False, default=None
-    )
 
-    # --------------------------------------------------
-    def connect(self):
-        self.siif.connect()
-
-    # --------------------------------------------------
-    def go_to_reports(self):
-        self.siif.go_to_reports()
 
     # --------------------------------------------------
     def download_report(
@@ -67,48 +56,35 @@ class ResumenFdosRfondo07tp(RPWUtils):
         tipo_comprobante:str = 'PA6'
     ):
         try:
-            # Path de salida
-            params = {
-            'behavior': 'allow',
-            'downloadPath': dir_path
-            }
-            self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
+            self.set_download_path(dir_path)
+            self.select_report_module('SUB - SISTEMA DE CONTROL DE GASTOS')
+            self.select_specific_report_by_id('2070')
 
-            # Seleccionar módulo Gastos
-            cmb_modulos = Select(
-                self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
-            )
-            cmb_modulos.select_by_visible_text('SUB - SISTEMA DE CONTROL DE GASTOS')
-            time.sleep(1)
-
-            # Select rf602 report
-            input_filter = self.siif.driver.find_element(
-                By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c1::content']"
-            )
-            input_filter.clear()
-            input_filter.send_keys('2070', Keys.ENTER)
-            btn_siguiente = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:pc1:btnSiguiente']")
-            btn_siguiente.click()
-
-            # Llenado de inputs
-            self.siif.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']")
-            ))
-            input_ejercicio = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']"
+            # Getting DOM elements
+            input_ejercicio = self.get_dom_element(
+                "//input[@id='pt1:txtAnioEjercicio::content']", wait=True
                 )
-            input_fecha_desde = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:idFechaDesde::content']"
+            input_fecha_desde = self.get_dom_element(
+                "//input[@id='pt1:idFechaDesde::content']"
                 )
-            input_fecha_hasta = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:idFechaHasta::content']"
+            input_fecha_hasta = self.get_dom_element(
+                "//input[@id='pt1:idFechaHasta::content']"
                 )
-            input_tipo_comprobante = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:txtTipoCte::content']"
+            input_tipo_comprobante = self.get_dom_element(
+                "//input[@id='pt1:txtTipoCte::content']"
                 )
-            btn_get_reporte = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVerReporte']")
-            btn_xls = self.siif.driver.find_element(By.XPATH, "//input[@id='pt1:rbtnXLS::content']")
+            btn_get_reporte = self.get_dom_element(
+                "//div[@id='pt1:btnVerReporte']"
+                )
+            btn_xls = self.get_dom_element(
+                "//input[@id='pt1:rbtnXLS::content']"
+                )
             btn_xls.click()
+            btn_volver = self.get_dom_element(
+                "//div[@id='pt1:btnVolver']"
+            )
+
+            # Form submit
             if not isinstance(ejercicios, list):
                 ejercicios = [ejercicios]
             for ejercicio in ejercicios:
@@ -135,23 +111,23 @@ class ResumenFdosRfondo07tp(RPWUtils):
                     input_tipo_comprobante.clear()
                     input_tipo_comprobante.send_keys(tipo_comprobante)
                     btn_get_reporte.click()
-                    self.siif.rename_report(
+
+                    # Download and rename xls
+                    self.rename_report(
                         dir_path, 'rfondo07tp.xls', 
                         ejercicio + '-rfondo07tp ('+ tipo_comprobante +').xls'
                     )
                     self.siif.wait.until(EC.number_of_windows_to_be(3))
-                    self.siif.driver.switch_to.window(self.siif.driver.window_handles[2])
-                    self.siif.driver.close()
-                    self.siif.driver.switch_to.window(self.siif.driver.window_handles[1])
+                    self.download_file_procedure()            
             time.sleep(1)
-            btn_volver = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
+
+            # Going back to reports list
             btn_volver.click()
             time.sleep(1)
 
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
-            self.siif.disconnect()
-            self.siif.quit()
+            self.disconnect()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
@@ -274,36 +250,35 @@ def main():
     if args.download:
         json_path = dir_path + '/siif_credentials.json'
         if args.username != '' and args.password != '':
-            siif_connection = ConnectSIIF(args.username, args.password)
+            ConnectSIIF(args.username, args.password)
         else:
             if os.path.isfile(json_path):
                 with open(json_path) as json_file:
                     data_json = json.load(json_file)
-                    siif_connection = ConnectSIIF(
+                    ConnectSIIF(
                         data_json['username'], data_json['password']
                     )
                 json_file.close()
-        siif_rci02 = ResumenFdosRfondo07tp(siif = siif_connection)
-        siif_rci02.connect()
-        siif_rci02.go_to_reports()
-        siif_rci02.download_report(
+        siif = ResumenFdosRfondo07tp()
+        siif.go_to_reports()
+        siif.download_report(
             dir_path, ejercicios=args.ejercicio
         )
-        siif_connection.disconnect()
+        siif.disconnect()
     else:
-        siif_rci02 = ResumenFdosRfondo07tp()
+        siif = ResumenFdosRfondo07tp()
 
     if args.file != '':
         filename = args.file
     else:
         filename = args.ejercicio + '-rfondo07tp (PA6).xls'
 
-    siif_rci02.from_external_report(dir_path + '/' + filename)
-    # siif_rci02.test_sql(dir_path + '/test.sqlite')
-    siif_rci02.to_sql(dir_path + '/siif.sqlite')
-    siif_rci02.print_tidyverse()
-    siif_rci02.from_sql(dir_path + '/siif.sqlite')
-    siif_rci02.print_tidyverse()
+    siif.from_external_report(dir_path + '/' + filename)
+    # siif.test_sql(dir_path + '/test.sqlite')
+    siif.to_sql(dir_path + '/siif.sqlite')
+    siif.print_tidyverse()
+    siif.from_sql(dir_path + '/siif.sqlite')
+    siif.print_tidyverse()
 
 # --------------------------------------------------
 if __name__ == '__main__':
