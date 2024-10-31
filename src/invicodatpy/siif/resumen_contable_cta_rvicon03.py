@@ -16,18 +16,13 @@ from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 
 from ..models.siif_model import SIIFModel
-from ..utils.rpw_utils import RPWUtils
 from .connect_siif import ConnectSIIF
 
 
 @dataclass
-class ResumenContableCtaRvicon03(RPWUtils):
+class ResumenContableCtaRvicon03(ConnectSIIF):
     """
     Read, process and write SIIF's rvicon03 report
     :param siif_connection must be initialized first in order to download from SIIF
@@ -37,74 +32,52 @@ class ResumenContableCtaRvicon03(RPWUtils):
     _INDEX_COL:str = field(init=False, repr=False, default='id')
     _FILTER_COL:str = field(init=False, repr=False, default='ejercicio')
     _SQL_MODEL:SIIFModel = field(init=False, repr=False, default=SIIFModel)
-    siif:ConnectSIIF = field(init=True, repr=False, default=None)
 
-    # --------------------------------------------------
-    def connect(self):
-        self.siif.connect()
 
-    # --------------------------------------------------
-    def go_to_reports(self):
-        self.siif.go_to_reports()
-    
     # --------------------------------------------------
     def download_report(
         self, dir_path:str, ejercicios:list = str(dt.datetime.now().year)
     ):
         try:
-            # Path de salida
-            params = {
-            'behavior': 'allow',
-            'downloadPath': dir_path
-            }
-            self.siif.driver.execute_cdp_cmd('Page.setDownloadBehavior', params)
+            self.set_download_path(dir_path)
+            self.select_report_module('SUB - SISTEMA DE CONTABILIDAD PATRIMONIAL')
+            self.select_specific_report_by_id('2079')
 
-            # Seleccionar módulo Contabilidad
-            cmb_modulos = Select(
-                self.siif.driver.find_element(By.XPATH, "//select[@id='pt1:socModulo::content']")
-            )
-            cmb_modulos.select_by_visible_text('SUB - SISTEMA DE CONTABILIDAD PATRIMONIAL')
-            time.sleep(1)
-
-            # Select report
-            input_filter = self.siif.driver.find_element(
-                By.XPATH, "//input[@id='_afrFilterpt1_afr_pc1_afr_tableReportes_afr_c1::content']"
-            )
-            input_filter.clear()
-            input_filter.send_keys('2079', Keys.ENTER)
-            btn_siguiente = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:pc1:btnSiguiente']")
-            btn_siguiente.click()
-
-            # Llenado de inputs
-            self.siif.wait.until(EC.presence_of_element_located(
-                (By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']")
-            ))
-            input_ejercicio = self.siif.driver.find_element(
-                    By.XPATH, "//input[@id='pt1:txtAnioEjercicio::content']"
+            # Getting DOM elements
+            input_ejercicio = self.get_dom_element(
+                    "//input[@id='pt1:txtAnioEjercicio::content']", wait=True
                 )
-            btn_get_reporte = self.siif.driver.find_element(By.XPATH, "//*[@id='pt1:btnEjecutarReporte']")
-            btn_xls = self.siif.driver.find_element(By.XPATH, "//input[@id='pt1:rbtnXLS::content']")
+            btn_get_reporte = self.get_dom_element(
+                "//*[@id='pt1:btnEjecutarReporte']"
+            )
+            btn_xls = self.get_dom_element(
+                "//input[@id='pt1:rbtnXLS::content']"
+            )
             btn_xls.click()
+            btn_volver = self.get_dom_element(
+                "//div[@id='pt1:btnVolver']"
+            )
+
+            # Form submit
             if not isinstance(ejercicios, list):
                 ejercicios = [ejercicios]
             for ejercicio in ejercicios:
                 input_ejercicio.clear()
                 input_ejercicio.send_keys(ejercicio)
                 btn_get_reporte.click()
-                self.siif.rename_report(dir_path, 'rvicon03.xls', ejercicio + '-rvicon03.xls')
-                self.siif.wait.until(EC.number_of_windows_to_be(3))
-                self.siif.driver.switch_to.window(self.siif.driver.window_handles[2])
-                self.siif.driver.close()
-                self.siif.driver.switch_to.window(self.siif.driver.window_handles[1])
+
+                # Download and rename xls
+                self.rename_report(dir_path, 'rvicon03.xls', ejercicio + '-rvicon03.xls')
+                self.download_file_procedure()
             time.sleep(1)
-            btn_volver = self.siif.driver.find_element(By.XPATH, "//div[@id='pt1:btnVolver']")
+
+            # Going back to reports list
             btn_volver.click()
             time.sleep(1)
 
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
-            self.siif.disconnect()
-            self.siif.quit()
+            self.disconnect()
 
     # --------------------------------------------------
     def from_external_report(self, xls_path:str) -> pd.DataFrame:
@@ -228,22 +201,21 @@ def main():
     if args.download:
         json_path = dir_path + '/siif_credentials.json'
         if args.username != '' and args.password != '':
-            siif_connection = ConnectSIIF(args.username, args.password)
+            ConnectSIIF(args.username, args.password)
         else:
             if os.path.isfile(json_path):
                 with open(json_path) as json_file:
                     data_json = json.load(json_file)
-                    siif_connection = ConnectSIIF(
+                    ConnectSIIF(
                         data_json['username'], data_json['password']
                     )
                 json_file.close()
-        siif = ResumenContableCtaRvicon03(siif = siif_connection)
-        siif.connect()
+        siif = ResumenContableCtaRvicon03()
         siif.go_to_reports()
         siif.download_report(
             dir_path, ejercicios=args.ejercicio
         )
-        siif_connection.disconnect()
+        siif.disconnect()
     else:
         siif = ResumenContableCtaRvicon03()
 
