@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 
 from ..models.siif_model import SIIFModel
-from .connect_siif import ConnectSIIF
+from .connect_siif import ConnectSIIF, ReportCategory
 
 
 @dataclass
@@ -112,7 +112,7 @@ class FormGtoRfpP605b(ConnectSIIF):
         """
         try:
             self.set_download_path(dir_path)
-            self.select_report_module('SUB - SISTEMA DE FORMULACION PRESUPUESTARIA')
+            self.select_report_module(ReportCategory.Formulacion)
             self.select_specific_report_by_id('890')
             
             # Getting DOM elements
@@ -126,9 +126,6 @@ class FormGtoRfpP605b(ConnectSIIF):
                 "//input[@id='pt1:rbtnXLS::content']"
             )
             btn_xls.click()
-            btn_volver = self.get_dom_element(
-                "//div[@id='pt1:btnVolver']"
-            )
 
             # Form submit
             if not isinstance(ejercicios, list):
@@ -143,8 +140,9 @@ class FormGtoRfpP605b(ConnectSIIF):
                     self.rename_report(dir_path, 'rfp_p605b.xls', ejercicio + '-rfp_p605b.xls')
                     self.download_file_procedure()
             time.sleep(1)
-            btn_volver.click()
-            time.sleep(1)
+
+            # Going back to reports list
+            self.go_back_to_reports_list()
 
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
