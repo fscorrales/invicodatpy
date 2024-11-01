@@ -110,25 +110,26 @@ class ConnectSIIF(SQLUtils):
             cls.quit()
 
     # --------------------------------------------------
-    def go_to_reports(self) -> None:
+    @classmethod
+    def go_to_reports(cls) -> None:
         """"Go to SIIF's Reportes Module"""
         try:
             #Abrir pestaña reportes
-            mnu_reportes = self.get_dom_element("//button[@id='pt1:cb12']", wait=True)
+            mnu_reportes = cls.get_dom_element(value="//button[@id='pt1:cb12']", wait=True)
             mnu_reportes.click()
             time.sleep(1)
-            reportes = self.get_dom_element("//button[@id='pt1:cb14']", wait=True)
+            reportes = cls.get_dom_element(value="//button[@id='pt1:cb14']", wait=True)
             reportes.click()
             # Wait for the new window or tab
-            self.wait.until(EC.number_of_windows_to_be(2))
-            self.driver.switch_to.window(self.driver.window_handles[1])
-            self.wait.until(EC.presence_of_element_located(
+            cls.wait.until(EC.number_of_windows_to_be(2))
+            cls.driver.switch_to.window(cls.driver.window_handles[1])
+            cls.wait.until(EC.presence_of_element_located(
                 (By.XPATH, "//select[@id='pt1:socModulo::content']"))
             )
             # time.sleep(1)
         except Exception as e:
             print(f"Ocurrió un error: {e}, {type(e)}")
-            self.disconnect() 
+            cls.disconnect() 
 
     # --------------------------------------------------
     def select_report_module(self, module:ReportCategory) -> None:
@@ -150,7 +151,8 @@ class ConnectSIIF(SQLUtils):
         btn_siguiente.click()
 
     # --------------------------------------------------
-    def get_dom_element(self, value:str, by:Literal['id', 'xpath'] = 'xpath', wait:bool = False) -> WebElement:
+    @classmethod
+    def get_dom_element(cls, value:str, by:Literal['id', 'xpath'] = 'xpath', wait:bool = False) -> WebElement:
 
         op_map = {
             "xpath": By.XPATH,
@@ -163,10 +165,10 @@ class ConnectSIIF(SQLUtils):
             raise ValueError(f"Unknown module: {by}")
 
         if wait:
-            self.wait.until(EC.presence_of_element_located(
+            cls.wait.until(EC.presence_of_element_located(
                 (by_method, value)
             ))
-        return self.driver.find_element(by_method, value)
+        return cls.driver.find_element(by_method, value)
 
     # --------------------------------------------------
     def set_download_path(self, dir_path:str):
@@ -210,7 +212,8 @@ class ConnectSIIF(SQLUtils):
             raise ValueError("%s isn't a file!" % old_file_path)
 
     # --------------------------------------------------
-    def remove_html_files(self, dir_path:str):
+    @classmethod
+    def remove_html_files(cls, dir_path:str):
         """Remove html files"""
         time.sleep(5)
         file_list = os.listdir(dir_path)
@@ -231,13 +234,15 @@ class ConnectSIIF(SQLUtils):
         print(PrintTidyverse(data))
 
     # --------------------------------------------------
-    def disconnect(self) -> None:
-        self.driver.switch_to.window(self.driver.window_handles[0])
-        btn_disconnect = self.get_dom_element("//a[@id='pt1:pt_np1:pt_cni1']")
+    @classmethod
+    def disconnect(cls) -> None:
+        cls.driver.switch_to.window(cls.driver.window_handles[0])
+        btn_disconnect = cls.get_dom_element(value="//a[@id='pt1:pt_np1:pt_cni1']")
         btn_disconnect.click()
         # self.quit()
 
     # --------------------------------------------------
-    def quit(self) -> None:
+    @classmethod
+    def quit(cls) -> None:
         # Quit
-        self.driver.quit()
+        cls.driver.quit()
