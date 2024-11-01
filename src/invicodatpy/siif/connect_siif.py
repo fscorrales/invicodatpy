@@ -12,7 +12,6 @@ import time
 from enum import Enum
 from typing import Literal
 
-import pandas as pd
 from selenium import webdriver
 from selenium.common.exceptions import (
     NoSuchElementException,
@@ -28,7 +27,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from ..utils import PrintTidyverse, SQLUtils, read_xls
+from ..utils import PrintTidyverse, RPWUtils
 
 
 class ReportCategory(Enum):
@@ -39,7 +38,7 @@ class ReportCategory(Enum):
     Clasificadores = "SUB - SISTEMA DE CLASIFICADORES"
 
 
-class ConnectSIIF(SQLUtils):
+class ConnectSIIF(RPWUtils):
     username:str =  ''
     password:str = ''
     invisible:bool = False
@@ -222,10 +221,6 @@ class ConnectSIIF(SQLUtils):
                 file_path = os.path.join(dir_path, f)
                 os.remove(file_path)
                 print(f"File: {file_path} removed")
-
-    # --------------------------------------------------
-    def read_xls(self, PATH:str, header:int = None) -> pd.DataFrame:
-        return read_xls(PATH=PATH, header=header)
 
     # --------------------------------------------------
     def print_tidyverse(self, data = None):
