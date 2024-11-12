@@ -29,7 +29,7 @@ class JoinResumenMayorContable(ConnectSIIF):
 
     # --------------------------------------------------
     def download_and_unite_reports(
-        self, dir_path: str, ejercicios: list = str(dt.datetime.now().year)
+        self, dir_path: str, ejercicios: list = str(dt.datetime.now().year), filtro_nivel:str = None
     ):
         rvicon03 = ResumenContableCtaRvicon03()
         rcocc31 = MayorContableRcocc31()
@@ -41,7 +41,8 @@ class JoinResumenMayorContable(ConnectSIIF):
         for ejercicio in ejercicios:
             filename = ejercicio + "-rvicon03.xls"
             df = rvicon03.from_external_report(os.path.join(dir_path, filename))
-            print(df["cta_contable"].values.tolist())
+            if filtro_nivel is not None:
+                df = df[df["nivel"] == filtro_nivel]
             rcocc31.download_report(
                 dir_path,
                 ejercicios=ejercicio,
