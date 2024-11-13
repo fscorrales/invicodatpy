@@ -24,8 +24,8 @@ class RPWUtils(SQLUtils):
         return read_xls(PATH=PATH, header=header)
 
 
-    def get_list_of_files(self, path:str) -> list:
-        return get_list_of_files(path=path)
+    def get_list_of_files(self, path:str, years:list[str] = None) -> list:
+        return get_list_of_files(path=path, years=years)
 
 
     def print_tidyverse(self, data = None):
