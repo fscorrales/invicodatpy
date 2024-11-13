@@ -136,8 +136,8 @@ class SQLUtils():
 
     # --------------------------------------------------
     def update_sql_db(self, input_path:str, output_path:str, 
-    clean_first:bool=False):
-        files = self.get_list_of_files(input_path)
+    clean_first:bool=False, years:list[str]=None):
+        files = self.get_list_of_files(input_path, years=years)
         if clean_first:
             self.delete_all_rows(output_path)
         for file in files:
