@@ -89,7 +89,7 @@ class MayorContableRcocc31(ConnectSIIF):
                 ejercicios = [ejercicios]
             for ejercicio in ejercicios:
                 int_ejercicio = int(ejercicio)
-                if int_ejercicio > 2010 and int_ejercicio <= dt.datetime.now().year:
+                if int_ejercicio > 2009 and int_ejercicio <= dt.datetime.now().year:
                     for cta_contable in ctas_contables:
                         nivel, mayor, subcuenta = cta_contable.split('-')
                         # Ejercicio
