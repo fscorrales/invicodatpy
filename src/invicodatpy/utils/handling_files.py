@@ -28,7 +28,7 @@ def read_xls(PATH:str, header:int = None) -> pd.DataFrame:
     """"Read from xls report"""
     df = pd.read_excel(PATH, index_col=None, header=header, 
     na_filter = False, dtype=str)
-    if header == None:
+    if header is None:
         n_col = df.shape[1]
         df.columns = [str(x) for x in range(n_col)]
     return df
@@ -55,9 +55,10 @@ def read_xls(PATH:str, header:int = None) -> pd.DataFrame:
 #     return df
 
 # --------------------------------------------------
-def get_list_of_files(path:str) -> list:
+def get_list_of_files(path:str, years: list[str] = None) -> list:
     """Get list of files in a folder
     :param path: folder or file.
+    :param years: list of years to filter the files.
     """
     # Check if path is a file and returns it. 
     # Otherwise returns list of files in folder.
@@ -67,6 +68,6 @@ def get_list_of_files(path:str) -> list:
     else:
         for entry in os.listdir(path):
             full_path = os.path.join(path, entry)
-            if os.path.isfile(full_path):
+            if os.path.isfile(full_path) and (years is None or full_path.split("/")[-1][:4] in years):
                 file_list.append(full_path)
     return file_list
