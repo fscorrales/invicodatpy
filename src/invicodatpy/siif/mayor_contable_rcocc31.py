@@ -38,7 +38,7 @@ class MayorContableRcocc31(ConnectSIIF):
         init=False, repr=False, default='id'
     )
     _FILTER_COL:str = field(
-        init=False, repr=False, default_factory=lambda: ['mes', 'cta_contable']
+        init=False, repr=False, default_factory=lambda: ['ejercicio', 'cta_contable']
     )
     _SQL_MODEL:SIIFModel = field(
         init=False, repr=False, default=SIIFModel
