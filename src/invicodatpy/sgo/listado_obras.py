@@ -6,7 +6,6 @@ Purpose: Read, process and write Gestion Viviendas's
 """
 
 import argparse
-import datetime as dt
 import inspect
 import json
 import os
@@ -16,7 +15,6 @@ import numpy as np
 
 import pandas as pd
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 
 from ..models.sgo_model import SGOModel

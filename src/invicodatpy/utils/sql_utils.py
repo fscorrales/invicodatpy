@@ -82,7 +82,7 @@ class SQLUtils():
     def from_sql(self, sql_path:str, table_name:str = None) -> pd.DataFrame:
         """From sql DataBase to sql DataFrame"""
         engine = create_engine(f'sqlite:///{sql_path}')
-        if table_name == None:
+        if table_name is None:
             table_name = self._TABLE_NAME
         self.df = pd.read_sql_table(
             table_name = table_name,
@@ -111,7 +111,7 @@ class SQLUtils():
         )
         
         engine_mdb = create_engine(connection_url)
-        if table_name == None:
+        if table_name is None:
             table_name = self._TABLE_NAME
         self.df = pd.read_sql_table(
             table_name = table_name,
