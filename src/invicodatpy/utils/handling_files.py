@@ -70,4 +70,6 @@ def get_list_of_files(path:str, years: list[str] = None) -> list:
             full_path = os.path.join(path, entry)
             if os.path.isfile(full_path) and (years is None or full_path.split("/")[-1][:4] in years):
                 file_list.append(full_path)
+    print("File list to update:")
+    print(file_list)
     return file_list
