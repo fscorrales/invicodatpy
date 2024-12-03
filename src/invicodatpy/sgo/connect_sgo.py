@@ -43,7 +43,9 @@ class ConnectSGO():
             "download.directory_upgrade": True,
             "plugins.always_open_pdf_externally": True #It will not show PDF directly in chrome
         })
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        driver_path = ChromeDriverManager().install()
+        self.driver = webdriver.Chrome(executable_path=driver_path, options=options)
+        # self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         self.driver.maximize_window()
 
         # Setup wait for later
