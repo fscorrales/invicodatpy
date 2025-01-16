@@ -49,6 +49,9 @@ class ListadoProv(RPWUtils):
         df = df.dropna(subset=['cuit'])
         df['cuit'] = df['cuit'].str.replace('-', '')
 
+        # drop duplicates based on desc_prov
+        df = df.drop_duplicates(subset=['desc_prov'], keep='first')
+
         df = df[['codigo', 'cuit'] + [col for col in df.columns if col not in ['codigo', 'cuit']]]
 
         self.df = df
