@@ -72,6 +72,15 @@ class SSCCModel():
             Column('icaro_cta_cte', String(20)),
         )
 
+        self.listado_imputaciones = Table(
+            'listado_imputaciones', self.metadata,
+            Column('id', Integer(), autoincrement=True, primary_key=True),
+            Column('cod_imputacion', String(3)),
+            Column('imputacion', String(50)),
+            Column('tipo', String(7)),
+            Column('imputacion_fonavi', String(50)),
+        )
+
     def create_engine(self):
         """Create an SQLite DB engine"""
         self.engine = create_engine(f'sqlite:///{self.sql_path}')
