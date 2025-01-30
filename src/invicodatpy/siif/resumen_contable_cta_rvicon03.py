@@ -231,4 +231,4 @@ def main():
 if __name__ == '__main__':
     main()
     # From invicodatpy/src
-    # python -m invicodatpy.siif.resumen_contable_cta_rvicon03 -e 2024
+    # python -m invicodatpy.siif.resumen_contable_cta_rvicon03 -e 2023 --no-download
