@@ -13,3 +13,5 @@ from .detalle_partidas_rog01 import *
 from .connect_siif import *
 from .ppto_rec_ri102 import *
 from .form_gto_rfp_p605b import *
+from .resumen_contable_cta_rvicon03 import *
+from .join_resumen_mayor_contable import *
